@@ -1,0 +1,14 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "", sans-serif;
+}
+
+/* CORES DO PROJETO */
+/* color: var(--preto); */
+:root{
+    --vermelho: #CB0D01;
+    --preto: #000000;
+    --branco: #F8F8F8;
+    --preto-fosco: #141414;
+}
