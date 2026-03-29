@@ -31,7 +31,7 @@ Antes de começar, você precisará ter instalado em sua máquina:
 Clone o repositório:
 
 ```bash
-git clone https://github.com/Pedro-Vino/Maximus-Tranning
+git clone https://github.com/Pedro-Vino/MaximusTranning
 cd maximus-tranning
 ```
 
