@@ -88,7 +88,7 @@ URL_BASE = https://localhost:3000
 ## ▶️ Executando o projeto
 
 ```bash
-npm start
+npm start ou node app
 ```
 
 O sistema estará disponível em:

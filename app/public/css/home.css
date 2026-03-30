@@ -1,0 +1,184 @@
+/* RESET TIRA PADRAO DO NAVEGADOR */ 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* BODY (CORPO) */
+body {
+  background-color: #000;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+
+  overflow: hidden;
+}
+/* HEADER(NAVBAR) */
+header {
+  background-color: #111;
+  padding: 10px 20px;
+}
+
+/* CONTAINER (ORGANIZAÇAO NAV BAR) */
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* LOGO (ALINHA LOGO) */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-container img {
+  width: 60px;
+}
+
+.nome-logo {
+  color: #ccc;
+  font-weight: bold;
+}
+/* NAV(EFEITO DO MOUSE) */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.menu-links {
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+}
+
+nav a:hover {
+  color: red;
+}
+
+.ativo {
+  color: red;
+  border-bottom: 2px solid red;
+}
+
+.botao-destaque {
+  background: red;
+  padding: 8px 16px;
+  border-radius: 5px;
+}
+.botao-destaque:hover {
+  background-color: #ff0000;
+  color: black;
+
+}
+/* HERO(CONTAINER PRINCIPAL)*/
+.hero {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+
+  padding: 0; 
+  height: calc(100vh - 70px); 
+}
+/* TEXTO */
+.hero-texto {
+  width: 50%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding-left: 40px; 
+}
+
+.hero-texto h1 {
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.hero-texto p {
+  color: #ccc;
+  margin-bottom: 30px;
+}
+/* BOTÕES */
+.hero-botoes {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-vermelho {
+  background: red;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: white;
+}
+
+.btn-borda {
+  border: 2px solid white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: white;
+}
+/* IMAGEM */
+.hero-imagem {
+  width: 50%;
+  height: 100%;
+
+  background-image: url("../../public/imagens/treinoINICIO01.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  border-radius: 0; 
+}
+
+
+/*RESPONSIVO (ADAPTA PARA TODAS AS TELAS )*/
+@media (max-width: 900px) {
+
+  .hero {
+    height: calc(100vh - 70px);
+  }
+
+  .hero-texto {
+    width: 55%;
+    padding-left: 20px;
+  }
+
+  .hero-imagem {
+    width: 45%;
+  }
+
+  .hero-texto h1 {
+    font-size: 28px;
+  }
+
+  .hero-texto p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .hero {
+    height: calc(100vh - 70px);
+  }
+
+  .hero-texto {
+    width: 55%;
+    padding-left: 15px;
+  }
+
+  .hero-imagem {
+    width: 45%;
+  }
+}
