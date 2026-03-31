@@ -17,4 +17,8 @@ router.get('/compras', function(req,res){
     res.render('pages/buy');
 })
 
+router.get('/Vial', function(req,res){
+    res.render('pages/teste_Vial');
+})
+
 module.exports = router;
