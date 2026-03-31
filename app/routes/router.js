@@ -40,4 +40,33 @@ router.get('/usuarios/view', function(req, res){
     res.render('pages/usuarios');
 });
 
+//teste do Lucas para funcionalidades do banco de dados
+
+// 🔹 Conexão com banco
+const db = require('../../config/pool-conexoes');
+
+// 🔹 Abrir formulário
+router.get('/aluno', (req, res) => {
+    res.render('pages/formulario');
+});
+
+// 🔹 Cadastrar aluno (IMC via trigger)
+router.post('/aluno', async (req, res) => {
+    const { nome, email, senha, peso, altura } = req.body;
+
+    const sql = `
+        INSERT INTO aluno 
+        (alu_nome, alu_email, alu_senha, alu_peso, alu_altura) 
+        VALUES (?, ?, ?, ?, ?)
+    `;
+
+    try {
+        await db.query(sql, [nome, email, senha, peso, altura]);
+        res.send('Aluno cadastrado com IMC 😮‍🔥');
+    } catch (err) {
+        console.error(err);
+        res.send('Erro ao cadastrar aluno');
+    }
+});
+
 module.exports = router;
