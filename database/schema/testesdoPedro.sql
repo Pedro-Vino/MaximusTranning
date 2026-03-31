@@ -1,5 +1,6 @@
 --BANCO DE DADOS QUE TA SENDO USADO PARA TESTES DO PEDRO
 --100% PROVISÓRIO, APENAS PARA TESTES, NÃO TEM NADA A VER COM O PROJETO FINAL
+--leia linha 25!!!
 
 create database maximus_db;
 -- Primeiro seleciona o banco
@@ -20,3 +21,5 @@ VALUES ('Teste', 'teste@email.com', 'senha_hash_aqui');
 ALTER TABLE usuarios
 ADD COLUMN usu_peso DECIMAL(5,2) AFTER usu_senha,
 ADD COLUMN usu_altura DECIMAL(5,2) AFTER usu_peso;
+
+--quem leu é viado
