@@ -1,4 +1,4 @@
-const pool = require("../../database/pool-conexoes");
+const pool = require("../../config/pool-conexoes");
 
 const UsuariotesteModel = {
   findAll: async () => {
