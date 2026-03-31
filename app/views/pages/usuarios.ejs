@@ -1,0 +1,31 @@
+<h1>Lista de usuários</h1>
+
+<table border="1" cellspacing="0" cellpadding="5">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Peso (kg)</th>
+      <th>Altura (m)</th>
+      <th>IMC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% usuarios.forEach(user => { 
+        const imc = (user.usu_peso / (user.usu_altura * user.usu_altura)).toFixed(2);
+    %>
+      <tr>
+        <td><%= user.usu_id %></td>
+        <td><%= user.usu_nome %></td>
+        <td><%= user.usu_email %></td>
+        <td><%= user.usu_peso %></td>
+        <td><%= user.usu_altura %></td>
+        <td><%= imc %></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<br>
+<a href="/cadastro">Cadastrar novo usuário</a>
