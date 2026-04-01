@@ -19,6 +19,19 @@ router.get('/compras', function(req, res){
     res.render('pages/buy');
 });
 
+//adm
+router.get('/adm', async (req, res) => {
+  try {
+    const [alunos] = await db.query('SELECT * FROM aluno');
+
+    res.render('pages/adm/home', { alunos });
+
+  } catch (err) {
+    console.error(err);
+    res.render('pages/adm/home', { alunos: [] }); // evita quebrar
+  }
+});
+
 // Rotas de cadastro
 // Mantendo seu teste de view antiga
 router.get('/cadastro', function(req, res){
