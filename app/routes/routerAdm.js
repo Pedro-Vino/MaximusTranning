@@ -1,11 +1,12 @@
-var express = require('express');
-var router = express.Router();
-const admController = require("../controllers/admController");
+//adm
+router.get('/adm', async (req, res) => {
+  try {
+    const [alunos] = await db.query('SELECT * FROM aluno');
 
-const verificarAdm = admController.verificarAdm;
+    res.render('pages/adm/home', { alunos });
 
-router.get('/home',verificarAdm, function(req,res){
-    res.render('pages/adm/home');  
-})
-
-module.exports = router;
+  } catch (err) {
+    console.error(err);
+    res.render('pages/adm/home', { alunos: [] }); // evita quebrar
+  }
+});
