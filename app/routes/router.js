@@ -2,13 +2,20 @@ var express = require('express');
 var router = express.Router();
 const UsuariotesteController = require('../controllers/usuariotesteController');
 
+// 🔥 ADICIONADO: usuário fixo
+const USER = {
+    id: "admMaximus",
+    senha: "adm123456"
+};
+
 // Rotas de páginas estáticas
 router.get('/', function(req, res){
     res.render('pages/home');  
 });
 
+// 🔥 AJUSTADO (login correto na pasta adm)
 router.get('/login', function(req, res){
-    res.render('pages/login');  
+    res.render('pages/adm/login', { erro: null });  
 });
 
 router.get('/planos', function(req, res){
@@ -19,41 +26,23 @@ router.get('/compras', function(req, res){
     res.render('pages/buy');
 });
 
-//adm
-router.get('/adm', async (req, res) => {
-  try {
-    const [alunos] = await db.query('SELECT * FROM aluno');
 
-    res.render('pages/adm/home', { alunos });
-
-  } catch (err) {
-    console.error(err);
-    res.render('pages/adm/home', { alunos: [] }); // evita quebrar
-  }
-});
 
 // Rotas de cadastro
-// Mantendo seu teste de view antiga
 router.get('/cadastro', function(req, res){
     res.render('pages/testesdoPedro');  
 });
 
-// Agora rota oficial do controller para abrir formulário
 router.get('/cadastro/form', UsuariotesteController.formCadastro);
 
-// Rota de envio do formulário
 router.post('/cadastro', UsuariotesteController.cadastrar);
 
 // Rotas de usuários
-// Controller oficial
 router.get('/usuarios', UsuariotesteController.listar);
 
-// Mantendo teste de view estática (opcional)
 router.get('/usuarios/view', function(req, res){
     res.render('pages/usuarios');
 });
-
-//teste do Lucas para funcionalidades do banco de dados
 
 // 🔹 Conexão com banco
 const db = require('../../config/pool-conexoes');
@@ -63,7 +52,7 @@ router.get('/aluno', (req, res) => {
     res.render('pages/formulario');
 });
 
-// 🔹 Cadastrar aluno (IMC via trigger)
+// 🔹 Cadastrar aluno
 router.post('/aluno', async (req, res) => {
     const { nome, email, senha, peso, altura } = req.body;
 
@@ -79,6 +68,33 @@ router.post('/aluno', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.send('Erro ao cadastrar aluno');
+    }
+});
+
+// 🔥 LOGIN (JÁ CORRIGIDO COM BANCO)
+router.post('/login', async (req, res) => {
+    const { id, senha } = req.body;
+
+    if (id === USER.id && senha === USER.senha) {
+        try {
+            const [alunos] = await db.query('SELECT * FROM aluno');
+
+            res.render('pages/adm/home', { 
+                usuario: id,
+                alunos
+            });
+
+        } catch (err) {
+            console.error(err);
+
+            res.render('pages/adm/home', { 
+                usuario: id,
+                alunos: []
+            });
+        }
+
+    } else {
+        res.render('pages/adm/login', { erro: "ID ou senha incorretos" });
     }
 });
 
