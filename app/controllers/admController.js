@@ -1,6 +1,7 @@
 const AdmModel = require('../models/model-adm');
 const bcrypt = require('bcryptjs');
 const { body, validationResult } = require("express-validator");
+const db = require('../../config/pool-conexoes');
 
 verificarAdm: async (req, res, next) => {
         try {
@@ -20,4 +21,16 @@ verificarAdm: async (req, res, next) => {
             console.error("Erro no verificar nivel:", error);
             res.redirect("/adm/login");
         }
-    }
+    },
+
+    exports.home = async (req, res) => {
+        try {
+            const [alunos] = await db.query('SELECT * FROM aluno');
+
+            res.render('pages/adm/home', { alunos });
+
+        } catch (err) {
+            console.error(err);
+            res.render('pages/adm/home', { alunos: [] });
+        }
+    };
