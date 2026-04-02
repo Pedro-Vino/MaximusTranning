@@ -10,8 +10,11 @@ app.set('views', './app/views');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-var rotas = require('./app/routes/router');
+const rotas = require('./app/routes/router');
 app.use('/', rotas);
+
+const rotasAdm = require('./app/routes/routerAdm');
+app.use('/adm/', rotasAdm);
 
 app.set("/navbar", './app/views/partial/navbar')
 
