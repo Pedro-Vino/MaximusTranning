@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://cdn-uicons.flaticon.com/2.5.1/uicons-regular-rounded/css/uicons-regular-rounded.css');
+
+
+#signin .erro{
+    background-color: rgb(255, 202, 202);
+    border: 2px solid var(--erro);
+    color: var(--erro);
+}
+#signup .erro{
+    background-color: rgb(255, 202, 202);
+    border: 2px solid var(--erro);
+    color: var(--erro);
+}
+.erro #email {
+    border: 2px solid var(--erro);
+}
+.erro #senha {
+    border: 2px solid var(--erro); 
+}
+.erro #nome {
+    border: 2px solid var(--erro);
+}
+.erro #repsenha {
+    border: 2px solid var(--erro);
+}
+
+.erro{
+    background-color: rgb(255, 202, 202);
+    border: 2px solid var(--erro);
+    color: var(--erro);
+}
+
+/* Página de erro */
+
+.erroDireitaEsquerda {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 8%;
+    
+}
+.erroEsquerda {
+    /* width: 100%;
+    height: 100%; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 50px;
+}
+.erroDireita {
+    display: flex;
+    flex-direction: column;
+}
+.erroDireita h1{
+    text-align: left;
+    color: var(--preto);
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3rem;
+    text-align: center;
+    color: var(--preto);
+}
+h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    text-align: left;
+    color: var(--preto);
+}
+
+.corErro {
+    color: var(--principal_claro);
+}
+
+.voltarHome {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 75%;
+}
+.voltarHome img {
+    margin-top: 100px;
+    width: 200px;
+    height: 200px;
+}
+.voltar {
+    font-size: 25px;
+    color: var(--principal_claro);
+    font-weight: bold;
+}
+
+@media(max-width: 925px){
+    .erroDireitaEsquerda {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .erroEsquerda {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+    .erroDireita {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+    .erroDireita h1 {
+        text-align: center;
+    }
+    .erroDireita h3{
+        text-align: center;
+        font-size: 1.5rem;
+    }
+}
+
+@media(max-width: 600px){
+    .erroDireitaEsquerda {
+        flex-direction: column;
+        align-items: center;
+    }
+    .voltarHome{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+    .voltarHome img {
+        width: 90%;
+    }
+    .erroEsquerda img{
+        width: 90%;
+    }
+    .erroEsquerda {
+        margin-right: 0;
+    }
+
+    .erroDireita h1{
+        text-align: center;
+    }
+    .erroDireita h3{
+        text-align: center;
+    }
+}

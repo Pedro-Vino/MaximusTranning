@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -75,5 +75,53 @@
         </form>
     </div>
 
+</body>
+</html>
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MaximusTranning - Administrativo</title>
+    <link rel="stylesheet" href="/css/erro.css">
+    <link rel="stylesheet" href="/css/adm/base.css">
+    <link rel="stylesheet" href="/css/adm/login.css">
+    <link rel="icon" href="/imagens/LogoSemFgrande.png">
+</head>
+<body>
+    <%
+    let  erroValidacao =  {"email":"", "senha":"" };
+    let  msgErro =  {"email":"", "senha":"" };
+    if(erros) {
+        erros.errors.forEach(function(erro) {
+            if (erro.path == "email") {
+                erroValidacao.email = "erro",
+                msgErro.email = erro.msg
+            }
+            if (erro.path == "senha") {
+                erroValidacao.senha = "erro",
+                msgErro.senha = erro.msg
+            }
+        })
+    }; %>
+    <section class="login-container">
+        <h1 class="banner">AREA ADMINISTRATIVA</h1>
+        <h1>MaximusTranning</h1>
+        <form method="post" action="/adm/login">
+            <label for="email">E-mail</label>
+            <input type="text" id="email" name="email" placeholder="Digite seu usuário" value="<%= dados.email  %>" class="<%= erroValidacao.email %>">
+            <span class="spanerro"><%= msgErro.email %></span><br>
+
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" name="senha" placeholder="Digite sua senha" value="<%= dados.senha  %>" class="<%= erroValidacao.senha %>">
+            <span class="spanerro"><%= msgErro.senha %></span><br>
+
+            <button type="submit">Entrar</button>
+        </form>
+        <br><br>
+        <a href="/">Voltar</a>
+    </section>
 </body>
 </html>
