@@ -22,4 +22,18 @@ ALTER TABLE usuarios
 ADD COLUMN usu_peso DECIMAL(5,2) AFTER usu_senha,
 ADD COLUMN usu_altura DECIMAL(5,2) AFTER usu_peso;
 
+
+CREATE TABLE IF NOT EXISTS alunos (
+        alu_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        alu_email VARCHAR(55) NOT NULL UNIQUE,
+        alu_nome VARCHAR(30) NOT NULL,
+        alu_senha VARCHAR(72) NOT NULL, -- VALOR ALTO PELA SENHA SER CRIPTOGRAFADA
+        alu_nasc DATE,
+        alu_foto VARCHAR(255) DEFAULT NULL,
+        alu_banner VARCHAR(255) DEFAULT NULL,
+        tipo ENUM('c', 'a') NOT NULL DEFAULT 'c',
+        alu_status BOOLEAN DEFAULT 0
+    );
+
+
 --quem leu é viado

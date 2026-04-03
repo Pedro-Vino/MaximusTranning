@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
+const guestMiddleware = require('../helpers/guestMiddleware');
 const UsuariotesteController = require('../controllers/usuariotesteController');
-
+const alunosController = require('../controllers/alunoscontroller');
 
 // Rotas de páginas estáticas
 router.get('/', function(req, res){
@@ -15,6 +16,15 @@ router.get('/planos', function(req, res){
 router.get('/compras', function(req, res){
     res.render('pages/buy');
 });
+
+router.get('/cadastro', guestMiddleware, (req, res) => {
+  res.render('pages/registro', 
+  { "erros": null, "dados": {"email":"","senha":""},dadosNotificacao:"","retorno":null });
+});
+
+router.post('/cadastrar',
+  alunosController.regrasValidacao, 
+  alunosController.cadastrarUsuarioNormal);
 
 
 
