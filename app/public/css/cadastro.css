@@ -4,45 +4,52 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     color: var(--branco);
 }
+
+/* CENTRALIZAÇÃO */
 .main_login {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 90vh;
+    min-height: 100vh;
+    padding: 20px;
 }
 
+/* CONTAINER */
 .container6 {
-    width: 650px;
+    width: 100%;
+    max-width: 650px;
     background: #111;
     padding: 30px;
     border-radius: 10px;
     position: relative;
     box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
 }
+
 .container6::before {
     content: "";
     position: absolute;
-    left: -10px;
+    left: -5px;
     width: 100%;
-    height: 98%;
+    height: 100%;
     background: red;
     border-radius: 5px;
     z-index: -1;
 }
 
+/* HEADER */
 .form-header h1 {
-    font-size: 24px;
+    font-size: clamp(20px, 5vw, 24px);
     margin-bottom: 5px;
     color: var(--branco);
 }
 
 .form-header p {
-    font-size: 14px;
+    font-size: clamp(12px, 3vw, 14px);
     color: var(--branco);
     margin-bottom: 15px;
 }
 
-
+/* FORM */
 fieldset {
     border: none;
     margin-bottom: 20px;
@@ -58,13 +65,16 @@ legend {
     margin-bottom: 15px;
 }
 
+/* LABEL */
 label {
     display: block;
-    font-size: 23px;
+    font-size: clamp(16px, 4vw, 23px);
     margin-bottom: 5px;
     font-weight: bold;
     font-family: "Zen Dots", sans-serif;
 }
+
+/* INPUT */
 input {
     width: 100%;
     padding: 10px;
@@ -74,7 +84,7 @@ input {
     color: var(--branco);
     outline: none;
     transition: 0.3s;
-    font-size: 25px
+    font-size: clamp(16px, 4vw, 25px);
 }
 
 input:focus {
@@ -90,6 +100,7 @@ input:focus {
     color: red;
 }
 
+/* INPUT COM BOTÃO */
 .input-group {
     display: flex;
     align-items: center;
@@ -108,6 +119,7 @@ input:focus {
     font-size: 16px;
 }
 
+/* INFO */
 .content {
     background: #0d0d0d;
     padding: 10px;
@@ -115,6 +127,7 @@ input:focus {
     margin: 10px 0;
     font-size: 13px;
 }
+
 .content p {
     color: var(--branco);
 }
@@ -136,6 +149,7 @@ input:focus {
     font-size: 8px;
 }
 
+/* FOOTER */
 .form-footer {
     margin-top: 20px;
 }
@@ -146,6 +160,7 @@ input:focus {
     text-decoration: none;
 }
 
+/* BOTÃO */
 #enviar_login {
     width: 100%;
     padding: 12px;
@@ -162,27 +177,43 @@ input:focus {
     background: #cc0000;
 }
 
-.logo{
-    height: 80px;
+/* LOGO */
+.logo {
+    height: clamp(50px, 10vw, 80px);
 }
-.titlelogo{
+
+.titlelogo {
     font-family: "Zen Dots", sans-serif;
     font-weight: 1100;
-    font-size: 100px;
+    font-size: clamp(40px, 8vw, 100px);
 }
-.divisoria{
+
+/* DIVISORIA */
+.divisoria {
     display: flex;
     align-items: center;
     gap: 30px;
+    flex-wrap: wrap;
 }
-.divisoria h1{
+
+.divisoria h1 {
     color: var(--branco);
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+    .divisoria {
+        flex-direction: column;
+        text-align: center;
+    }
 }
 
 @media (max-width: 480px) {
     .container6 {
-        width: 90%;
-        padding: 20px;
+        padding: 20px 15px;
+    }
+
+    input {
+        padding: 8px;
     }
 }
-
