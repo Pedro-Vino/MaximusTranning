@@ -5,14 +5,14 @@ const bcrypt = require("bcryptjs");
  
 const UsuarioModel = {
   // Regras de validação 
-  // Buscar usuário por ID
+  // Buscar aluno por ID
   findId: async (id) => {
     try {
-      const query = "SELECT * FROM alunos WHERE usu_id = ?";
+      const query = "SELECT * FROM alunos WHERE alu_id = ?";
       const [rows] = await pool.query(query, [id]);
       return rows.length > 0 ? rows[0] : null;
     } catch (error) {
-      console.error("Erro ao buscar usuário por ID:", error);
+      console.error("Erro ao buscar aluno por ID:", error);
       throw error;
     }
   },
@@ -20,7 +20,7 @@ const UsuarioModel = {
   // Verificar se email já existe
   findByEmail: async (email) => {
     try {
-      const query = "SELECT * FROM alunos WHERE usu_email = ?";
+      const query = "SELECT * FROM alunos WHERE alu_email = ?";
       const [rows] = await pool.query(query, [email]);
       return rows.length > 0 ? rows[0] : null;
     } catch (error) {

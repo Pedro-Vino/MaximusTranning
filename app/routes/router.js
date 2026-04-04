@@ -28,6 +28,38 @@ router.post('/cadastrar',
   alunosController.cadastrarAlunoNormal);
 
 
+
+router.get("/recuperar-senha", 
+  function(req, res){
+    res.render("pages/recuperar-senha",
+      { erros: null, dadosNotificacao: null });
+});
+
+router.post("/recuperar-senha",
+  alunosController.regrasValidacaoFormRecSenha, 
+  function(req, res){
+    alunosController.recuperarSenha(req, res);
+});
+
+router.get("/reset-senha", 
+  function(req, res){
+    alunosController.validarTokenNovaSenha(req, res);
+  });
+
+  
+router.get("/reset-senha-teste", 
+  function(req, res){
+      res.render("pages/resetar-senha",
+      { erros: null, dadosNotificacao: null,"usu_id":"" });
+  });
+  
+router.post("/resetar-senha", 
+    alunosController.regrasValidacaoFormNovaSenha,
+  function(req, res){
+    alunosController.resetarSenha(req, res);
+});
+
+
 // Rotas de cadastro
 router.get('/cadastro/teste', function(req, res){
     res.render('pages/testesdoPedro');  

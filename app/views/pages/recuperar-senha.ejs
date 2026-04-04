@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- <link rel="stylesheet" href="/css/login.css"> -->
+    <link rel="stylesheet" href="/css/recuperar-senha.css">
+    <link rel="stylesheet" href="/css/erro.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <script src="/js/login.js" defer></script>
+    <link rel="icon" href="imagens/SportAgora.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
+    <script src="/js/notify.js"></script>
+    
+</head>
+<body>
+    <% 
+    let avisoErro = {"email":""}
+    let msgErro = ""
+        if(erros){
+            erros.errors.forEach(function(erro){
+                if(erro.path == "email"){
+                    avisoErro.email = "erro";
+                    msgErro += `* ${erro.msg} <br>`
+                }
+            })
+            if(msgErro != ""){
+            %>
+                <script>
+                    let msgErro ="<%= msgErro %>"
+                    notify("Erro(s) no preenchimento", 
+                           "Verifique o(s) campo(s) <br> " + msgErro.replace(/&lt;/g,"<").replace(/&gt;/g,">"), 
+                           "error", "right bottom", 5000)                        
+                </script>
+            <%
+            }
+        }
+        if (dadosNotificacao) { %>
+            <script>
+                    notify("<%= dadosNotificacao.titulo%>","<%= dadosNotificacao.mensagem%>", "<%= dadosNotificacao.tipo%>", "right bottom")
+                    if("<%= dadosNotificacao.tipo %>" == "success"){
+                        setTimeout(function(){window.location="/login"}, 3000)
+                    }                        
+            </script>
+    <% } %>           
+    <header>
+    <%- include('../partials/navbar'); %> 
+    </header>
+    <main class="main_login">  
+        <section class="container5">
+            <article class="buttonsForm">
+                <h1>Recuperação de Senha</h1>
+                <a href="/login">Voltar a pagina anterior</a>
+            </article>
+            <article class="form-reset-senha">
+                <form action="" method="post">
+                    <h3>Escreva seu Email para recuperação</h3>
+                    <p>Para recuperar a sua senha, informe seu endereço de email que nós enviaremos um link para a alteração da senha.</p>
+                    <input type="email " name="email" placeholder="E-mail" value="" class="" id="email"/><br>
+                    <input type="submit" class="enviar-btn" value="Enviar"><br>
+                </form>
+            </article>
+        </section>  
+    </main>
+    <%- include('../partials/footer'); %>
+</body>
+</html>

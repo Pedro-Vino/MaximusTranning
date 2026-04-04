@@ -1,0 +1,168 @@
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 20px;
+        background-color: var(--vermelho);
+        color: var(--branco);
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+.buttonsForm{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+    .form-reset-senha{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .form-reset-senha form{
+        padding: 20px 50px 0px 50px;
+        color: var(--preto);
+    }
+    
+    .form-reset-senha1 form{
+        padding: 10px 50px 0px 50px;;
+    }
+    
+    .form-reset-senha p{
+        padding-bottom: 10px;
+    }
+    .ab{
+        height: 350px;
+    }
+    /* aside{
+        display: flex;
+    }
+    aside input{
+        margin: 10px;
+    } */
+    #email, .senha {
+        border-top: 1px double var(--branco);
+        border-right: 1px double var(--branco);
+        border-bottom: 2px solid var(--cinza);
+        border-left: 1px double var(--branco);
+        margin-top: 10px;
+        margin-bottom: 20px;
+        padding: 8px 0 8px 15px;
+        outline: none;
+        width: 98%;
+        font-size: 18px;
+        color: white;
+        background-color: var(--background);
+    }
+    .enviar-btn{
+    background-color: var(--vermelho);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 350px;
+    }
+
+    .ab{
+        height: 400px;
+    }
+    .container5 {
+        background-color: var(--branco);
+        width: 880px;
+        height: 320px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 0 20px 0 var(--cinza);
+        margin-top: 100px;
+        font-size: 18px;
+        margin-bottom: 60px;
+        padding: 20px;
+}
+.main_login {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.buttonsForm h1 {
+    font-size: 45px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    color: var(--preto);
+}
+.buttonsForm a {
+    font-size: 18px;
+    color: var(--vermelho);
+}
+
+footer{
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+}
+
+@media (max-width: 925px) {
+    .main_login {
+        width: 100%;
+        margin: auto;
+    }
+    .container5{
+        width:              100%;
+        margin: 4em auto;
+    }
+    .pessoa1{
+        display: none;
+    }
+    .pessoa2{
+        display: none;
+    }
+}
+
+    @media (max-width: 600px) {
+    /* Ajusta o container principal para telas menores */
+    .container5 {
+        margin: 3em 1em;    /* Reduz a margem para não ficar tão distante do topo/fundo */
+        padding: 20px 15px; /* Diminui o preenchimento lateral */
+        height: auto;       /* Permite que a altura se ajuste ao conteúdo */
+        font-size: 16px;    /* Reduz o tamanho da fonte base dentro do container */
+    }
+
+    /* Reduz o tamanho do título principal */
+    .buttonsForm h1 {
+        font-size: 30px;      /* Tamanho mais adequado para telas de celular */
+        text-align: center; /* Centraliza o título */
+    }
+
+    /* Garante que o link abaixo do título também seja legível */
+    .buttonsForm a {
+        font-size: 16px;
+    }
+
+    /* Remove o padding lateral excessivo do formulário */
+    .form-reset-senha form {
+        padding: 15px 10px; /* Simplifica e reduz o padding */
+    }
+
+    /* Ajusta o botão de envio para ocupar a largura total */
+    .enviar-btn {
+        margin-left: 0;     /* Remove a margem que o empurrava para a direita */
+        width: 100%;        /* Faz o botão ocupar toda a largura disponível */
+        padding: 12px;
+    }
+    
+    /* Ajuste final no footer para garantir que não quebre o layout */
+    footer {
+        position: relative; /* Garante que o footer siga o fluxo da página */
+        width: 100%;
+    }
+}
+
+footer{
+    position: relative;
+    width: 97%;
+}
