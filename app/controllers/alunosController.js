@@ -54,8 +54,8 @@ module.exports = {
         nome: nome,
         email: email,
         senha: senhaHash,
-        foto: "imagens/usuarios/default_user.jpg",
-        banner: "imagens/usuarios/default_background.jpg",
+        foto: "imagens/alunos/default_user.jpg",
+        banner: "imagens/alunos/default_background.jpg",
         status: 0,
         nasc: nasc
       });
