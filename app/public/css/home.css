@@ -133,7 +133,7 @@ nav a:hover {
   width: 50%;
   height: 100%;
 
-  background-image: url("../../public/imagens/treinoINICIO01.jpg");
+  background-image: url("/imagens/treinoINICIO01.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

@@ -1,91 +1,26 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="/css/admbase.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADM Maximus Tranning</title>
+    <link rel="stylesheet" href="/css/adm/base.css">
+    <link rel="stylesheet" href="/css/adm/home.css">
+    <link rel="icon" href="/imagens/LogoSemFgrande.png">
 </head>
 <body>
-
-<div class="container">
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <h2>Admin-Maximus</h2>
-    <ul>
-      <li>Dashboard</li>
-      <li>Alunos</li>
-      <li>Relatórios</li>
-    </ul>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- HEADER -->
-    <header class="header">
-      <h1>Dashboard</h1>
-      <input type="text" id="searchInput" placeholder="Pesquisar aluno...">
-    </header>
-
-    <!-- CARDS -->
-    <section class="cards">
-      <div class="card">
-  👥 Total: <%= alunos?.length || 0 %></div>
-      <div class="card">🏋️ Treinos</div>
-      <div class="card">📊 Média IMC</div>
-    </section>
-
-    <!-- TABELA -->
-   <section class="table-section">
-  <table id="tabelaAlunos">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Treino</th>
-        <th>IMC</th>
-      </tr>
-    </thead>
-
-<tbody>
-  <% (alunos || []).forEach(aluno => { %>
-    <tr>
-      <td><%= aluno.alu_id %></td>
-      <td><%= aluno.alu_nome %></td>
-      <td><%= aluno.alu_treino || '-' %></td>
-      <td>
-        <%= aluno.alu_imc 
-            ? Number(aluno.alu_imc).toFixed(2) 
-            : '-' %>
-      </td>
-    </tr>
-  <% }) %>
-</tbody>
-      </table>
-    </section>
-
-  </main>
-
-</div>
-<!-- Script para pesquisar -->
-<script>
-const input = document.getElementById('searchInput');
-
-input.addEventListener('keyup', function () {
-  const filtro = input.value.toLowerCase();
-  const linhas = document.querySelectorAll('#tabelaAlunos tbody tr');
-
-  linhas.forEach(linha => {
-    const nome = linha.children[1].innerText.toLowerCase(); // 👈 AQUI
-
-    if (nome.includes(filtro)) {
-      linha.style.display = '';
-    } else {
-      linha.style.display = 'none';
-    }
-  });
-});
-</script>
+    <%- include('../../partials/adm_navbar'); %>
+    <main>
+        <section class="logo-area">
+            <img src="/imagens/LogoSemFgrande.png" alt="Logo Maximus Tranning" class="home-logo">
+            <h1 class="tituloLogo">Maximus Tranning</h1>
+        </section>
+        <section class="botoesHome">
+            <a href="/adm/usuarios"><button class="botaohome">Pesquisar Alunos</button></a>
+            <a href="/adm/eventos"><button class="botaohome">Pesquisar</button></a>
+            <a href="/adm/solicitacoes"><button class="botaohome">Solicitações</button></a>
+        </section>
+    </main>
+    <%- include('../../partials/adm_footer'); %>
 </body>
 </html>

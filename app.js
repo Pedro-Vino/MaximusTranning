@@ -13,8 +13,9 @@ app.use(express.json());
 const rotas = require('./app/routes/router');
 app.use('/', rotas);
 
-const rotasAdm = require('./app/routes/routerAdm');
-app.use('/adm/', rotasAdm);
+// EM MANUTENÇÃO
+// const rotasAdm = require('./app/routes/routerAdm');
+// app.use('/adm/', rotasAdm);
 
 app.set("/navbar", './app/views/partial/navbar')
 
