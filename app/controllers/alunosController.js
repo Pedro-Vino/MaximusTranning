@@ -1,4 +1,4 @@
-const UsuarioModel = require('../models/model-aluno');
+const AlunoModel = require('../models/model-aluno');
 const bcrypt = require('bcryptjs');
 const { body, validationResult } = require("express-validator");
 const https = require("https");
@@ -12,16 +12,10 @@ module.exports = {
     body("repsenha").custom((value, { req }) => {
     return value === req.body.senha;
     }).withMessage("Senhas estão diferentes"),
-    body("nasc").isDate().withMessage("Data de nascimento inválida").custom((value) => {
-        const dataNascimento = new Date(value);
-        const dataAtual = new Date();
-        const idadeMinima = 18; // Idade mínima permitida
-        return (dataAtual.getFullYear() - dataNascimento.getFullYear() >= idadeMinima);
-    }).withMessage("Você deve ter no mínimo 18 anos para se cadastrar.")
   ],
   
 
-  cadastrarUsuarioNormal: async (req, res) => {
+  cadastrarAlunoNormal: async (req, res) => {
     
     const errors = validationResult(req);
         if(!errors.isEmpty()) {
@@ -38,8 +32,8 @@ module.exports = {
       const {nome, email, senha, nasc } = req.body;
 
       if (email){
-      const usuarioExistente = await UsuarioModel.findByEmail(email);
-      if (usuarioExistente) {
+      const alunoExistente = await AlunoModel.findByEmail(email);
+      if (alunoExistente) {
        return res.render("pages/registro", {
         dados: req.body,
         erros: { errors: [{ path: 'email', msg: "Este email já está cadastrado" }] },
@@ -56,18 +50,18 @@ module.exports = {
      
       const senhaHash = await bcrypt.hash(senha, 10);
      
-      const novoUsuario = await UsuarioModel.create({
+      const novoAluno = await AlunoModel.create({
         nome: nome,
         email: email,
         senha: senhaHash,
-        foto: "imagens/usuarios/default_user.jpg",
-        banner: "imagens/usuarios/default_background.jpg",
+        foto: "imagens/alunos/default_user.jpg",
+        banner: "imagens/alunos/default_background.jpg",
         status: 0,
         nasc: nasc
       });
 
       const token = jwt.sign(
-        { userId: novoUsuario },
+        { userId: novoAluno },
         process.env.SECRET_KEY
       );
 
@@ -75,7 +69,7 @@ module.exports = {
 
       const html = require('../helpers/email-ativar-conta')(process.env.URL_BASE, token, nome);
 
-      enviarEmail(email, "Cadastro no site SportAgora", null, html, (erro)=>{
+      enviarEmail(email, "Cadastro no site Maximus Tranning", null, html, (erro)=>{
         if (erro) {
         return res.render("pages/registro", {
             erros: [{ msg: "Erro ao enviar o e-mail. Tente novamente." }],
@@ -88,7 +82,7 @@ module.exports = {
           erros: null,
           dadosNotificacao: {
             titulo: "Cadastro realizado!",
-            mensagem: "Novo usuário criado com sucesso!<br>"+
+            mensagem: "Novo aluno criado com sucesso!<br>"+
             "Enviamos um e-mail para a ativação de sua conta",
             tipo: "success",
           },
@@ -106,5 +100,459 @@ module.exports = {
     }
   },
     
+  ativarConta: async (req, res) => {
+  try {
+    const token = req.query.token;
+
+    // Verifica o token de forma síncrona
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+
+    // Busca o aluno
+    const user = await AlunoModel.findId(decoded.userId);
+    if (!user) {
+
+      return res.render("pages/login", {
+        erros: null,
+        dadosNotificacao: {
+        titulo: "Algo deu errado!",
+        mensagem: "Conta não encontrada, verifique o link de ativação.",
+        tipo: "error",
+        },
+        dados: { email: "", senha: "" },
+        retorno: null
+      });
+    }
+
+    // Ativa a conta
+    await AlunoModel.ativarConta(decoded.userId);
+
+    // Renderiza página de login com notificação
+    res.render("pages/login", {
+      erros: null,
+      dadosNotificacao: {
+        titulo: "Sucesso",
+        mensagem: "Conta ativada, use seu e-mail e senha para acessar o seu perfil!",
+        tipo: "success",
+      },
+      dados: { email: "", senha: "" },
+      retorno: null
+    });
+
+  } catch (err) {
+
+    res.render("pages/login", {
+      erros: ["Token inválido ou expirado"],
+      dadosNotificacao: null,
+      dados: { email: "", senha: "" },
+      retorno: null
+    });
+  }
+}
+,
+
+  regrasValidacaoFormNovaSenha: [
+    body("senha")
+      .isStrongPassword()
+      .withMessage(
+        "A senha deve ter no mínimo 8 caracteres (mínimo 1 letra maiúscula, 1 caractere especial e 1 número)"
+      )
+      ,
+    body("rep_senha")
+      .isStrongPassword()
+      .withMessage(
+        "A senha deve ter no mínimo 8 caracteres (mínimo 1 letra maiúscula, 1 caractere especial e 1 número)"
+      ).custom(async (value, { req }) => {
+        if (value !== req.body.rep_senha) {
+          throw new Error("As senhas não são iguais!");
+        }
+      }),
+  ],
+
+  regrasValidacaoFormRecSenha: [
+    body("email")
+      .isEmail()
+      .withMessage("Digite um e-mail válido!")
+      .custom(async (value) => {
+        const nomeAlu = await AlunoModel.findByEmail(value);
+        if (!nomeAlu) {
+          throw new Error("E-mail não encontrado");
+        }
+      }),
+  ],
+
+
+  recuperarSenha: async (req, res) => {
+    const erros = validationResult(req);
+    console.error(erros);
+    if (!erros.isEmpty()) {
+      return res.render("pages/recuperar-senha", {
+        dados: req.body,
+        dadosNotificacao: null,
+        erros: erros
+      });
+    }
+    try {
+      //logica do token
+      user = await AlunoModel.findByEmail(req.body.email);
+      const token = jwt.sign(
+        { userId: user.alu_id, expiresIn: "25m" },
+        process.env.SECRET_KEY
+      );
+
+      //enviar e-mail com link usando o token
+      html = require("../helpers/email-reset-senha")(process.env.URL_BASE, token, user.alu_nome)
+      enviarEmail(req.body.email, "Pedido de recuperação de senha", null, html, ()=>{
+        return res.render("pages/recuperar-senha", {
+          erros: null,
+          dadosNotificacao: {
+            titulo: "Recuperação de senha",
+            mensagem: "Enviamos um e-mail com instruções para resetar sua senha",
+            tipo: "success",
+          },
+          dados: req.body
+        });
+      });
+
+    } catch (e) {
+
+    }
+  },
+
+  validarTokenNovaSenha: async (req, res) => {
+    //receber token da URL
+    const token = req.query.token;
+
+    //validar token
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+      if (err) {
+        res.render("pages/recuperar-senha", {
+          erros: null,
+          dadosNotificacao: { titulo: "Link expirado!", mensagem: "Insira seu e-mail para iniciar o reset de senha.", tipo: "error", },
+          dados: req.body,
+          
+        });
+      } else {
+        res.render("pages/resetar-senha", {
+          erros: null,
+          aluno: req.session.aluno,
+          alu_id: decoded.userId,
+          dadosNotificacao: null
+        });
+      }
+    });
+  },
+
+  regrasValidacaoFormNovaSenha: [
+    body("senha")
+      .isStrongPassword()
+      .withMessage(
+        "A senha deve ter no mínimo 8 caracteres (mínimo 1 letra maiúscula, 1 caractere especial e 1 número)"
+      )
+      .custom(async (value, { req }) => {
+        if (value !== req.body.rep_senha) {
+          throw new Error("As senhas não são iguais!");
+        }
+      }),
+    body("rep_senha")
+      .isStrongPassword()
+      .withMessage(
+        "A senha deve ter no mínimo 8 caracteres (mínimo 1 letra maiúscula, 1 caractere especial e 1 número)"
+      ),
+  ],
   
+  resetarSenha: async (req, res) => {
+    const erros = validationResult(req);
+
+    if (!erros.isEmpty()) {
+      return res.render("pages/resetar-senha", {
+        erros: erros,
+        dadosNotificacao: null,
+        dados: req.body,
+        alu_id: req.body.alu_id
+      });
+    }
+    try {
+      //gravar nova senha
+      senha = await bcrypt.hash(req.body.senha, 10);
+
+      const resetar = await AlunoModel.atualizar(req.body.alu_id, {senha:senha} );
+
+      res.redirect("/login");
+    } catch (e) {
+
+    }
+  },
+
+
+  regrasValidacaoLogin :[
+  body("email").isEmail().withMessage("Email inválido.")
+],
+ 
+
+autenticarAluno: async (req, res, tipo = "c") => {
+    let pag = "pages/login";
+      switch(tipo){
+        case "c": pag = 'pages/login'; break;
+        case "o": pag = 'pages/login'; break;
+        case "a": pag = 'pages/adm/login'; break;
+        default : pag = 'pages/login'; break;
+      }
+    try {
+
+      const errors = validationResult(req);
+        if(!errors.isEmpty()) {
+
+            return res.render(pag,{
+                dados: req.body,
+                erros: errors,
+                dadosNotificacao: null
+            })
+        }
+
+      const { email, senha } = req.body;
+     
+      const aluno = await AlunoModel.findByEmail(email);
+     
+      if (!aluno) {
+        return res.render(pag, {
+           dados: req.body,
+          erros: { errors: [{ path: 'email', msg: "Este email não está cadastrado ou está digitado errado." }] },
+          dadosNotificacao: {
+            titulo: "E-mail não cadastrado",
+            mensagem: "Este e-mail não está cadastrado ou está digitado errado.",
+            tipo: "error",
+          }
+        });
+      }
+     
+      const senhaCorreta = await bcrypt.compare(senha, aluno.alu_senha);
+     
+      if (!senhaCorreta) {
+        return res.render(pag, {
+           dados: req.body,
+          erros: { errors: [{ path: 'senha', msg: "Senha incorreta." }] },
+          dadosNotificacao: {
+            titulo: "Senha incorreta",
+            mensagem: "A senha digitada está incorreta.",
+            tipo: "error",
+          }
+        });
+      }
+     
+      req.session.aluno = {
+        id: aluno.alu_id,
+        email: aluno.alu_email,
+        nome: aluno.alu_nome,
+        foto: aluno.alu_foto,
+        banner: aluno.alu_banner,
+        tipo: aluno.tipo
+      };
+      
+      if (aluno.tipo === "a") {
+       res.redirect("/adm/home");
+      } else {
+        res.redirect("/perfil");
+      }
+    } catch (error) {
+      console.error(error);
+      res.render(pag, {
+        dados: req.body,
+        erros: { errors: [{ path: 'email', msg: "Erro ao logar, tente novamente mais tarde." }] },
+        dadosNotificacao: {
+            titulo: "Algo deu errado!",
+            mensagem: "Algum erro ocorreu, tente novamente mais tarde.",
+            tipo: "error",
+          }
+      });
+    }
+  },
+ 
+  logout: (req, res) => {
+    req.session.destroy(() => {
+      res.redirect("/login");
+    });
+  },
+
+  carregarPerfil: async (req, res) => {
+  try {
+    const user = req.session.aluno;
+    var aluninfos = await AlunoModel.findByEmail(user.email);
+    aluninfos.tipo = aluninfos.tipo[0].toUpperCase() + aluninfos.tipo.substring(1);
+
+    let ingressos = await AlunoModel.findIngressosInscritos(aluninfos.alu_id);
+    
+    
+    res.render("pages/perfil", {
+        aluno: {
+        id: aluninfos.alu_id,
+        nome: aluninfos.alu_nome,
+        email: aluninfos.alu_email,
+        arroba: aluninfos.perf_nome,
+        seguidores: aluninfos.quantidade_seguidores,
+        seguindo: aluninfos.quantidade_seguindo,
+        foto: aluninfos.alu_foto,
+        banner: aluninfos.alu_banner,
+        tipo: aluninfos.tipo,
+        },
+        ingressos: ingressos,
+        dadosNotificacao:""
+    });
+
+  } catch (err) {
+    console.error(err);
+    return res.redirect("/login");
+  }
+},
+
+  carregarEditarPerfil: async (req, res) => {
+  try {
+    const user = req.session.aluno;
+    const aluninfos = await AlunoModel.findByEmail(user.email);
+    aluninfos.alu_nasc = aluninfos.alu_nasc ? aluninfos.alu_nasc.toISOString().split('T')[0] : "";
+
+    res.render("pages/editar-perfil", {
+        valores: {
+        id: aluninfos.alu_id,
+        nome: aluninfos.alu_nome,
+        email: aluninfos.alu_email,
+        arroba: aluninfos.perf_nome,
+        foto: aluninfos.alu_foto,
+        banner: aluninfos.alu_banner,
+        nasc: aluninfos.alu_nasc
+        },
+        erros:"",
+        dadosNotificacao:""
+    });
+
+  } catch (err) {
+    console.error(err);
+    return res.redirect("/login");
+  }
+},
+
+    regrasValidacaoPerfil: [
+        body("nome")
+        .optional()
+            .isLength({ min: 3, max: 45 }).withMessage("Nome deve ter de 3 a 45 caracteres!"),
+        body("email")
+        .optional()
+            .isEmail().withMessage("Digite um e-mail válido!"),
+        body("senha")
+        .optional({ checkFalsy: true })
+        .isStrongPassword().withMessage("Senha muito fraca!"),
+        body("repsenha").custom((value, { req }) => {
+          return value === req.body.senha;
+        }).withMessage("Senhas estão diferentes")      
+    ],
+
+    gravarPerfil: async (req, res) => {
+      const erros = validationResult(req);
+      const erroMulter = req.session.erroMulter;
+       if (!erros.isEmpty() || erroMulter != null ) {
+            lista =  !erros.isEmpty() ? erros : {formatter:null, errors:[]};
+            if(erroMulter != null ){
+                lista.errors.push(erroMulter);
+            } 
+
+            return res.render("pages/editar-perfil", { 
+              erros: lista, 
+              valores: {
+              nome: req.body.nome,
+              email: req.body.email,
+              foto: req.session.aluno.foto,
+              banner: req.session.aluno.banner,
+              senha: ""
+                
+              }, 
+              dadosNotificacao: {
+                  titulo: "Erro ao atualizar o perfil!",
+                  mensagem: "Verifique se os dados foram inseridos corretamente.",
+                  tipo: "error"
+              } })
+        }
+        try {
+            var dadosForm = {
+                nome: req.body.nome,
+                email: req.body.email,
+                foto: req.session.aluno.foto,
+                banner: req.session.aluno.banner,
+                senha: req.body.senha,
+            };
+
+              if (req.body.senha && req.body.senha.trim() !== "") {
+                  dadosForm.senha = bcrypt.hashSync(req.body.senha, 10);
+              } else {
+                  delete dadosForm.senha; // Remove do objeto para não sobrescrever
+              }
+            if (!req.files || (!req.files.foto && !req.files.banner)) {
+
+              } else {
+                if (req.files.foto) {
+                  const caminhoFoto = "imagens/perfil/" + req.files.foto[0].filename;
+                  if (dadosForm.foto !== caminhoFoto && dadosForm.foto !== "imagens/alunos/default_user.jpg") removeImg(dadosForm.foto);
+                  dadosForm.foto = caminhoFoto;
+                }
+
+                if (req.files.banner) {
+                  const caminhoBanner = "imagens/perfil/" + req.files.banner[0].filename;
+                  if (dadosForm.banner !== caminhoBanner && dadosForm.banner !== "imagens/alunos/default_background.jpg") removeImg(dadosForm.banner);
+                  dadosForm.banner = caminhoBanner;
+                }
+              }
+
+            let resultUpdate = await AlunoModel.atualizar(req.session.aluno.id, dadosForm);
+            if (resultUpdate) {
+                if (resultUpdate.changedRows == 1) {
+                  var result = await AlunoModel.findId(req.session.aluno.id);
+                  var aluno = {
+                    nome: result.alu_nome,
+                    id: result.alu_id,
+                    foto: result.alu_foto,
+                    email: result.alu_email,
+                    banner: result.alu_banner,
+                    tipo: result.tipo,
+                  }
+                
+                  
+                   req.session.aluno = aluno;
+
+                  var valores = aluno;
+                  valores.senha = "";
+
+                  //salvo certo
+                  res.render("pages/editar-perfil", {
+                    erros: null,
+                    valores: valores,
+                    dadosNotificacao: { 
+                      titulo: "Perfil! atualizado com sucesso", 
+                      mensagem: "Alterações Gravadas", 
+                      tipo: "success" 
+                  }
+                  });
+                } else {
+
+                  res.render("pages/editar-perfil", {
+                    erros: null,
+                    valores: dadosForm,
+                    dadosNotificacao: { 
+                      titulo: "Perfil! atualizado com sucesso", 
+                      mensagem: "Sem alterações", 
+                      tipo: "success" 
+                    }
+                });
+                }
+            }
+
+    } catch(e){
+
+      res.render("pages/editar-perfil", {valores: req.body, erros: erros,
+        dadosNotificacao: {  
+          titulo: "Erro ao atualizar o perfil!", 
+          mensagem: "Verifique os valores digitados!", 
+          tipo: "error" 
+        }
+      })
+
+    }
+  },
 };
