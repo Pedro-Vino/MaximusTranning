@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 const guestMiddleware = require('../helpers/guestMiddleware');
 const UsuariotesteController = require('../controllers/usuariotesteController');
-const alunosController = require('../controllers/alunoscontroller');
+const alunosController = require('../controllers/alunosController');
+
 
 // Rotas de páginas estáticas
 router.get('/', function(req, res){
@@ -24,12 +25,11 @@ router.get('/cadastro', guestMiddleware, (req, res) => {
 
 router.post('/cadastrar',
   alunosController.regrasValidacao, 
-  alunosController.cadastrarUsuarioNormal);
-
+  alunosController.cadastrarAlunoNormal);
 
 
 // Rotas de cadastro
-router.get('/cadastro', function(req, res){
+router.get('/cadastro/teste', function(req, res){
     res.render('pages/testesdoPedro');  
 });
 
