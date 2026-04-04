@@ -7,8 +7,11 @@
 /* CORES DO PROJETO */
 /* color: var(--preto); */
 :root{
+    /* --erro:#812222; */
     --vermelho: #CB0D01;
     --preto: #000000;
     --branco: #F8F8F8;
     --preto-fosco: #141414;
+    --cinza: #6C757D;
+    --a: #272727;
 }

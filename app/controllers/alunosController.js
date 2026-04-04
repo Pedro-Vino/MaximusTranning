@@ -12,12 +12,6 @@ module.exports = {
     body("repsenha").custom((value, { req }) => {
     return value === req.body.senha;
     }).withMessage("Senhas estão diferentes"),
-    body("nasc").isDate().withMessage("Data de nascimento inválida").custom((value) => {
-        const dataNascimento = new Date(value);
-        const dataAtual = new Date();
-        const idadeMinima = 18; // Idade mínima permitida
-        return (dataAtual.getFullYear() - dataNascimento.getFullYear() >= idadeMinima);
-    }).withMessage("Você deve ter no mínimo 18 anos para se cadastrar.")
   ],
   
 

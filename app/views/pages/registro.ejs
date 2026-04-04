@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="/css/cadastro.css">
+    <link rel="stylesheet" href="/css/erro.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <script src="js/passwordvalidator.js" defer></script>
+    <link rel="stylesheet" href="css/passwordvalidator.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="icon" href="/imagens/LogoSemFgrande.png">
+
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
+    <script src="/js/notify.js"></script>
+    <script src="/js/cadastro.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&family=Zen+Dots&display=swap" rel="stylesheet">
+</head>
+<body onload="testarSenha()">
+    <%
+    let  erroValidacao =  {"nome":"","email":"", "repsenha":"","senha":"","nasc":""};
+    let  msgErroPag =  {"nome":"","email":"","repsenha":"","senha":"","nasc":""};
+    if(erros) {
+        erros.errors.forEach(function(erro) {
+            if (erro.path == "nome") {
+                erroValidacao.nome = "erro",
+                msgErroPag.nome = erro.msg
+            }
+            if (erro.path == "email") {
+                erroValidacao.email = "erro",
+                msgErroPag.email = erro.msg
+            }
+            if (erro.path == "repsenha") {
+                erroValidacao.repsenha = "erro",
+                msgErroPag.repsenha = erro.msg
+            }
+            if (erro.path == "senha") {
+                erroValidacao.senha = "erro",
+                msgErroPag.senha = erro.msg
+            }
+            if (erro.path == "nasc") {
+                erroValidacao.nasc = "erro",
+                msgErroPag.nasc = erro.msg
+            }
+        })
+    }; %>
+
+    <% 
+    let avisoErro = {"nome":"","email":"", "senha":"","repsenha":"", "nasc":""};
+    let msgErro = ""
+        if(erros){
+            erros.errors.forEach(function(erro){
+                if(erro.path == "nome"){
+                    avisoErro.nome = "erro";
+                    msgErro += `* ${erro.msg} <br>`
+                }
+                if(erro.path == "email"){
+                    avisoErro.email = "erro";
+                    msgErro += `* ${erro.msg} <br>`
+                }
+                if(erro.path == "senha"){
+                    avisoErro.senha = "erro";
+                    msgErro += `* ${erro.msg} <br>`
+                }
+                if(erro.path == "repsenha"){
+                    avisoErro.repsenha = "erro";
+                    msgErro += `* ${erro.msg} <br>`
+                }
+                if(erro.path == "nasc"){
+                    avisoErro.nasc = "erro";
+                    msgErro += `* ${erro.msg} <br>`
+                }
+            })
+
+        }
+        if(msgErro != ""){
+                    %>
+                        <script>
+                            let msgErro ="<%= msgErro %>"
+                            notify("Erro(s) no preenchimento", 
+                                   "Verifique o(s) campo(s) <br> " + msgErro.replace(/&lt;/g,"<").replace(/&gt;/g,">"), 
+                                   "error", "right bottom", 5000)                        
+                        </script>
+    <%} if (dadosNotificacao) { %>
+            <script>
+                    notify("<%= dadosNotificacao.titulo%>","<%= dadosNotificacao.mensagem%>", "<%= dadosNotificacao.tipo%>", "right bottom")                    
+            </script>
+    <% } %>
+
+
+    <!-- 
+    <main class="main_login">
+        <section class="container6">
+
+            <article class="buttonsForm">
+                <h1>Bem-vindo!</h1>
+                <a href="/login">Já possuo uma conta</a><br><br>
+            </article>
+        
+            <form id="signup" method="post" action="/cadastrar">
+                <input type="text" placeholder="Nome de usuário" name="nome" id="nome" value="<%= dados.nome  %>" class="<%= erroValidacao.nome %>"> 
+                <span class="spanerro"><%= msgErroPag.nome %></span><br>
+
+                <input type="email" placeholder="Email" name="email" id="email" value="<%= dados.email  %>" class="<%= erroValidacao.email %>"> 
+                <span class="spanerro"><%= msgErroPag.email %></span><br><br>
+                    
+                <input type="password" placeholder="Senha" name="senha" id="senha" value="<%= dados.senha  %>" class="<%= erroValidacao.senha %>">
+                
+
+                <section class="content">
+                    <p>Senha deve conter</p>
+                    <ul class="requirement-list">
+                        <li>
+                            <i class="fa-solid fa-circle"></i>
+                            <span>ao menos 8 caracteres</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-circle"></i>
+                            <span>ao menos 1 número</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-circle"></i>
+                            <span>ao menos 1 letra minúscula</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-circle"></i>
+                            <span>ao menos 1 simbolo (@#$...)</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-circle"></i>
+                            <span>ao menos 1 letra maiúscula </span>
+                        </li>
+                      </ul>
+                    </section>
+                  
+                <input type="password" placeholder="Repita a Senha" name="repsenha" id="repsenha" value="<%= dados.repsenha  %>" class="<%= erroValidacao.repsenha %>"> 
+                
+                <span class="spanerro"><%= msgErroPag.repsenha %></span><br>
+                
+
+                <input type="submit" id="enviar_login" value="REGISTRAR">
+            </form>
+    </main>
+    -->
+    <main class="main_login">
+
+    <section class="container6">
+
+        <header class="form-header">
+
+            <article class="divisoria">
+                <img src="/imagens/LogoSemFgrande.png" alt="Logo" class="logo">
+                <h1 class="titlelogo">Maximus Tranning</h1>
+            </article>
+            <h1>Cadastre-se</h1>
+        </header>
+
+        <form id="signup" method="post" action="/cadastrar">
+
+            <fieldset>
+                <section class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" name="nome" id="nome"
+                        value="<%= dados.nome %>"
+                        class="<%= erroValidacao.nome %>">
+                    <span class="spanerro"><%= msgErroPag.nome %></span>
+                </section>
+
+                <section class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email"
+                        value="<%= dados.email %>"
+                        class="<%= erroValidacao.email %>">
+                    <span class="spanerro"><%= msgErroPag.email %></span>
+                </section>
+
+            </fieldset>
+
+            <fieldset>
+
+                <section class="form-group">
+                    <label for="senha">Senha</label>
+
+                    <article class="input-group">
+                        <input type="password" name="senha" id="senha"
+                            value="<%= dados.senha %>"
+                            class="<%= erroValidacao.senha %>">
+
+                        <button type="button" id="toggleSenha"
+                            class="toggle-senha-btn2"
+                            aria-label="Mostrar senha">👁️</button>
+                    </article>
+                </section>
+
+                <aside class="content">
+                    <p>Senha deve conter:</p>
+                    <ul class="requirement-list">
+                        <li><i class="fa-solid fa-circle"></i> mínimo 8 caracteres</li>
+                        <li><i class="fa-solid fa-circle"></i> 1 número</li>
+                        <li><i class="fa-solid fa-circle"></i> 1 minúscula</li>
+                        <li><i class="fa-solid fa-circle"></i> 1 símbolo </li>
+                        <li><i class="fa-solid fa-circle"></i> 1 maiúscula </li>
+                    </ul>
+                </aside>
+
+                <section class="form-group">
+                    <label for="repsenha">Confirme a senha</label>
+
+                    <article class="input-group">
+                        <input type="password" name="repsenha" id="repsenha"
+                            value="<%= dados.repsenha %>"
+                            class="<%= erroValidacao.repsenha %>">
+
+                        <button type="button" id="ctoggleSenha"
+                            class="toggle-senha-btn3"
+                            aria-label="Mostrar senha">👁️</button>
+                    </article>
+
+                    <span class="spanerro"><%= msgErroPag.repsenha %></span>
+                </section>
+
+            </fieldset>
+
+            <footer class="form-footer">
+                <button type="submit" id="enviar_login">
+                    Cadastrar
+                </button>
+                <nav>
+                    <a href="/login">Já possui uma conta? Entrar</a>
+                </nav>
+            </footer>
+
+        </form>
+
+    </section>
+
+</main>
+    <%- include('../partials/footer'); %>
+</body>
+</html>

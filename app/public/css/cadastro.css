@@ -1,0 +1,188 @@
+/* BODY */
+body {
+    background: var(--preto);
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--branco);
+}
+.main_login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+}
+
+.container6 {
+    width: 650px;
+    background: #111;
+    padding: 30px;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+}
+.container6::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    width: 100%;
+    height: 98%;
+    background: red;
+    border-radius: 5px;
+    z-index: -1;
+}
+
+.form-header h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+    color: var(--branco);
+}
+
+.form-header p {
+    font-size: 14px;
+    color: var(--branco);
+    margin-bottom: 15px;
+}
+
+
+fieldset {
+    border: none;
+    margin-bottom: 20px;
+}
+
+legend {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #aaa;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-size: 23px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-family: "Zen Dots", sans-serif;
+}
+input {
+    width: 100%;
+    padding: 10px;
+    background: var(--preto);
+    border: none;
+    border-bottom: 2px solid #222;
+    color: var(--branco);
+    outline: none;
+    transition: 0.3s;
+    font-size: 25px
+}
+
+input:focus {
+    border-bottom: 2px solid red;
+}
+
+.erro {
+    border-bottom: 2px solid red !important;
+}
+
+.spanerro {
+    font-size: 12px;
+    color: red;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+}
+
+.input-group input {
+    flex: 1;
+}
+
+.input-group button {
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0 10px;
+    font-size: 16px;
+}
+
+.content {
+    background: #0d0d0d;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-size: 13px;
+}
+.content p {
+    color: var(--branco);
+}
+
+.requirement-list {
+    list-style: none;
+    margin-top: 5px;
+}
+
+.requirement-list li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #bbb;
+    margin-bottom: 5px;
+}
+
+.requirement-list i {
+    font-size: 8px;
+}
+
+.form-footer {
+    margin-top: 20px;
+}
+
+.form-footer nav a {
+    color: red;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+#enviar_login {
+    width: 100%;
+    padding: 12px;
+    background: red;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 5px;
+}
+
+#enviar_login:hover {
+    background: #cc0000;
+}
+
+.logo{
+    height: 80px;
+}
+.titlelogo{
+    font-family: "Zen Dots", sans-serif;
+    font-weight: 1100;
+    font-size: 100px;
+}
+.divisoria{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+.divisoria h1{
+    color: var(--branco);
+}
+
+@media (max-width: 480px) {
+    .container6 {
+        width: 90%;
+        padding: 20px;
+    }
+}
+

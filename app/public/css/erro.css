@@ -3,12 +3,12 @@
 
 
 #signin .erro{
-    background-color: rgb(255, 202, 202);
+    background-color: rgb(100, 66, 66);
     border: 2px solid var(--erro);
     color: var(--erro);
 }
 #signup .erro{
-    background-color: rgb(255, 202, 202);
+    background-color: rgb(100, 66, 66);
     border: 2px solid var(--erro);
     color: var(--erro);
 }
@@ -26,7 +26,7 @@
 }
 
 .erro{
-    background-color: rgb(255, 202, 202);
+    background-color: rgb(54, 29, 29);
     border: 2px solid var(--erro);
     color: var(--erro);
 }
