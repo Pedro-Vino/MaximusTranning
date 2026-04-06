@@ -1,11 +1,9 @@
-/* BODY */
 body {
     background: var(--preto);
     font-family: "Zen Dots" sans-serif;
     color: var(--branco);
 }
 
-/* CENTRALIZAÇÃO */
 .main_login {
     display: flex;
     justify-content: center;
@@ -14,8 +12,7 @@ body {
     padding: 20px;
 }
 
-/* CONTAINER */
-.container6 {
+.formulario {
     width: 100%;
     max-width: 650px;
     background: #111;
@@ -25,7 +22,7 @@ body {
     box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
 }
 
-.container6::before {
+.formulario::before {
     content: "";
     position: absolute;
     left: -15px;
@@ -36,7 +33,6 @@ body {
     z-index: -1;
 }
 
-/* HEADER */
 .form-header h1 {
     font-size: clamp(20px, 5vw, 24px);
     margin-bottom: 5px;
@@ -49,7 +45,6 @@ body {
     margin-bottom: 15px;
 }
 
-/* FORM */
 fieldset {
     border: none;
     margin-bottom: 20px;
@@ -64,8 +59,10 @@ legend {
 .form-group {
     margin-bottom: 15px;
 }
+.form-group a{
+    color: var(--principal);
+}
 
-/* LABEL */
 label {
     display: block;
     font-size: clamp(16px, 4vw, 23px);
@@ -74,7 +71,6 @@ label {
     font-family: "Zen Dots", sans-serif;
 }
 
-/* INPUT */
 input {
     width: 100%;
     padding: 10px;
@@ -100,7 +96,6 @@ input:focus {
     color: var(--principal);
 }
 
-/* INPUT COM BOTÃO */
 .input-group {
     display: flex;
     align-items: center;
@@ -119,7 +114,6 @@ input:focus {
     font-size: 16px;
 }
 
-/* INFO */
 .content {
     background: #0d0d0d;
     padding: 10px;
@@ -148,8 +142,6 @@ input:focus {
 .requirement-list i {
     font-size: 8px;
 }
-
-/* FOOTER */
 .form-footer {
     margin-top: 20px;
     font-family: "Zen Dots" sans-serif;
@@ -168,7 +160,6 @@ input:focus {
     color: var(--principal);
 }
 
-/* BOTÃO */
 #enviar_login {
     width: 100%;
     padding: 12px;
@@ -183,10 +174,8 @@ input:focus {
 }
 
 #enviar_login:hover {
-    background: var(--principal_escura);
+    background: #cc0000;
 }
-
-/* LOGO */
 .logo {
     height: clamp(50px, 10vw, 80px);
 }
@@ -197,7 +186,6 @@ input:focus {
     font-size: clamp(40px, 8vw, 100px);
 }
 
-/* DIVISORIA */
 .divisoria {
     display: flex;
     align-items: center;
@@ -209,7 +197,7 @@ input:focus {
     color: var(--branco);
 }
 
-/* RESPONSIVIDADE */
+
 @media (max-width: 768px) {
     .divisoria {
         flex-direction: column;
@@ -226,3 +214,4 @@ input:focus {
         padding: 8px;
     }
 }
+

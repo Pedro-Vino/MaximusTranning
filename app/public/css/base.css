@@ -14,4 +14,25 @@
     --preto-fosco: #141414;
     --cinza: #6C757D;
     --a: #272727;
+    --erro:#cb0c00;
+    --principal: #cb0c01;
+    --principal_escura: #cb0c00;
+    --principal_claro: #f85646;
+    --complementar: #FFC300;
+    --complementar2: #B8860B;
+    --branco: #f1f1f1;
+    --preto: #000000; 
+    --cinza: #141414;
+    --cinza_escuro: #3333;
+    --cinza_claro: #929292;
+    --background: #E6ECF0;
+    --a: #272727;
+    --principal_claro_transparente: #b83330;
+    --erro_claro: #ad2632;
+    --erro_escuro: #b33939;
+    --fundo-claro: #ffffff; 
+    --fundo-secundario: #ededed; 
+    --texto-secundario: #555555; 
+    --sombra-suave: rgba(0,0,0,0.05);
+    --sombra-moderada: rgba(0,0,0,0.1)
 }

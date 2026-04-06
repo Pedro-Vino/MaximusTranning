@@ -5,6 +5,16 @@ const UsuariotesteController = require('../controllers/usuariotesteController');
 const alunosController = require('../controllers/alunosController');
 
 
+// AUTENTICACAO
+function verificarAutenticacao(req, res, next) {
+  if (req.session && req.session.usuario) {
+    return next();
+  }
+  res.redirect("/login");
+}
+
+
+
 // Rotas de páginas estáticas
 router.get('/', function(req, res){
     res.render('pages/home');  
@@ -18,6 +28,15 @@ router.get('/compras', function(req, res){
     res.render('pages/buy');
 });
 
+
+
+
+
+router.use((req, res, next) => {
+  res.locals.aluno = req.session.aluno || null;
+  next();
+});
+
 router.get('/cadastro', guestMiddleware, (req, res) => {
   res.render('pages/registro', 
   { "erros": null, "dados": {"email":"","senha":""},dadosNotificacao:"","retorno":null });
@@ -27,7 +46,24 @@ router.post('/cadastrar',
   alunosController.regrasValidacao, 
   alunosController.cadastrarAlunoNormal);
 
+router.get(
+  "/ativar-conta",
+  async function (req, res) {
+    alunosController.ativarConta(req, res);
+  }
+);
 
+router.get("/login", (req, res) => {
+  res.render("pages/login", {
+  erro: null,  erros: null,  dados: { email: "", senha: "" }, dadosNotificacao:"",  retorno: null
+});
+});
+
+router.post("/login",   alunosController.regrasValidacaoLogin, alunosController.autenticar);
+
+// Rota de logout
+router.get("/logout", alunosController.logout);
+router.post("/logout", alunosController.logout);  
 
 router.get("/recuperar-senha", 
   function(req, res){
@@ -58,6 +94,9 @@ router.post("/resetar-senha",
   function(req, res){
     alunosController.resetarSenha(req, res);
 });
+
+
+
 
 
 // Rotas de cadastro

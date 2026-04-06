@@ -73,8 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Previne a ação padrão (copiar)
             event.preventDefault();
             
-            // Opcional: Notificar o usuário sobre a restrição (utiliza a função 'notify' do seu código)
-            // A função 'notify' deve estar definida em /js/notify.js
             if (typeof notify === 'function') {
                  notify("Restrição de segurança", 
                         "Por segurança, não é permitido copiar a senha deste campo.", 

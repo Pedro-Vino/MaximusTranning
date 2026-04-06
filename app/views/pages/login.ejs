@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/erro.css">
+    <script src="/js/cadastro.js" defer></script>
+
+    <link rel="icon" href="/imagens/LogoSemFgrande.png">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
+    <script src="/js/notify.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&family=Zen+Dots&display=swap" rel="stylesheet">
+</head>
+<body>
+    <%
+    let  erroValidacao =  {"email":"", "senha":"" };
+    let  msgErroPag =  {"email":"", "senha":"" };
+    if(erros) {
+        erros.errors.forEach(function(erro) {
+            if (erro.path == "email") {
+                erroValidacao.email = "erro"
+                msgErroPag.email = erro.msg
+            }
+            if (erro.path == "senha") {
+                erroValidacao.senha = "erro"
+                msgErroPag.senha = erro.msg
+            }
+        })
+    }; %>
+
+    <%if (dadosNotificacao) { %>
+            <script>
+                    notify("<%= dadosNotificacao.titulo%>","<%= dadosNotificacao.mensagem%>", "<%= dadosNotificacao.tipo%>", "right top")                    
+            </script>
+    <% } %>
+
+    <header>
+    <%- include('../partials/navbar'); %> 
+    </header>
+    <main class="main_login">  
+        <section class="formulario">
+            <header class="form-header">
+                <article class="divisoria">
+                <img src="/imagens/LogoSemFgrande.png" alt="Logo" class="logo">
+                    <h1 class="titlelogo">Maximus Tranning</h1>
+                </article>
+            </header>
+            <form id="signin" method="post" action="/login">
+                <fieldset>
+                    <section class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email" value="<%= dados.email  %>" class="<%= erroValidacao.email %>"> 
+                        <span class="spanerro"><%= msgErroPag.email %></span>
+                    </section>
+                </fieldset>
+                <fieldset>
+                    <section class="form-group">
+                        <label for="senha">Senha</label>
+                        <article class="input-group">
+                            <input type="password" name="senha" id="senha" value="<%= dados.senha  %>" class="<%= erroValidacao.senha %>"> 
+                            <button type="button" id="toggleSenha" class="toggle-senha-btn1" aria-label="Mostrar senha"><img src="imagens/olhos-abertos.png" width="40"></button>
+                        </article>
+                        <span class="spanerro"><%= msgErroPag.senha %></span><br>
+                        <a href="/recuperar-senha">Esqueci a senha</a>
+                    </section>
+                </fieldset>
+                <footer class="form-footer">
+                    <input type="submit" id="enviar_login" value="Conectar-se">
+                    <nav>
+                        <a href="/cadastro">Não tem Conta? <b>Cadastre-se</b></a>
+                    </nav>
+                </footer>
+            </form>
+        </section>
+    </main>
+    <%- include('../partials/footer'); %>
+</body>
+</html>
