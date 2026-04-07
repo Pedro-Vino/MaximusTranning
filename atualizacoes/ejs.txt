@@ -1,0 +1,324 @@
+cadastro
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0f0f0f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .card {
+      background-color: #1a1a1a;
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 420px;
+      border: 1px solid #2a2a2a;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo h1 {
+      font-size: 1.8rem;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .logo span {
+      color: #6e39aa;
+    }
+
+    .logo p {
+      color: #666;
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1.2rem;
+    }
+
+    label {
+      font-size: 0.85rem;
+      color: #aaa;
+    }
+
+    input {
+      padding: 0.8rem 1rem;
+      background-color: #242424;
+      border: 1px solid #333;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      color: #fff;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    input:focus {
+      border-color: #4f46e5;
+    }
+
+    input::placeholder {
+      color: #555;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.85rem;
+      background-color: #6e39aa;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #4338ca;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <h1>IMC <span>Pro</span></h1>
+      <p>Crie sua conta para começar</p>
+    </div>
+
+    <form action="/cadastro" method="POST">
+      <div class="input-group">
+        <label>Nome completo</label>
+        <input type="text" name="nome" placeholder="Nome" required>
+      </div>
+
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="Email" required>
+      </div>
+
+      <div class="input-group">
+        <label>Senha</label>
+        <input type="password" name="senha" placeholder="" required>
+      </div>
+
+      <button type="submit">Criar conta</button>
+    </form>
+
+    <div class="footer">
+      Ao cadastrar você concorda com os termos de uso
+    </div>
+    <p style="text-align:center; margin-top:1rem; color:#94a3b8; font-size:0.85rem;">
+  Já tem conta? <a href="/login" style="color:#8c00ff;">Entrar</a>
+</p>
+  </div>
+</body>
+</html>
+
+
+home
+
+ <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="/css/baseimc.css">
+</head>
+<body>
+<div class="card">
+  <h1>Olá, <%= aluno.nome %>!</h1>
+
+  <div class="resultado">
+    <span>Seu IMC</span>
+    <h2><%= Number(aluno.imc).toFixed(2) %></h2>
+  </div>
+
+  <div class="faixas">
+    <div id="abaixo" class="<%= Number(aluno.imc) < 18.5 ? 'ativo' : '' %>">Abaixo do peso</div>
+    <div id="ideal" class="<%= Number(aluno.imc) >= 18.5 && Number(aluno.imc) < 25 ? 'ativo' : '' %>">Peso ideal</div>
+    <div id="acima" class="<%= Number(aluno.imc) >= 25 ? 'ativo' : '' %>">Acima do peso</div>
+  </div>
+</div>
+</body>
+</html>
+
+IMC
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMC Pro</title>
+  <link rel="stylesheet" href="/css/baseimc.css">
+</head>
+<body>
+<div class="card">
+  <h1>Calculando seu IMC</h1>
+
+  <% if (typeof imcBanco !== 'undefined') { %>
+    <div class="resultado">
+      <span>Seu IMC salvo</span>
+      <h2><%= Number(imcBanco).toFixed(2) %></h2>
+    </div>
+    <div class="faixas">
+      <div id="abaixo" class="<%= Number(imcBanco) < 18.5 ? 'ativo' : '' %>">Abaixo do peso</div>
+      <div id="ideal" class="<%= Number(imcBanco) >= 18.5 && Number(imcBanco) < 25 ? 'ativo' : '' %>">Peso ideal</div>
+      <div id="acima" class="<%= Number(imcBanco) >= 25 ? 'ativo' : '' %>">Acima do peso</div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:0.8rem; margin-top:1.5rem;">
+      <a href="/home" class="btn-continuar">Continuar →</a>
+      <a href="/imc" class="btn-resetar">Calcular novamente</a>
+    </div>
+
+  <% } else { %>
+    <div id="tela-calcular">
+      <div class="inputs">
+        <div class="input-group">
+          <label>Peso (kg)</label>
+          <input type="text" id="peso" placeholder="75">
+        </div>
+        <div class="input-group">
+          <label>Altura (cm)</label>
+          <input type="text" id="altura" placeholder="170">
+        </div>
+      </div>
+      <button onclick="calcularIMC()">Calcular IMC</button>
+
+      <div class="resultado">
+        <span>Seu IMC</span>
+        <h2 id="imc">--</h2>
+      </div>
+      <div class="faixas">
+        <div id="abaixo">Abaixo do peso</div>
+        <div id="ideal">Peso ideal</div>
+        <div id="acima">Acima do peso</div>
+      </div>
+    </div>
+
+    <div id="acoes" style="display:none; margin-top:1.5rem; flex-direction:column; gap:0.8rem;">
+      <form action="/imc" method="POST" id="formSalvar">
+        <input type="hidden" name="peso" id="peso-hidden">
+        <input type="hidden" name="altura" id="altura-hidden">
+        <button type="submit">Salvar e ver resultado</button>
+      </form>
+      <button onclick="resetar()" class="btn-resetar">Calcular novamente</button>
+    </div>
+  <% } %>
+
+</div>
+
+<script>
+  function calcularIMC() {
+    const peso = parseFloat(document.getElementById('peso').value.replace(',', '.'))
+    let alturaCm = parseFloat(document.getElementById('altura').value.replace(',', '.'))
+
+    if (!peso || !alturaCm) return
+
+    if (alturaCm < 3) alturaCm = alturaCm * 100
+
+    if (alturaCm < 50 || alturaCm > 250) {
+      alert('Altura inválida! Digite em cm (ex: 170) ou metros (ex: 1.70)')
+      return
+    }
+
+    const alturaM = alturaCm / 100
+    const imc = parseFloat((peso / (alturaM * alturaM)).toFixed(2))
+
+    document.getElementById('imc').textContent = imc.toFixed(2)
+
+    document.getElementById('abaixo').classList.remove('ativo')
+    document.getElementById('ideal').classList.remove('ativo')
+    document.getElementById('acima').classList.remove('ativo')
+
+    if (imc < 18.5) document.getElementById('abaixo').classList.add('ativo')
+    else if (imc < 25) document.getElementById('ideal').classList.add('ativo')
+    else document.getElementById('acima').classList.add('ativo')
+
+    document.getElementById('peso-hidden').value = peso
+    document.getElementById('altura-hidden').value = alturaCm
+    document.getElementById('acoes').style.display = 'flex'
+  }
+
+  function resetar() {
+    document.getElementById('imc').textContent = '--'
+    document.getElementById('abaixo').classList.remove('ativo')
+    document.getElementById('ideal').classList.remove('ativo')
+    document.getElementById('acima').classList.remove('ativo')
+    document.getElementById('acoes').style.display = 'none'
+    document.getElementById('peso').value = ''
+    document.getElementById('altura').value = ''
+  }
+</script>
+</body>
+</html>
+
+
+login   
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="/css/baseimc.css">
+</head>
+<body>
+<div class="card">
+  <h1>Entrar</h1>
+
+  <% if (typeof erro !== 'undefined') { %>
+    <p style="color:#6200ff; text-align:center; margin-bottom:1rem;"><%= erro %></p>
+  <% } %>
+
+  <form action="/login" method="POST">
+    <div class="input-group" style="margin-bottom:1rem;">
+      <label>Email</label>
+      <input type="text" name="email" placeholder="Nome">
+    </div>
+    <div class="input-group" style="margin-bottom:1rem;">
+      <label>Senha</label>
+      <input type="password" name="senha" placeholder="">
+    </div>
+    <button type="submit">Entrar</button>
+  </form>
+
+  <p style="text-align:center; margin-top:1rem; color:#94a3b8; font-size:0.85rem;">
+    Não tem conta? <a href="/cadastro" style="color:#8c00ff;">Cadastre-se</a>
+  </p>
+</div>
+</body>
+</html>
