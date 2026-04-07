@@ -7,7 +7,6 @@ var express = require('express');
 var router = express.Router();
 
 const guestMiddleware = require('../helpers/guestMiddleware');
-const UsuariotesteController = require('../controllers/usuariotesteController');
 const alunosController = require('../controllers/alunosController');
 
 function verificarAutenticacao(req, res, next) {
@@ -105,19 +104,5 @@ router.post(
   alunosController.resetarSenha
 );
 
-
-router.get('/cadastro/teste', (req, res) => {
-  res.render('pages/testesdoPedro');  
-});
-
-router.get('/cadastro/form', UsuariotesteController.formCadastro);
-router.post('/cadastro', UsuariotesteController.cadastrar);
-
-
-router.get('/usuarios', UsuariotesteController.listar);
-
-router.get('/usuarios/view', (req, res) => {
-  res.render('pages/usuarios');
-});
 
 module.exports = router;
