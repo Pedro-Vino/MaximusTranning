@@ -31,11 +31,6 @@ router.get('/planos', (req, res) => {
   res.render('pages/planos');  
 });
 
-router.get('/compras', (req, res) => {
-  res.render('pages/buy');
-});
-
-
 router.get('/cadastro', guestMiddleware, (req, res) => {
   res.render('pages/registro', { 
     erros: null, 
