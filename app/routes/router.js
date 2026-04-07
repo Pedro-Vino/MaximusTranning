@@ -10,7 +10,6 @@ const guestMiddleware = require('../helpers/guestMiddleware');
 const UsuariotesteController = require('../controllers/usuariotesteController');
 const alunosController = require('../controllers/alunosController');
 
-// AUTENTICACAO
 function verificarAutenticacao(req, res, next) {
   if (req.session && req.session.usuario) {
     return next();
@@ -24,9 +23,6 @@ router.use((req, res, next) => {
   next();
 });
 
-// =======================
-// ROTAS PÁGINAS
-// =======================
 
 router.get('/', (req, res) => {
   res.render('pages/home');  
@@ -40,9 +36,6 @@ router.get('/compras', (req, res) => {
   res.render('pages/buy');
 });
 
-// =======================
-// CADASTRO
-// =======================
 
 router.get('/cadastro', guestMiddleware, (req, res) => {
   res.render('pages/registro', { 
@@ -59,15 +52,9 @@ router.post(
   alunosController.cadastrarAlunoNormal
 );
 
-// =======================
-// ATIVAÇÃO DE CONTA
-// =======================
 
 router.get('/ativar-conta', alunosController.ativarConta);
 
-// =======================
-// LOGIN / LOGOUT
-// =======================
 
 router.get("/login", (req, res) => {
   res.render("pages/login", {
@@ -79,7 +66,6 @@ router.get("/login", (req, res) => {
   });
 });
 
-// ✅ CORREÇÃO AQUI
 router.post(
   "/login",
   alunosController.regrasValidacaoLogin,
@@ -89,9 +75,6 @@ router.post(
 router.get("/logout", alunosController.logout);
 router.post("/logout", alunosController.logout);
 
-// =======================
-// RECUPERAR SENHA
-// =======================
 
 router.get("/recuperar-senha", (req, res) => {
   res.render("pages/recuperar-senha", {
@@ -105,10 +88,6 @@ router.post(
   alunosController.regrasValidacaoFormRecSenha,
   alunosController.recuperarSenha
 );
-
-// =======================
-// RESET SENHA
-// =======================
 
 router.get("/reset-senha", alunosController.validarTokenNovaSenha);
 
@@ -126,9 +105,6 @@ router.post(
   alunosController.resetarSenha
 );
 
-// =======================
-// ROTAS TESTE
-// =======================
 
 router.get('/cadastro/teste', (req, res) => {
   res.render('pages/testesdoPedro');  
@@ -137,9 +113,6 @@ router.get('/cadastro/teste', (req, res) => {
 router.get('/cadastro/form', UsuariotesteController.formCadastro);
 router.post('/cadastro', UsuariotesteController.cadastrar);
 
-// =======================
-// USUÁRIOS
-// =======================
 
 router.get('/usuarios', UsuariotesteController.listar);
 
