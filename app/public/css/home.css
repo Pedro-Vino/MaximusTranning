@@ -2,73 +2,8 @@ body {
   background-color: var(--preto);
   color: var(--branco);
   font-family: Arial, Helvetica, sans-serif;
-
   overflow: hidden;
-}
-
-header {
-  background-color: var(--cinza-escuro);
-  padding: 10px 20px;
-}
-
-
-.container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logo-container img {
-  width: 60px;
-}
-
-.nome-logo {
-  transform: skewX(-17deg);
-  color: var(--branco);
-  font-weight: bold;
-}
-
-nav {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.menu-links {
-  display: flex;
-  gap: 20px;
-}
-
-nav a {
-  color: var(--branco);
-  text-decoration: none;
-  padding: 8px 12px;
-}
-
-nav a:hover {
-  color: var(--vermelho);
-}
-
-.ativo {
-  color: var(--vermelho);
-  border-bottom: 2px solid var(--vermelho);
-}
-
-.botao-destaque {
-  background: var(--vermelho);
-  padding: 8px 16px;
-  border-radius: 5px;
-}
-.botao-destaque:hover {
-  background-color: var(--vermelho);
-  color: var(--preto);
-
+  overflow: hidden;
 }
 
 .hero {

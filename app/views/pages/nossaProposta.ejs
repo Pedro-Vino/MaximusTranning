@@ -5,119 +5,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <link rel="stylesheet" href="/css/base.css">
-    <link rel="icon" href="/imagens/LogoSemFgrande.png">
-    <title>Nossa Proposta - Maximus Training</title>
-
+    <link rel="icon" href="/imagens/LogoSemFgrandeICO.ico">
     <link rel="stylesheet" href="/css/nossaproposta.css">
+    <link rel="stylesheet" href="/css/base.css">
+        
+    <title>Nossa Proposta - Maximus Training</title>
 </head>
 
 <body>
+  <%- include('../partials/navbar'); %> 
+  <main>
+    <section class="hero">
+      <section class="hero-texto">
+        <h1 class="titulo-proposta">NOSSA PROPOSTA</h1>
+        <article class="card-proposta destaque">
+          <p>
+            OFERECEMOS UM SISTEMA COMPLETO PARA ORGANIZAR SEUS TREINOS COM EFICIÊNCIA,
+            REALIZANDO O CADASTRO DE ALUNOS E ESTRUTURANDO TREINOS POR CATEGORIAS A, B E C.
+          </p>
+        </article>
+        <article class="card-proposta">
+          <p>
+            Distribuídos ao longo da semana para melhor desempenho. Cada aluno treina com foco em seus objetivos.
+          </p>
+        </article>
+        <article class="card-proposta">
+          <p>
+            Emagrecimento, hipertrofia ou condicionamento físico <br><br>
+            <strong>A:</strong> PEITO E TRÍCEPS <br>
+            <strong>B:</strong> PERNAS E GLÚTEOS <br>
+            <strong>C:</strong> COSTAS, BÍCEPS E ABDÔMEN
+          </p>
+        </article>
+      </section>
+      <section class="hero-imagem"></section>
+    </section>
+    <section class="divisaoTreinos">
+      <h1 style="font-family: --fonte-destaque;">DIVISÃO DE TREINOS</h1>
+      <section class="linha"></section>
+      <section class="treinos">
+        <!-- TREINO A -->
+        <article class="treino">
+          <h2>TREINO A</h2>
+          <h3>Peito, Ombro e Tríceps</h3>
+          <p>
+            Focado na parte superior anterior do corpo, com exercícios de empurrar
+            para desenvolver força e volume muscular.
+          </p>
+          <img src="/imagens/LogoSemFgrande.png" alt="Logo">
+        </article>
 
-
-<header>
-  <div class="container">
-
-
-    <div class="logo-container">
-      <img src="/imagens/LogoSemFgrande.png" alt="Logo">
-      <h2 class="nome-logo">MAXIMUS TRAINING</h2>
-    </div>
-
-    <nav>
-      <div class="menu-links">
-        <a href="home.html">Início</a>
-        <a href="sobre.html">Sobre</a>
-        <a href="contato.html">Contato</a>
-      </div>
-      <a href="#" class="botao-destaque">Conta</a>
-    </nav>
-
-  </div>
-</header>
-
-<section class="hero">
-
-  <!-- TEXTO -->
-  <div class="hero-texto">
-
-    <h1 class="titulo-proposta">NOSSA PROPOSTA</h1>
-
-
-    <div class="card-proposta destaque">
-      <p>
-        OFERECEMOS UM SISTEMA COMPLETO PARA ORGANIZAR SEUS TREINOS COM EFICIÊNCIA,
-        REALIZANDO O CADASTRO DE ALUNOS E ESTRUTURANDO TREINOS POR CATEGORIAS A, B E C.
-      </p>
-    </div>
-
-
-    <div class="card-proposta">
-      <p>
-        Distribuídos ao longo da semana para melhor desempenho. Cada aluno treina com foco em seus objetivos.
-      </p>
-    </div>
-
-    <div class="card-proposta">
-      <p>
-        Emagrecimento, hipertrofia ou condicionamento físico <br><br>
-        <strong>A:</strong> PEITO E TRÍCEPS <br>
-        <strong>B:</strong> PERNAS E GLÚTEOS <br>
-        <strong>C:</strong> COSTAS, BÍCEPS E ABDÔMEN
-      </p>
-    </div>
-
-  </div>
-
-  <div class="hero-imagem"></div>
-
-  
-</section>
-<section class="divisaoTreinos">
-
-  <h1 style="font-family: --fonte-destaque;">DIVISÃO DE TREINOS</h1>
-  <div class="linha"></div>
-
-
- <div class="treinos">
-
-    <!-- TREINO A -->
-    <div class="treino">
-      <h2>TREINO A</h2>
-      <h3>Peito, Ombro e Tríceps</h3>
-      <p>
-        Focado na parte superior anterior do corpo, com exercícios de empurrar
-        para desenvolver força e volume muscular.
-      </p>
-      <img src="/imagens/LogoSemFgrande.png" alt="Logo">
-    </div>
-
-    <!-- TREINO B -->
-    <div class="treino">
-      <h2>TREINO B</h2>
-      <h3>Costas e Bíceps</h3>
-      <p>
-        Focado na parte superior posterior do corpo, com exercícios de puxar
-        para desenvolver força e definição muscular.
-      </p>
-      <img src="/imagens/LogoSemFgrande.png" alt="Logo">
-    </div>
-
-    <!-- TREINO C -->
-    <div class="treino">
-      <h2>TREINO C</h2>
-      <h3>Pernas e Abdômen</h3>
-      <p>
-        Focado na parte inferior do corpo, com exercícios para força, resistência
-        e estabilidade muscular.
-      </p>
-      <img src="/imagens/LogoSemFgrande.png" alt="Logo">
-    </div>
-
-  </div>
-
-</section>
-
-
+        <!-- TREINO B -->
+        <article class="treino">
+          <h2>TREINO B</h2>
+          <h3>Costas e Bíceps</h3>
+          <p>
+            Focado na parte superior posterior do corpo, com exercícios de puxar
+            para desenvolver força e definição muscular.
+          </p>
+          <img src="/imagens/LogoSemFgrande.png" alt="Logo">
+        </article>
+    
+        <!-- TREINO C -->
+        <article class="treino">
+          <h2>TREINO C</h2>
+          <h3>Pernas e Abdômen</h3>
+          <p>
+            Focado na parte inferior do corpo, com exercícios para força, resistência
+            e estabilidade muscular.
+          </p>
+          <img src="/imagens/LogoSemFgrande.png" alt="Logo">
+        </article>    
+      </section>
+    </section>
+  </main>
 </body>
 </html>
