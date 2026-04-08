@@ -7,7 +7,7 @@ var express = require('express');
 var router = express.Router();
 
 const guestMiddleware = require('../helpers/guestMiddleware');
-const alunosController = require('../controllers/alunosController');
+const alunosController = require('../controllers/alunoscontroller');
 
 function verificarAutenticacao(req, res, next) {
   if (req.session && req.session.usuario) {
@@ -29,6 +29,10 @@ router.get('/', (req, res) => {
 
 router.get('/planos', (req, res) => {
   res.render('pages/planos');  
+});
+
+router.get('/proposta', (req, res) => {
+  res.render('pages/nossaProposta');  
 });
 
 router.get('/cadastro', guestMiddleware, (req, res) => {

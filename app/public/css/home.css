@@ -1,30 +1,23 @@
-/* RESET TIRA PADRAO DO NAVEGADOR */ 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-/* BODY (CORPO) */
 body {
-  background-color: #000;
-  color: white;
+  background-color: var(--preto);
+  color: var(--branco);
   font-family: Arial, Helvetica, sans-serif;
 
   overflow: hidden;
 }
-/* HEADER(NAVBAR) */
+
 header {
-  background-color: #111;
+  background-color: var(--cinza-escuro);
   padding: 10px 20px;
 }
 
-/* CONTAINER (ORGANIZAÇAO NAV BAR) */
+
 .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-/* LOGO (ALINHA LOGO) */
+
 .logo-container {
   display: flex;
   align-items: center;
@@ -36,10 +29,11 @@ header {
 }
 
 .nome-logo {
-  color: #ccc;
+  transform: skewX(-17deg);
+  color: var(--branco);
   font-weight: bold;
 }
-/* NAV(EFEITO DO MOUSE) */
+
 nav {
   display: flex;
   align-items: center;
@@ -52,31 +46,31 @@ nav {
 }
 
 nav a {
-  color: white;
+  color: var(--branco);
   text-decoration: none;
   padding: 8px 12px;
 }
 
 nav a:hover {
-  color: red;
+  color: var(--vermelho);
 }
 
 .ativo {
-  color: red;
-  border-bottom: 2px solid red;
+  color: var(--vermelho);
+  border-bottom: 2px solid var(--vermelho);
 }
 
 .botao-destaque {
-  background: red;
+  background: var(--vermelho);
   padding: 8px 16px;
   border-radius: 5px;
 }
 .botao-destaque:hover {
-  background-color: #ff0000;
-  color: black;
+  background-color: var(--vermelho);
+  color: var(--preto);
 
 }
-/* HERO(CONTAINER PRINCIPAL)*/
+
 .hero {
   display: flex;
   align-items: stretch;
@@ -85,7 +79,7 @@ nav a:hover {
   padding: 0; 
   height: calc(100vh - 70px); 
 }
-/* TEXTO */
+
 .hero-texto {
   width: 50%;
 
@@ -104,31 +98,31 @@ nav a:hover {
 }
 
 .hero-texto p {
-  color: #ccc;
+  color: var(--branco);
   margin-bottom: 30px;
 }
-/* BOTÕES */
+
 .hero-botoes {
   display: flex;
   gap: 15px;
 }
 
 .btn-vermelho {
-  background: red;
+  background: var(--vermelho);
   padding: 12px 24px;
   border-radius: 8px;
   text-decoration: none;
-  color: white;
+  color: var(--branco);
 }
 
 .btn-borda {
-  border: 2px solid white;
+  border: 2px solid var(--branco);
   padding: 12px 24px;
   border-radius: 8px;
   text-decoration: none;
-  color: white;
+  color: var(--branco);
 }
-/* IMAGEM */
+
 .hero-imagem {
   width: 50%;
   height: 100%;
@@ -142,7 +136,7 @@ nav a:hover {
 }
 
 
-/*RESPONSIVO (ADAPTA PARA TODAS AS TELAS )*/
+
 @media (max-width: 900px) {
 
   .hero {
