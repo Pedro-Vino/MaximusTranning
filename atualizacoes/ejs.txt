@@ -146,6 +146,13 @@ cadastro
 </html>
 
 
+
+
+
+
+
+
+
 home
 
  <!DOCTYPE html>
@@ -173,6 +180,17 @@ home
 </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
 
 IMC
 
@@ -284,6 +302,16 @@ IMC
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
 
 
 login   

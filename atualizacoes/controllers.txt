@@ -1,6 +1,6 @@
 cadastrocontroller
 
-const pool = require('../../config/pool_conexao') // ✅
+const pool = require('../../config/pool_conexao')
 
 const exibirCadastro = (req, res) => {
   res.render('pages/cadastro')
@@ -10,7 +10,7 @@ const realizarCadastro = async (req, res) => {
   const { nome, email, senha } = req.body
   try {
     const [result] = await pool.query(
-      'INSERT INTO aluno (nome, email, senha) VALUES (?, ?, ?)',
+      'INSERT INTO aluno (alu_nome, alu_email, alu_senha) VALUES (?, ?, ?)',
       [nome, email, senha]
     )
     req.session.aluno_id = result.insertId
@@ -23,6 +23,12 @@ const realizarCadastro = async (req, res) => {
 }
 
 module.exports = { exibirCadastro, realizarCadastro }
+
+
+
+
+
+
 
 homecontroller
 
@@ -42,6 +48,16 @@ const exibirHome = async (req, res) => {
 }
 
 module.exports = { exibirHome }
+
+
+
+
+
+
+
+
+
+
 
 imccontroller 
 
@@ -83,6 +99,16 @@ const realizarImc = async (req, res) => {
 
 module.exports = { exibirImc, realizarImc }
 
+
+
+
+
+
+
+
+
+
+
 logincontroller
 
 const pool = require('../../config/pool_conexao')
@@ -95,7 +121,7 @@ const realizarLogin = async (req, res) => {
   const { email, senha } = req.body
   try {
     const [rows] = await pool.query(
-      'SELECT * FROM aluno WHERE email = ? AND senha = ?',
+      'SELECT * FROM aluno WHERE alu_email = ? AND alu_senha = ?',
       [email, senha]
     )
 
@@ -104,7 +130,7 @@ const realizarLogin = async (req, res) => {
     }
 
     req.session.aluno_id = rows[0].id
-    req.session.nome = rows[0].nome
+    req.session.nome = rows[0].alu_nome  // ✅ era rows[0].nome
     res.redirect('/home')
   } catch (err) {
     console.error(err)
