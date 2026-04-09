@@ -51,21 +51,17 @@ router.get('/ativar-conta', alunosController.ativarConta);
 router.get('/imc', imcController.exibirImc)
 router.post('/imc', imcController.realizarImc)
 
-router.get("/login", (req, res) => {
-  res.render("pages/login", {
-    erro: null,
-    erros: null,
-    dados: { email: "", senha: "" },
-    dadosNotificacao: "",
-    retorno: null
-  });
-});
+router.get('/login', loginController.exibirLogin)
 
-router.post(
-  "/login",
-  alunosController.regrasValidacaoLogin,
-  alunosController.autenticarAluno
-);
+// Processar login
+router.post('/login', loginController.realizarLogin)
+
+// Logout (opcional, mas recomendado)
+router.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/login')
+  })
+})
 
 router.get("/logout", alunosController.logout);
 router.post("/logout", alunosController.logout);

@@ -1,104 +1,53 @@
-cadastrocontroller
+  cadastrocontroller
 
-const pool = require('../../config/pool_conexao')
+  const pool = require('../../config/pool_conexao')
 
-const exibirCadastro = (req, res) => {
-  res.render('pages/cadastro')
-}
-
-const realizarCadastro = async (req, res) => {
-  const { nome, email, senha } = req.body
-  try {
-    const [result] = await pool.query(
-      'INSERT INTO aluno (alu_nome, alu_email, alu_senha) VALUES (?, ?, ?)',
-      [nome, email, senha]
-    )
-    req.session.aluno_id = result.insertId
-    req.session.nome = nome
-    res.redirect('/imc')
-  } catch (err) {
-    console.error(err)
-    res.status(500).send('Erro ao cadastrar')
+  const exibirCadastro = (req, res) => {
+    res.render('pages/cadastro')
   }
-}
 
-module.exports = { exibirCadastro, realizarCadastro }
-
-
-
-
-
-
-
-homecontroller
-
-const pool = require('../../config/pool_conexao')
-
-const exibirHome = async (req, res) => {
-  try {
-    const [rows] = await pool.query(
-      'SELECT * FROM registro WHERE id = ?',
-      [req.session.aluno_id]
-    )
-    res.render('pages/home', { aluno: rows[0] })
-  } catch (err) {
-    console.error(err)
-    res.status(500).send('Erro ao carregar home')
-  }
-}
-
-module.exports = { exibirHome }
-
-
-
-
-
-
-
-
-
-
-
-imccontroller 
-
-const pool = require('../../config/pool_conexao')
-
-const exibirImc = (req, res) => {
-  res.render('pages/imc')
-}
-
-const realizarImc = async (req, res) => {
-  const { peso } = req.body
-  const alturaM = (parseFloat(req.body.altura) / 100).toFixed(2)
-  try {
-    const [existe] = await pool.query(
-      'SELECT id FROM imc WHERE aluno_id = ?',
-      [req.session.aluno_id]
-    )
-    if (existe.length > 0) {
-      await pool.query(
-        'UPDATE imc SET peso = ?, altura = ? WHERE aluno_id = ?',
-        [peso, alturaM, req.session.aluno_id]
+  const realizarCadastro = async (req, res) => {
+    const { nome, email, senha } = req.body
+    try {
+      const [result] = await pool.query(
+        'INSERT INTO aluno (alu_nome, alu_email, alu_senha) VALUES (?, ?, ?)',
+        [nome, email, senha]
       )
-    } else {
-      await pool.query(
-        'INSERT INTO imc (aluno_id, peso, altura) VALUES (?, ?, ?)',
-        [req.session.aluno_id, peso, alturaM]
+      req.session.aluno_id = result.insertId
+      req.session.nome = nome
+      res.redirect('/imc')
+    } catch (err) {
+      console.error(err)
+      res.status(500).send('Erro ao cadastrar')
+    }
+  }
+
+  module.exports = { exibirCadastro, realizarCadastro }
+
+
+
+
+
+
+
+  homecontroller
+
+  const pool = require('../../config/pool_conexao')
+
+  const exibirHome = async (req, res) => {
+    try {
+      const [rows] = await pool.query(
+        'SELECT * FROM registro WHERE id = ?',
+        [req.session.aluno_id]
       )
+      res.render('pages/home', { aluno: rows[0] })
+    } catch (err) {
+      console.error(err)
+      res.status(500).send('Erro ao carregar home')
     }
-    const [rows] = await pool.query(
-      'SELECT imc FROM imc WHERE aluno_id = ? ORDER BY id DESC LIMIT 1',
-      [req.session.aluno_id]
-    )
-    res.render('pages/imc', { imcBanco: rows[0].imc })
-  } catch (err) {
-    console.error(err)
-    res.status(500).send('Erro ao salvar IMC')
   }
-}
 
-module.exports = { exibirImc, realizarImc }
-
+  module.exports = { exibirHome }
 
 
 
@@ -109,33 +58,84 @@ module.exports = { exibirImc, realizarImc }
 
 
 
-logincontroller
 
-const pool = require('../../config/pool_conexao')
+  imccontroller 
 
-const exibirLogin = (req, res) => {
-  res.render('pages/login')
-}
+  const pool = require('../../config/pool_conexao')
 
-const realizarLogin = async (req, res) => {
-  const { email, senha } = req.body
-  try {
-    const [rows] = await pool.query(
-      'SELECT * FROM aluno WHERE alu_email = ? AND alu_senha = ?',
-      [email, senha]
-    )
+  const exibirImc = (req, res) => {
+    res.render('pages/imc')
+  }
 
-    if (rows.length === 0) {
-      return res.render('pages/login', { erro: 'Email ou senha incorretos!' })
+  const realizarImc = async (req, res) => {
+    const { peso } = req.body
+    const alturaM = (parseFloat(req.body.altura) / 100).toFixed(2)
+    try {
+      const [existe] = await pool.query(
+        'SELECT id FROM imc WHERE aluno_id = ?',
+        [req.session.aluno_id]
+      )
+      if (existe.length > 0) {
+        await pool.query(
+          'UPDATE imc SET peso = ?, altura = ? WHERE aluno_id = ?',
+          [peso, alturaM, req.session.aluno_id]
+        )
+      } else {
+        await pool.query(
+          'INSERT INTO imc (aluno_id, peso, altura) VALUES (?, ?, ?)',
+          [req.session.aluno_id, peso, alturaM]
+        )
+      }
+      const [rows] = await pool.query(
+        'SELECT imc FROM imc WHERE aluno_id = ? ORDER BY id DESC LIMIT 1',
+        [req.session.aluno_id]
+      )
+      res.render('pages/imc', { imcBanco: rows[0].imc })
+    } catch (err) {
+      console.error(err)
+      res.status(500).send('Erro ao salvar IMC')
     }
-
-    req.session.aluno_id = rows[0].id
-    req.session.nome = rows[0].alu_nome  // ✅ era rows[0].nome
-    res.redirect('/home')
-  } catch (err) {
-    console.error(err)
-    res.status(500).send('Erro ao fazer login')
   }
-}
 
-module.exports = { exibirLogin, realizarLogin }
+  module.exports = { exibirImc, realizarImc }
+
+
+
+
+
+
+
+
+
+
+
+  logincontroller
+
+  const pool = require('../../config/pool_conexao')
+
+  const exibirLogin = (req, res) => {
+    res.render('pages/login')
+  }
+
+  const realizarLogin = async (req, res) => {
+    const { email, senha } = req.body
+    try {
+      const [rows] = await pool.query(
+        'SELECT * FROM aluno WHERE alu_email = ? AND alu_senha = ?',
+        [email, senha]
+      )
+
+      if (rows.length === 0) {
+        return res.render('pages/login', { erro: 'Email ou senha incorretos!' })
+      }
+
+      req.session.aluno_id = rows[0].id
+      req.session.nome = rows[0].alu_nome  // ✅ era rows[0].nome
+      res.redirect('/home')
+    } catch (err) {
+      console.error(err)
+      res.status(500).send('Erro ao fazer login')
+    }
+  }
+
+  module.exports = { exibirLogin, realizarLogin }

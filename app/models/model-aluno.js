@@ -16,6 +16,27 @@ const UsuarioModel = {
       throw error;
     }
   },
+
+  login: async (email, senha) => {
+  try {
+    const query = "SELECT * FROM alunos WHERE alu_email = ?";
+    const [rows] = await pool.query(query, [email]);
+
+    if (rows.length === 0) return null;
+
+    const usuario = rows[0];
+
+    // Comparar senha com hash
+    const senhaValida = await bcrypt.compare(senha, usuario.alu_senha);
+
+    if (!senhaValida) return null;
+
+    return usuario;
+  } catch (error) {
+    console.error("Erro no login:", error);
+    throw error;
+  }
+},
  
   // Verificar se email já existe
   findByEmail: async (email) => {

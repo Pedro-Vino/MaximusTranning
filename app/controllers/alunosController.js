@@ -16,140 +16,159 @@ module.exports = {
     }).withMessage("Senhas estão diferentes"),
   ],
   
+  const realizarLogin = async (req, res) => {
+  const { email, senha } = req.body
 
-  cadastrarAlunoNormal: async (req, res) => {
-    
-    const errors = validationResult(req);
-        if(!errors.isEmpty()) {
-
-            return res.render('pages/registro',{
-                dados: req.body,
-                erros: errors,
-                dadosNotificacao: ""
-            })
-        }
-
-    try {
-
-      const {nome, email, senha, nasc } = req.body;
-
-      if (email){
-      const alunoExistente = await AlunoModel.findByEmail(email);
-      if (alunoExistente) {
-       return res.render("pages/registro", {
-        dados: req.body,
-        erros: { errors: [{ path: 'email', msg: "Este email já está cadastrado" }] },
-        dadosNotificacao: {
-          titulo: "Falha ao cadastrar!",
-          mensagem: "Este e-mail já está cadastrado!",
-          tipo: "error",
-        },
-      });
-    }
-
-
-      }
-     
-      const senhaHash = await bcrypt.hash(senha, 10);
-     
-      const novoAluno = await AlunoModel.create({
-        nome: nome,
-        email: email,
-        senha: senhaHash,
-        foto: "imagens/alunos/default_user.jpg",
-        banner: "imagens/alunos/default_background.jpg",
-        status: 0,
-        nasc: nasc
-      });
-
-      const token = jwt.sign(
-        { userId: novoAluno },
-        process.env.SECRET_KEY
-      );
-
-
-
-      const html = require('../helpers/email-ativar-conta')(process.env.URL_BASE, token, nome);
-
-      enviarEmail(email, "Cadastro no site Maximus Tranning", null, html, (erro)=>{
-        if (erro) {
-        return res.render("pages/registro", {
-            erros: [{ msg: "Erro ao enviar o e-mail. Tente novamente." }],
-            dadosNotificacao: null,
-            dados: req.body
-        });
-      }
-
-        return res.render("pages/registro", {
-          erros: null,
-          dadosNotificacao: {
-            titulo: "Cadastro realizado!",
-            mensagem: "Novo aluno criado com sucesso!<br>"+
-            "Enviamos um e-mail para a ativação de sua conta",
-            tipo: "success",
-          },
-          dados: req.body
-        });
-      });
-     
-    } catch (e) {
-      console.error(e);
-      res.render("pages/registro", {
-      dados: req.body,
-      erros: { errors: [{ path: 'email', msg: "Ocorreu um erro ao criar a conta" }] },
-      dadosNotificacao: "",
-    });
-    }
-  },
-    
-  ativarConta: async (req, res) => {
   try {
-    const token = req.query.token;
+    const aluno = await AlunoModel.login(email, senha)
 
-    // Verifica o token de forma síncrona
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
-
-    // Busca o aluno
-    const user = await AlunoModel.findId(decoded.userId);
-    if (!user) {
-
-      return res.render("pages/login", {
-        erros: null,
-        dadosNotificacao: {
-        titulo: "Algo deu errado!",
-        mensagem: "Conta não encontrada, verifique o link de ativação.",
-        tipo: "error",
-        },
-        dados: { email: "", senha: "" },
-        retorno: null
-      });
+    if (!aluno) {
+      return res.render('pages/login', { erro: 'Email ou senha incorretos!' })
     }
 
-    // Ativa a conta
-    await AlunoModel.ativarConta(decoded.userId);
+    req.session.aluno_id = aluno.alu_id
+    req.session.nome = aluno.alu_nome
 
-    // Renderiza página de login com notificação
-    res.render("pages/login", {
-      erros: null,
-      dadosNotificacao: {
-        titulo: "Sucesso",
-        mensagem: "Conta ativada, use seu e-mail e senha para acessar o seu perfil!",
-        tipo: "success",
-      },
-      dados: { email: "", senha: "" },
-      retorno: null
-    });
-
+    res.redirect('/home')
   } catch (err) {
-
-    res.render("pages/login", {
-      erros: ["Token inválido ou expirado"],
-      dadosNotificacao: null,
-      dados: { email: "", senha: "" },
-      retorno: null
-    });
+    console.error(err)
+    res.status(500).send('Erro ao fazer login')
   }
 }
+
+  // cadastrarAlunoNormal: async (req, res) => {
+    
+  //   const errors = validationResult(req);
+  //       if(!errors.isEmpty()) {
+
+  //           return res.render('pages/registro',{
+  //               dados: req.body,
+  //               erros: errors,
+  //               dadosNotificacao: ""
+  //           })
+  //       }
+
+  //   try {
+
+  //     const {nome, email, senha, nasc } = req.body;
+
+  //     if (email){
+  //     const alunoExistente = await AlunoModel.findByEmail(email);
+  //     if (alunoExistente) {
+  //      return res.render("pages/registro", {
+  //       dados: req.body,
+  //       erros: { errors: [{ path: 'email', msg: "Este email já está cadastrado" }] },
+  //       dadosNotificacao: {
+  //         titulo: "Falha ao cadastrar!",
+  //         mensagem: "Este e-mail já está cadastrado!",
+  //         tipo: "error",
+  //       },
+  //     });
+  //   }
+
+
+  //     }
+     
+  //     const senhaHash = await bcrypt.hash(senha, 10);
+     
+  //     const novoAluno = await AlunoModel.create({
+  //       nome: nome,
+  //       email: email,
+  //       senha: senhaHash,
+  //       foto: "imagens/alunos/default_user.jpg",
+  //       banner: "imagens/alunos/default_background.jpg",
+  //       status: 0,
+  //       nasc: nasc
+  //     });
+
+  //     const token = jwt.sign(
+  //       { userId: novoAluno },
+  //       process.env.SECRET_KEY
+  //     );
+
+
+
+  //     const html = require('../helpers/email-ativar-conta')(process.env.URL_BASE, token, nome);
+
+  //     enviarEmail(email, "Cadastro no site Maximus Tranning", null, html, (erro)=>{
+  //       if (erro) {
+  //       return res.render("pages/registro", {
+  //           erros: [{ msg: "Erro ao enviar o e-mail. Tente novamente." }],
+  //           dadosNotificacao: null,
+  //           dados: req.body
+  //       });
+  //     }
+
+  //       return res.render("pages/registro", {
+  //         erros: null,
+  //         dadosNotificacao: {
+  //           titulo: "Cadastro realizado!",
+  //           mensagem: "Novo aluno criado com sucesso!<br>"+
+  //           "Enviamos um e-mail para a ativação de sua conta",
+  //           tipo: "success",
+  //         },
+  //         dados: req.body
+  //       });
+  //     });
+     
+  //   } catch (e) {
+  //     console.error(e);
+  //     res.render("pages/registro", {
+  //     dados: req.body,
+  //     erros: { errors: [{ path: 'email', msg: "Ocorreu um erro ao criar a conta" }] },
+  //     dadosNotificacao: "",
+  //   });
+  //   }
+  // },
+    
+//   ativarConta: async (req, res) => {
+//   try {
+//     const token = req.query.token;
+
+//     // Verifica o token de forma síncrona
+//     const decoded = jwt.verify(token, process.env.SECRET_KEY);
+
+//     // Busca o aluno
+//     const user = await AlunoModel.findId(decoded.userId);
+//     if (!user) {
+
+//       return res.render("pages/login", {
+//         erros: null,
+//         dadosNotificacao: {
+//         titulo: "Algo deu errado!",
+//         mensagem: "Conta não encontrada, verifique o link de ativação.",
+//         tipo: "error",
+//         },
+//         dados: { email: "", senha: "" },
+//         retorno: null
+//       });
+//     }
+
+//     // Ativa a conta
+//     await AlunoModel.ativarConta(decoded.userId);
+
+//     // Renderiza página de login com notificação
+//     res.render("pages/login", {
+//       erros: null,
+//       dadosNotificacao: {
+//         titulo: "Sucesso",
+//         mensagem: "Conta ativada, use seu e-mail e senha para acessar o seu perfil!",
+//         tipo: "success",
+//       },
+//       dados: { email: "", senha: "" },
+//       retorno: null
+//     });
+
+//   } catch (err) {
+
+//     res.render("pages/login", {
+//       erros: ["Token inválido ou expirado"],
+//       dadosNotificacao: null,
+//       dados: { email: "", senha: "" },
+//       retorno: null
+//     });
+//   }
+// }
 ,
 
   regrasValidacaoFormNovaSenha: [
