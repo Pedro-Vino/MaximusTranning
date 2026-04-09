@@ -15,26 +15,30 @@ module.exports = {
     return value === req.body.senha;
     }).withMessage("Senhas estão diferentes"),
   ],
-  
-  const realizarLogin = async (req, res) => {
-  const { email, senha } = req.body
+  exibirLogin: (req, res) => {
+    res.render('pages/login');
+  },
 
-  try {
-    const aluno = await AlunoModel.login(email, senha)
+  realizarLogin: async (req, res) => {
+    const { email, senha } = req.body;
 
-    if (!aluno) {
-      return res.render('pages/login', { erro: 'Email ou senha incorretos!' })
+    try {
+      const aluno = await AlunoModel.login(email, senha);
+
+      if (!aluno) {
+        return res.render('pages/login', { erro: 'Email ou senha incorretos!' });
+      }
+
+      req.session.aluno_id = aluno.alu_id;
+      req.session.nome = aluno.alu_nome;
+
+      res.redirect('/home');
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Erro ao fazer login');
     }
-
-    req.session.aluno_id = aluno.alu_id
-    req.session.nome = aluno.alu_nome
-
-    res.redirect('/home')
-  } catch (err) {
-    console.error(err)
-    res.status(500).send('Erro ao fazer login')
   }
-}
+
 
   // cadastrarAlunoNormal: async (req, res) => {
     

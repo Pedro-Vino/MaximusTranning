@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const guestMiddleware = require('../helpers/guestMiddleware');
-const alunosController = require('../controllers/alunoscontroller');
+const alunosController = require('../controllers/alunosController');
 const imcController = require('../controllers/imcController');
 
 function verificarAutenticacao(req, res, next) {
@@ -12,7 +12,6 @@ function verificarAutenticacao(req, res, next) {
   res.redirect("/login");
 }
 
-// Disponibiliza aluno na view
 router.use((req, res, next) => {
   res.locals.aluno = req.session.aluno || null;
   next();
@@ -51,10 +50,11 @@ router.get('/ativar-conta', alunosController.ativarConta);
 router.get('/imc', imcController.exibirImc)
 router.post('/imc', imcController.realizarImc)
 
-router.get('/login', loginController.exibirLogin)
 
-// Processar login
-router.post('/login', loginController.realizarLogin)
+console.log(alunosController);
+router.get('/login', alunosController.exibirLogin);
+
+router.post('/login', alunosController.realizarLogin);
 
 // Logout (opcional, mas recomendado)
 router.get('/logout', (req, res) => {
