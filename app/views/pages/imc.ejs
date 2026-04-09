@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMC Pro</title>
+  <link rel="stylesheet" href="/css/baseimc.css">
+</head>
+<body>
+<div class="card">
+  <h1>Calculando seu IMC</h1>
+
+  <% if (typeof imcBanco !== 'undefined') { %>
+    <div class="resultado">
+      <span>Seu IMC salvo</span>
+      <h2><%= Number(imcBanco).toFixed(2) %></h2>
+    </div>
+    <div class="faixas">
+      <div id="abaixo" class="<%= Number(imcBanco) < 18.5 ? 'ativo' : '' %>">Abaixo do peso</div>
+      <div id="ideal" class="<%= Number(imcBanco) >= 18.5 && Number(imcBanco) < 25 ? 'ativo' : '' %>">Peso ideal</div>
+      <div id="acima" class="<%= Number(imcBanco) >= 25 ? 'ativo' : '' %>">Acima do peso</div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:0.8rem; margin-top:1.5rem;">
+      <a href="/home" class="btn-continuar">Continuar →</a>
+      <a href="/imc" class="btn-resetar">Calcular novamente</a>
+    </div>
+
+  <% } else { %>
+    <div id="tela-calcular">
+      <div class="inputs">
+        <div class="input-group">
+          <label>Peso (kg)</label>
+          <input type="text" id="peso" placeholder="75">
+        </div>
+        <div class="input-group">
+          <label>Altura (cm)</label>
+          <input type="text" id="altura" placeholder="170">
+        </div>
+      </div>
+      <button onclick="calcularIMC()">Calcular IMC</button>
+
+      <div class="resultado">
+        <span>Seu IMC</span>
+        <h2 id="imc">--</h2>
+      </div>
+      <div class="faixas">
+        <div id="abaixo">Abaixo do peso</div>
+        <div id="ideal">Peso ideal</div>
+        <div id="acima">Acima do peso</div>
+      </div>
+    </div>
+
+    <div id="acoes" style="display:none; margin-top:1.5rem; flex-direction:column; gap:0.8rem;">
+      <form action="/imc" method="POST" id="formSalvar">
+        <input type="hidden" name="peso" id="peso-hidden">
+        <input type="hidden" name="altura" id="altura-hidden">
+        <button type="submit">Salvar e ver resultado</button>
+      </form>
+      <button onclick="resetar()" class="btn-resetar">Calcular novamente</button>
+    </div>
+  <% } %>
+
+</div>
+
+<script>
+  function calcularIMC() {
+    const peso = parseFloat(document.getElementById('peso').value.replace(',', '.'))
+    let alturaCm = parseFloat(document.getElementById('altura').value.replace(',', '.'))
+
+    if (!peso || !alturaCm) return
+
+    if (alturaCm < 3) alturaCm = alturaCm * 100
+
+    if (alturaCm < 50 || alturaCm > 250) {
+      alert('Altura inválida! Digite em cm (ex: 170) ou metros (ex: 1.70)')
+      return
+    }
+
+    const alturaM = alturaCm / 100
+    const imc = parseFloat((peso / (alturaM * alturaM)).toFixed(2))
+
+    document.getElementById('imc').textContent = imc.toFixed(2)
+
+    document.getElementById('abaixo').classList.remove('ativo')
+    document.getElementById('ideal').classList.remove('ativo')
+    document.getElementById('acima').classList.remove('ativo')
+
+    if (imc < 18.5) document.getElementById('abaixo').classList.add('ativo')
+    else if (imc < 25) document.getElementById('ideal').classList.add('ativo')
+    else document.getElementById('acima').classList.add('ativo')
+
+    document.getElementById('peso-hidden').value = peso
+    document.getElementById('altura-hidden').value = alturaCm
+    document.getElementById('acoes').style.display = 'flex'
+  }
+
+  function resetar() {
+    document.getElementById('imc').textContent = '--'
+    document.getElementById('abaixo').classList.remove('ativo')
+    document.getElementById('ideal').classList.remove('ativo')
+    document.getElementById('acima').classList.remove('ativo')
+    document.getElementById('acoes').style.display = 'none'
+    document.getElementById('peso').value = ''
+    document.getElementById('altura').value = ''
+  }
+</script>
+</body>
+</html>

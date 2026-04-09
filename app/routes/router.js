@@ -1,13 +1,9 @@
-// 
-
-
-// router novo 
-
 var express = require('express');
 var router = express.Router();
 
 const guestMiddleware = require('../helpers/guestMiddleware');
 const alunosController = require('../controllers/alunoscontroller');
+const imcController = require('../controllers/imcController');
 
 function verificarAutenticacao(req, res, next) {
   if (req.session && req.session.usuario) {
@@ -50,9 +46,10 @@ router.post(
   alunosController.cadastrarAlunoNormal
 );
 
-
 router.get('/ativar-conta', alunosController.ativarConta);
 
+router.get('/imc', imcController.exibirImc)
+router.post('/imc', imcController.realizarImc)
 
 router.get("/login", (req, res) => {
   res.render("pages/login", {
