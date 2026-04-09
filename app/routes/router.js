@@ -5,11 +5,8 @@ const guestMiddleware = require('../helpers/guestMiddleware');
 const alunosController = require('../controllers/alunosController');
 const imcController = require('../controllers/imcController');
 
-function verificarAutenticacao(req, res, next) {
-  if (req.session && req.session.usuario) {
-    return next();
-  }
-  res.redirect("/login");
+function verificar(fn) {
+  return typeof fn === 'function' ? fn : (req, res) => res.sendStatus(500);
 }
 
 router.use((req, res, next) => {
@@ -17,73 +14,54 @@ router.use((req, res, next) => {
   next();
 });
 
-
 router.get('/', (req, res) => {
-  res.render('pages/home');  
+  res.render('pages/home');
 });
 
 router.get('/planos', (req, res) => {
-  res.render('pages/planos');  
+  res.render('pages/planos');
 });
 
 router.get('/proposta', (req, res) => {
-  res.render('pages/nossaProposta');  
+  res.render('pages/nossaProposta');
 });
 
 router.get('/cadastro', guestMiddleware, (req, res) => {
-  res.render('pages/registro', { 
-    erros: null, 
-    dados: { email: "", senha: "" },
-    dadosNotificacao: "",
-    retorno: null 
+  res.render('pages/cadastro', {
+    dados: { nome: "", email: "", senha: "" },
+    erros: null,
+    dadosNotificacao: null
   });
 });
 
-router.post(
-  '/cadastrar',
-  alunosController.regrasValidacao,
-  alunosController.cadastrarAlunoNormal
-);
+router.post('/cadastrar', alunosController.cadastrarAluno);
 
-router.get('/ativar-conta', alunosController.ativarConta);
+router.get('/login', verificar(alunosController.exibirLogin));
+router.post('/login', verificar(alunosController.realizarLogin));
 
-router.get('/imc', imcController.exibirImc)
-router.post('/imc', imcController.realizarImc)
+router.get('/logout', verificar(alunosController.logout));
+router.post('/logout', verificar(alunosController.logout));
 
+router.get('/imc', verificar(imcController.exibirImc));
+router.post('/imc', verificar(imcController.realizarImc));
 
-console.log(alunosController);
-router.get('/login', alunosController.exibirLogin);
-
-router.post('/login', alunosController.realizarLogin);
-
-// Logout (opcional, mas recomendado)
-router.get('/logout', (req, res) => {
-  req.session.destroy(() => {
-    res.redirect('/login')
-  })
-})
-
-router.get("/logout", alunosController.logout);
-router.post("/logout", alunosController.logout);
-
-
-router.get("/recuperar-senha", (req, res) => {
-  res.render("pages/recuperar-senha", {
+router.get('/recuperar-senha', (req, res) => {
+  res.render('pages/recuperar-senha', {
     erros: null,
     dadosNotificacao: null
   });
 });
 
 router.post(
-  "/recuperar-senha",
-  alunosController.regrasValidacaoFormRecSenha,
-  alunosController.recuperarSenha
+  '/recuperar-senha',
+  verificar(alunosController.regrasValidacaoFormRecSenha),
+  verificar(alunosController.recuperarSenha)
 );
 
-router.get("/reset-senha", alunosController.validarTokenNovaSenha);
+router.get('/reset-senha', verificar(alunosController.validarTokenNovaSenha));
 
-router.get("/reset-senha-teste", (req, res) => {
-  res.render("pages/resetar-senha", {
+router.get('/reset-senha-teste', (req, res) => {
+  res.render('pages/resetar-senha', {
     erros: null,
     dadosNotificacao: null,
     usu_id: ""
@@ -91,10 +69,9 @@ router.get("/reset-senha-teste", (req, res) => {
 });
 
 router.post(
-  "/resetar-senha",
-  alunosController.regrasValidacaoFormNovaSenha,
-  alunosController.resetarSenha
+  '/resetar-senha',
+  verificar(alunosController.regrasValidacaoFormNovaSenha),
+  verificar(alunosController.resetarSenha)
 );
-
 
 module.exports = router;

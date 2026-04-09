@@ -2,193 +2,90 @@
 const pool = require("../../config/pool-conexoes");
 const moment = require("moment");
 const bcrypt = require("bcryptjs");
- 
-const UsuarioModel = {
-  // Regras de validação 
-  // Buscar aluno por ID
-  findId: async (id) => {
-    try {
-      const query = "SELECT * FROM alunos WHERE alu_id = ?";
-      const [rows] = await pool.query(query, [id]);
-      return rows.length > 0 ? rows[0] : null;
-    } catch (error) {
-      console.error("Erro ao buscar aluno por ID:", error);
-      throw error;
-    }
-  },
 
-  login: async (email, senha) => {
-  try {
-    const query = "SELECT * FROM alunos WHERE alu_email = ?";
-    const [rows] = await pool.query(query, [email]);
+const AlunoModel = {
 
-    if (rows.length === 0) return null;
-
-    const usuario = rows[0];
-
-    // Comparar senha com hash
-    const senhaValida = await bcrypt.compare(senha, usuario.alu_senha);
-
-    if (!senhaValida) return null;
-
-    return usuario;
-  } catch (error) {
-    console.error("Erro no login:", error);
-    throw error;
-  }
-},
- 
-  // Verificar se email já existe
   findByEmail: async (email) => {
-    try {
-      const query = "SELECT * FROM alunos WHERE alu_email = ?";
-      const [rows] = await pool.query(query, [email]);
-      return rows.length > 0 ? rows[0] : null;
-    } catch (error) {
-      console.error("Erro ao verificar email:", error);
-      throw error;
-    }
+    const [rows] = await pool.query(
+      "SELECT * FROM aluno WHERE alu_email = ?",
+      [email]
+    );
+    return rows[0] || null;
   },
 
-  findByName: async (nome) => {
-    try {
-      const query = "SELECT * FROM alunos WHERE alu_nome = ?";
-      const [rows] = await pool.query(query, [nome]);
-      return rows.length > 0 ? rows[0] : null;
-    } catch (error) {
-      console.error("Erro ao verificar nome:", error);
-      throw error;
-    }
-  },
- 
-  // Criar novo aluno
-  create: async (userData) => {
-    try {
-      const { nome, email, senha, foto, banner, status } = userData;
- 
-      // Preparar os dados para inserção
-      const data = {
-        alu_nome : nome,
-        alu_email:  email,
-        alu_senha: senha, // Já deve estar com hash
-        alu_foto:foto,
-        alu_banner:banner,
-        alu_status: status || 0, // Padrão para inativo
-      };
- 
-      // Construir a query dinamicamente
-      const fields = Object.keys(data).filter(key => data[key] !== null);
-      const values = fields.map(field => data[field]);
-      const placeholders = fields.map(() => '?').join(', ');
-     
-      const query = `INSERT INTO alunos (${fields.join(', ')}) VALUES (${placeholders})`;
-     
-      const [result] = await pool.query(query, values);
-      return result.insertId;
-    } catch (error) {
-      console.error("Erro ao criar aluno:", error);
-      throw error;
-    }
-  },
- 
-  // Atualizar usuário
-  atualizar: async (id, userData) => {
-    try {
-      const { nome, email, telefone, plano, tipo, foto, banner, senha} = userData;
- 
-      const data = {
-        alu_nome: nome,
-        alu_email: email,
-        alu_senha:senha,
-        contato_id: telefone,
-        plano_id : plano,
-        tipo : tipo,
-        alu_foto : foto,
-        alu_banner : banner,
-      };
- 
-      // Construir a query dinamicamente
-      const updates = Object.entries(data)
-        .filter(([_, value]) => value !== undefined)
-        .map(([key, _]) => `${key} = ?`);
-     
-      const values = Object.entries(data)
-        .filter(([_, value]) => value !== undefined)
-        .map(([_, value]) => value);
-     
-      // Adicionar o ID no final dos valores
-      values.push(id);
-     
-      const query = `UPDATE alunos SET ${updates.join(', ')} WHERE alu_id= ?`;
-     
-      const [result] = await pool.query(query, values);
-      return result;
-    } catch (error) {
-      console.error("Erro ao atualizar aluno:", error);
-      throw error;
-    }
-  },
- 
-  // Excluir usuário
-  excluir: async (id) => {
-    try {
-      const query = "DELETE FROM alunos WHERE alu_id = ?";
-      const [result] = await pool.query(query, [id]);
-      return result.affectedRows > 0;
-    } catch (error) {
-      console.error("Erro ao excluir aluno:", error);
-      throw error;
-    }
-  },
- 
-  // Alterar senha do usuário
-  alterarSenha: async (id, novaSenha) => {
-    try {
-      // Hash da nova senha
-      const senhaHash = await bcrypt.hash(novaSenha, 10);
-     
-      const query = "UPDATE alunos SET usu_senha = ? WHERE alu_id = ?";
-      const [result] = await pool.query(query, [senhaHash, id]);
-     
-      return result.affectedRows > 0;
-    } catch (error) {
-      console.error("Erro ao alterar senha:", error);
-      throw error;
-    }
+  create: async (data) => {
+    const senhaHash = await bcrypt.hash(data.senha, 10);
+
+    const sql = `
+      INSERT INTO aluno
+      (alu_nome, alu_email, alu_senha)
+      VALUES (?, ?, ?)
+    `;
+
+    const values = [
+      data.nome,
+      data.email,
+      senhaHash,
+    ];
+
+    const [result] = await pool.query(sql, values);
+    return result.insertId;
   },
 
-  ativarConta: async (id) => {
-    try {
-     
-      const query = "UPDATE alunos SET usu_status = ? WHERE alu_id = ?";
-      const [result] = await pool.query(query, [1, id]);
-     
-      return result.affectedRows > 0;
-    } catch (error) {
-      console.error("Erro ao alterar senha:", error);
-      throw error;
-    }
+  login: async (email) => {
+    const [rows] = await pool.query(
+      "SELECT * FROM aluno WHERE alu_email = ?",
+      [email]
+    );
+    return rows[0] || null;
   },
 
-  ativarPlano: async (id) => {
-    try {
-     
-      const query = "UPDATE alunos SET tipo = ? WHERE alu_id = ?";
-      const [result] = await pool.query(query, ['o', id]);
-     
-      return result.affectedRows > 0;
-    } catch (error) {
-      console.error("Erro ao alterar senha:", error);
-      throw error;
-    }
+  findId: async (id) => {
+    const [rows] = await pool.query(
+      "SELECT * FROM aluno WHERE alu_id = ?",
+      [id]
+    );
+    return rows[0] || null;
   },
 
+  update: async (id, data) => {
+    const fields = [];
+    const values = [];
+
+    if (data.nome) {
+      fields.push("alu_nome = ?");
+      values.push(data.nome);
+    }
+
+    if (data.email) {
+      fields.push("alu_email = ?");
+      values.push(data.email);
+    }
+
+    if (data.senha) {
+      const hash = await bcrypt.hash(data.senha, 10);
+      fields.push("alu_senha = ?");
+      values.push(hash);
+    }
+
+    if (fields.length === 0) return false;
+
+    const sql = `UPDATE aluno SET ${fields.join(", ")} WHERE alu_id = ?`;
+    values.push(id);
+
+    const [result] = await pool.query(sql, values);
+    return result;
+  },
+
+  delete: async (id) => {
+    const [result] = await pool.query(
+      "DELETE FROM aluno WHERE alu_id = ?",
+      [id]
+    );
+    return result.affectedRows > 0;
+  },
 
 
 };
- 
-module.exports = UsuarioModel;
- 
 
- 
- 
+module.exports = AlunoModel;

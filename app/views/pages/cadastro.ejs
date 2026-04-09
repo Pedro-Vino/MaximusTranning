@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+
+    <link rel="stylesheet" href="/css/cadastro.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/erro.css">
+
+    <link rel="icon" href="/imagens/LogoSemFgrande.png">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
+    <script src="/js/notify.js"></script>
+
+    <script src="/js/cadastro.js" defer></script>
+</head>
+
+<body onload="testarSenha()">
+
+<%
+const dadosForm = typeof dados !== 'undefined' ? dados : { nome: "", email: "", senha: "", repsenha: "" };
+
+const erroValidacao = { nome:"", email:"", senha:"", repsenha:"", nasc:"" };
+const msgErroPag = { nome:"", email:"", senha:"", repsenha:"", nasc:"" };
+
+if (typeof erros !== 'undefined' && erros && erros.errors) {
+    erros.errors.forEach(function(erro) {
+        if (erro.path === "nome") {
+            erroValidacao.nome = "erro";
+            msgErroPag.nome = erro.msg;
+        }
+        if (erro.path === "email") {
+            erroValidacao.email = "erro";
+            msgErroPag.email = erro.msg;
+        }
+        if (erro.path === "senha") {
+            erroValidacao.senha = "erro";
+            msgErroPag.senha = erro.msg;
+        }
+        if (erro.path === "repsenha") {
+            erroValidacao.repsenha = "erro";
+            msgErroPag.repsenha = erro.msg;
+        }
+        if (erro.path === "nasc") {
+            erroValidacao.nasc = "erro";
+            msgErroPag.nasc = erro.msg;
+        }
+    });
+}
+%>
+
+<% if (typeof dadosNotificacao !== 'undefined' && dadosNotificacao) { %>
+<script>
+notify(
+"<%= dadosNotificacao.titulo %>",
+"<%= dadosNotificacao.mensagem %>",
+"<%= dadosNotificacao.tipo %>",
+"right bottom"
+)
+</script>
+<% } %>
+
+<header>
+<%- include('../partials/navbar'); %>
+</header>
+
+<main class="main_login">
+
+<section class="container6">
+
+<header class="form-header">
+
+<article class="divisoria">
+    <img src="/imagens/LogoSemFgrande.png" class="logo">
+    <h1 class="titlelogo">Maximus Tranning</h1>
+</article>
+
+<h1>Cadastre-se</h1>
+
+</header>
+
+<form method="post" action="/cadastrar">
+
+<!-- NOME -->
+<section class="form-group">
+<label>Nome</label>
+<input type="text" name="nome" value="<%= dadosForm.nome %>" class="<%= erroValidacao.nome %>">
+<span class="spanerro"><%= msgErroPag.nome %></span>
+</section>
+
+<!-- EMAIL -->
+<section class="form-group">
+<label>Email</label>
+<input type="email" name="email" value="<%= dadosForm.email %>" class="<%= erroValidacao.email %>">
+<span class="spanerro"><%= msgErroPag.email %></span>
+</section>
+
+<!-- SENHA -->
+<section class="form-group">
+<label>Senha</label>
+
+<div class="input-group">
+<input type="password" name="senha" id="senha" value="<%= dadosForm.senha %>" class="<%= erroValidacao.senha %>">
+<button type="button" onclick="toggleSenha()">👁️</button>
+</div>
+
+<span class="spanerro"><%= msgErroPag.senha %></span>
+</section>
+
+<!-- REPSENHA -->
+<section class="form-group">
+<label>Confirmar Senha</label>
+
+<div class="input-group">
+<input type="password" name="repsenha" id="repsenha" value="<%= dadosForm.repsenha %>" class="<%= erroValidacao.repsenha %>">
+<button type="button" onclick="toggleReSenha()">👁️</button>
+</div>
+
+<span class="spanerro"><%= msgErroPag.repsenha %></span>
+</section>
+
+<footer class="form-footer">
+<input type="submit" value="Cadastrar">
+
+<nav>
+<a href="/login">Já tem conta? <b>Entrar</b></a>
+</nav>
+</footer>
+
+</form>
+
+</section>
+
+</main>
+
+<%- include('../partials/footer'); %>
+
+<script>
+function toggleSenha() {
+    const s = document.getElementById("senha");
+    s.type = s.type === "password" ? "text" : "password";
+}
+
+function toggleReSenha() {
+    const s = document.getElementById("repsenha");
+    s.type = s.type === "password" ? "text" : "password";
+}
+</script>
+
+</body>
+</html>
