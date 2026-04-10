@@ -49,8 +49,10 @@
             if (dadosNotificacao) {
         %>
                 <script>
-                    notify("<%= dadosNotificacao.titulo %>","<%= dadosNotificacao.mensagem %>", "<%= dadosNotificacao.tipo %>", "right bottom")
-                </script>
+            window.addEventListener('load', function() {
+            notify("<%= dadosNotificacao.titulo %>","<%= dadosNotificacao.mensagem %>", "<%= dadosNotificacao.tipo %>", "right bottom")
+        });
+    </script>
         <% } %>
 
         <form id="form-perfil" class="form-container" enctype="multipart/form-data" method="POST" action="/salvar-perfil">
@@ -89,6 +91,14 @@
                 <label>Data de nascimento
                     <input type="date" name="nasc" value="<%= valores.nasc || '' %>">
                 </label>
+                <label>Peso (kg)
+                <input type="number" name="peso" step="0.1" min="30" max="300" 
+                    value="<%= valores.peso || '' %>" placeholder="Ex: 75.5">
+                </label>
+                <label>Altura (cm)
+                <input type="number" name="altura" step="1" min="100" max="250" 
+                    value="<%= valores.altura || '' %>" placeholder="Ex: 170">
+                </label>
                 <small>Não preencha senha ou e-mail caso não deseje alterar</small>
                 <label>E-mail
                     <input type="email" name="email" value="<%= valores.email %>" class="<%= avisoErro.email %>">
@@ -99,6 +109,7 @@
                 <label>Confirmar Senha
                     <input type="password" name="repsenha" id="repsenha" placeholder="Confirme a senha">
                 </label>
+                <input type="hidden" name="alu_id" value="<%= valores.id %>">
             </section>
 
             <section id="form-pessoal" class="form">

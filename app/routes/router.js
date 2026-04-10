@@ -50,6 +50,7 @@ function authMiddleware(req, res, next) {
 }
 router.get('/perfil', authMiddleware, verificar(alunosController.carregarPerfil));
 router.get('/editar-perfil', authMiddleware, verificar(alunosController.carregarEditarPerfil));
+router.post('/salvar-perfil', authMiddleware, upload.single('foto'), verificar(alunosController.gravarPerfil));
 router.post('/salvar-perfil', upload.single('foto'), verificar(alunosController.gravarPerfil));
 
 // comentado até implementar

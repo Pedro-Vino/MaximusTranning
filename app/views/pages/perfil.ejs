@@ -39,10 +39,10 @@
             </div>
 
             <ul class="perfil-stats-lista">
-                <li>IDADE: <span><%= aluno.idade || '—' %></span></li>
-                <li>PESO: <span><%= aluno.peso || '—' %></span></li>
-                <li>ALTURA: <span><%= aluno.altura || '—' %></span></li>
-                <li>PLANO ATUAL: <span><%= aluno.plano || '—' %></span></li>
+                <li>IDADE: <span><%= aluno.idade ? aluno.idade + ' anos' : '—' %></span></li>
+                <li>PESO: <span><%= aluno.peso %></span></li>
+                <li>ALTURA: <span><%= aluno.altura %></span></li>
+                <li>IMC: <span><%= aluno.imc %> — <%= aluno.classificacaoImc %></span></li>
             </ul>
         </section>
 
@@ -66,11 +66,10 @@
                     <p class="card-label">SEQUENCIA DE DIAS</p>
                     <p class="card-valor"><%= aluno.sequencia || '00/00' %></p>
                 </div>
-                <div class="perfil-card vazio"></div>
-            </div>
-
-            <div class="perfil-grafico-row">
-                <div class="perfil-grafico vazio"></div>
+                <div class="perfil-card">
+                    <p class="card-label">IMC ATUAL</p>
+                    <p class="card-valor"><%= aluno.imc %> <span><%= aluno.classificacaoImc %></span></p>
+                </div>
             </div>
         </section>
 

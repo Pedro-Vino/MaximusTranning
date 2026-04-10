@@ -28,4 +28,12 @@ const salvarOuAtualizar = async (alunoId, peso, altura) => {
   return rows[0].imc
 }
 
-module.exports = { salvarOuAtualizar }
+const findByAluno = async (alunoId) => {
+  const [rows] = await pool.query(
+    'SELECT peso, altura, imc FROM imc WHERE aluno_id = ? ORDER BY id DESC LIMIT 1',
+    [alunoId]
+  );
+  return rows[0] || null;
+};
+
+module.exports = { salvarOuAtualizar, findByAluno }
