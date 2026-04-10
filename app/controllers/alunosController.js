@@ -130,6 +130,7 @@ module.exports = {
         token,
         nome
       );
+  console.log("Link de ativação:", `${process.env.URL_BASE}/ativar-conta?token=${token}`);
 
       enviarEmail(email, "Ativação de conta", null, html, () => {
         return res.render("pages/cadastro", {
@@ -160,9 +161,13 @@ module.exports = {
   ativarConta: async (req, res) => {
     try {
       const token = req.query.token;
+      console.log("SECRET_KEY usada:", process.env.SECRET_KEY);
+      console.log("Token recebido:", token);
       const decoded = jwt.verify(token, process.env.SECRET_KEY);
-
+      console.log("Token decodificado:", decoded); 
+      
       const aluno = await AlunoModel.findId(decoded.userId);
+      console.log("Aluno encontrado:", aluno);     
 
       if (!aluno) {
         return res.render("pages/login", {
@@ -185,6 +190,7 @@ module.exports = {
       });
 
     } catch (err) {
+      console.log("Erro ao verificar token:", err.message);
       return res.render("pages/login", {
         dados: { email: "", senha: "" },
         erro: null,

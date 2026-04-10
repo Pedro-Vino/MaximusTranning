@@ -1,4 +1,3 @@
-// models/model-usuario.js
 const pool = require("../../config/pool-conexoes");
 const moment = require("moment");
 const bcrypt = require("bcryptjs");
@@ -14,23 +13,17 @@ const AlunoModel = {
   },
 
   create: async (data) => {
-    const senhaHash = await bcrypt.hash(data.senha, 10);
-
     const sql = `
       INSERT INTO aluno
       (alu_nome, alu_email, alu_senha)
       VALUES (?, ?, ?)
     `;
-
-    const values = [
-      data.nome,
-      data.email,
-      senhaHash,
-    ];
-
+    const values = [data.nome, data.email, data.senha];
     const [result] = await pool.query(sql, values);
     return result.insertId;
   },
+
+  // ← aqui estava o trecho duplicado, removido
 
   login: async (email) => {
     const [rows] = await pool.query(
@@ -56,12 +49,10 @@ const AlunoModel = {
       fields.push("alu_nome = ?");
       values.push(data.nome);
     }
-
     if (data.email) {
       fields.push("alu_email = ?");
       values.push(data.email);
     }
-
     if (data.senha) {
       const hash = await bcrypt.hash(data.senha, 10);
       fields.push("alu_senha = ?");
@@ -85,6 +76,13 @@ const AlunoModel = {
     return result.affectedRows > 0;
   },
 
+  ativarConta: async (id) => {
+    const [result] = await pool.query(
+      "UPDATE aluno SET alu_status = 1 WHERE alu_id = ?",
+      [id]
+    );
+    return result.affectedRows > 0;
+  },
 
 };
 

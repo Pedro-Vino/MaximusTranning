@@ -40,3 +40,4 @@ app.set("/navbar", './app/views/partial/navbar')
 app.listen(port, () =>{
     console.log(`Servidor online \nhttp://localhost:${port}...`);
 })
+//ypoj lefc opof kdro

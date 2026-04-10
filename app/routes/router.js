@@ -35,6 +35,7 @@ router.get('/cadastro', guestMiddleware, (req, res) => {
 });
 
 router.post('/cadastrar', alunosController.cadastrarAluno);
+router.get('/ativar-conta', verificar(alunosController.ativarConta));
 
 router.get('/login', verificar(alunosController.exibirLogin));
 router.post('/login', verificar(alunosController.realizarLogin));
