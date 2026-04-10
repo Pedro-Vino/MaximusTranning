@@ -118,7 +118,7 @@ module.exports = {
         email,
         senha: senhaHash
       });
-
+      req.session.aluno_pendente = novoId;
       const token = jwt.sign(
         { userId: novoId },
         process.env.SECRET_KEY,
@@ -133,15 +133,7 @@ module.exports = {
   console.log("Link de ativação:", `${process.env.URL_BASE}/ativar-conta?token=${token}`);
 
       enviarEmail(email, "Ativação de conta", null, html, () => {
-        return res.render("pages/cadastro", {
-          dados: req.body,
-          erros: null,
-          dadosNotificacao: {
-            titulo: "Cadastro realizado",
-            mensagem: "Verifique seu email para ativar a conta",
-            tipo: "success"
-          }
-        });
+        return res.redirect('/imc');
       });
 
     } catch (err) {
@@ -178,6 +170,8 @@ module.exports = {
       }
 
       await AlunoModel.ativarConta(decoded.userId);
+
+      req.session.aluno_pendente = null;
 
       return res.render("pages/login", {
         dados: { email: "", senha: "" },
@@ -221,7 +215,7 @@ module.exports = {
 
     } catch (err) {
       console.error(err);
-      return res.redirect("/imc");
+      return res.redirect("/login");
     }
   },
 

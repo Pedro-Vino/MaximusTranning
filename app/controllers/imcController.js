@@ -1,24 +1,24 @@
-const imcModel = require('../models/model-imc')
+const imcModel = require('../models/model-imc');
 
 const exibirImc = (req, res) => {
-  res.render('pages/imc')
-}
+  const id = req.session.aluno?.id || req.session.aluno_pendente;
+  if (!id) return res.redirect('/cadastro');
+  res.render('pages/imc', { imcBanco: undefined });
+};
 
 const realizarImc = async (req, res) => {
-  const { peso, altura } = req.body
+  const { peso, altura } = req.body;
+  const id = req.session.aluno?.id || req.session.aluno_pendente;
+
+  if (!id) return res.redirect('/cadastro');
 
   try {
-    const imc = await imcModel.salvarOuAtualizar(
-      req.session.aluno_id,
-      peso,
-      altura
-    )
-
-    res.render('pages/imc', { imcBanco: imc })
+    const imc = await imcModel.salvarOuAtualizar(id, peso, altura);
+    res.render('pages/imc', { imcBanco: imc });
   } catch (err) {
-    console.error(err)
-    res.status(500).send('Erro ao salvar IMC')
+    console.error(err);
+    res.status(500).send('Erro ao salvar IMC');
   }
-}
+};
 
-module.exports = { exibirImc, realizarImc }
+module.exports = { exibirImc, realizarImc };

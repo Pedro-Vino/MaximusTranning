@@ -38,6 +38,9 @@ router.post('/logout', verificar(alunosController.logout));
 
 router.get('/imc', verificar(imcController.exibirImc));
 router.post('/imc', verificar(imcController.realizarImc));
+router.get('/aguardar-verificacao', (req, res) => {
+  res.render('pages/aguardar-verificacao', { dadosNotificacao: null });
+});
 
 function authMiddleware(req, res, next) {
   if (!req.session.aluno) {

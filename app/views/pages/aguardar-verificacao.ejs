@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifique seu email</title>
+    <link rel="icon" href="imagens/LogoSemFgrande.png">
+    <style>
+  .main_login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+  }
+  .container6 {
+    width: 100%;
+    max-width: 550px;
+    background: #111;
+    padding: 40px 30px;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+  }
+  .container6::before {
+    content: "";
+    position: absolute;
+    left: -15px;
+    top: 0;
+    width: 100%;
+    height: 99%;
+    background: var(--principal);
+    border-radius: 5px;
+    z-index: -1;
+  }
+  .form-header h1 { font-size: 22px; margin-bottom: 10px; }
+  .form-header p { font-size: 14px; color: var(--cinza_claro); line-height: 1.6; }
+  .content { background: #0d0d0d; padding: 14px; border-radius: 6px; margin-top: 20px; }
+  .content p { font-size: 13px; color: var(--cinza_claro); margin-top: 6px; }
+  .form-footer { margin-top: 24px; }
+  .form-footer a { color: var(--branco); font-size: 14px; text-decoration: none; }
+  .form-footer b { color: var(--principal); }
+</style>
+</head>
+<body>
+    <header>
+        <%- include('../partials/navbar'); %>
+    </header>
+
+    <main class="main_login">
+        <div class="container6">
+            <div class="form-header">
+                <h1>Verifique seu email</h1>
+                <p>Enviamos um link de ativação para o seu email.</p>
+                <p>Acesse sua caixa de entrada e clique no link para ativar sua conta antes de fazer login.</p>
+            </div>
+
+            <div class="content" style="margin-top: 20px;">
+                <p>Não recebeu o email?</p>
+                <p style="color: var(--cinza_claro); margin-top: 8px; font-size: 13px;">
+                    Verifique sua pasta de spam ou lixo eletrônico.
+                </p>
+            </div>
+
+            <div class="form-footer">
+                <nav>
+                    <a href="/login">Já ativei minha conta — <b>fazer login</b></a>
+                </nav>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
