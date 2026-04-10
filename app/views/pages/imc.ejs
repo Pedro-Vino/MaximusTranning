@@ -3,271 +3,313 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IMC Pro</title>
-  <link rel="stylesheet" href="/css/baseimc.css">
+  <title>Calculando seu IMC</title>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="icon" href="imagens/LogoSemFgrande.png">
   <style>
-    * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
-}
+    .imc-main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 80vh;
+      padding: 20px;
+    }
 
-body {
-    height: 100vh;
-    background: linear-gradient(135deg, #020617, #0f172a);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    .imc-card {
+      width: 100%;
+      max-width: 480px;
+      background: #111;
+      border-radius: 10px;
+      padding: 36px 30px;
+      position: relative;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.15);
+    }
 
-/* CARD */
-.card {
-    width: 420px;
-    padding: 35px;
-    border-radius: 20px;
-    background: rgba(15, 23, 42, 0.8);
-    backdrop-filter: blur(15px);
-    box-shadow: 0 0 60px rgba(98, 0, 255, 0.15);
-    color: white;
-}
+    .imc-card::before {
+      content: "";
+      position: absolute;
+      left: -15px;
+      top: 0;
+      width: 100%;
+      height: 99%;
+      background: var(--principal);
+      border-radius: 5px;
+      z-index: -1;
+    }
 
-/* TÍTULO */
-h1 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #6c0086;
-}
+    .imc-card h1 {
+      font-size: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: var(--branco);
+      border-left: 4px solid var(--vermelho);
+      padding-left: 12px;
+      margin-bottom: 28px;
+    }
 
-/* INPUTS */
-.inputs {
-    display: flex;
-    gap: 10px;
-}
+    .imc-inputs {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
 
-.input-group {
-    flex: 1;
-}
+    .imc-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
 
-label {
-    font-size: 12px;
-    color: #94a3b8;
-}
+    .imc-group label {
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: var(--cinza_claro);
+    }
 
-input {
-    width: 100%;
-    margin-top: 5px;
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
-    background: #020617;
-    color: white;
-    font-size: 15px;
-    outline: none;
-    transition: 0.3s;
-}
+    .imc-group input {
+      width: 100%;
+      padding: 12px 14px;
+      background: #0d0d0d;
+      border: 1px solid #333;
+      border-radius: 6px;
+      color: var(--branco);
+      font-size: 16px;
+      outline: none;
+      transition: border 0.2s;
+    }
 
-input:focus {
-    border: 1px solid #7e3ff4;
-}
+    .imc-group input:focus {
+      border-color: var(--vermelho);
+    }
 
-/* BOTÃO */
-button {
-    width: 100%;
-    margin-top: 20px;
-    padding: 14px;
-    border-radius: 12px;
-    border: none;
-    background: linear-gradient(90deg, #6e39aa, #4b0772);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
+    .imc-btn {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      background: var(--vermelho);
+      border: none;
+      border-radius: 6px;
+      color: var(--branco);
+      font-size: 15px;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
 
-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(148, 0, 247, 0.5);
-}
+    .imc-btn:hover {
+      background: var(--principal_escura);
+    }
 
-/* RESULTADO */
-.resultado {
-    margin-top: 30px;
-    text-align: center;
-}
+    .imc-resultado {
+      margin-top: 28px;
+      text-align: center;
+    }
 
-.resultado span {
-    color: #94a3b8;
-}
+    .imc-resultado span {
+      font-size: 13px;
+      color: var(--cinza_claro);
+      text-transform: uppercase;
+    }
 
-#imc {
-    font-size: 50px;
-    margin-top: 10px;
-    color: #910b85;
-}
+    .imc-valor {
+      font-size: 56px;
+      font-weight: bold;
+      color: var(--vermelho);
+      margin-top: 6px;
+      line-height: 1;
+    }
 
-/* FAIXAS */
-.faixas {
-    display: flex;
-    margin-top: 25px;
-    gap: 8px;
-}
+    .imc-faixas {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+    }
 
-.faixas div {
-    flex: 1;
-    padding: 10px;
-    border-radius: 8px;
-    text-align: center;
-    font-size: 12px;
-    opacity: 0.4;
-    transition: 0.3s;
-}
+    .imc-faixas div {
+      flex: 1;
+      padding: 10px 6px;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      opacity: 0.35;
+      transition: 0.3s;
+    }
 
-/* CORES */
-#abaixo { background: #f59e0b; }
-#ideal { background: #22c55e; }
-#acima { background: #ef4444; }
+    #abaixo { background: #f59e0b; color: #000; }
+    #ideal  { background: #22c55e; color: #000; }
+    #acima  { background: #ef4444; color: #fff; }
 
-/* ATIVO = mais claro + destaque */
-.ativo {
-    opacity: 1 !important;
-    transform: scale(1.05);
-    filter: brightness(1.3);
-}
+    .ativo {
+      opacity: 1 !important;
+      transform: scale(1.05);
+    }
 
-/* BOTÕES DE AÇÃO PÓS-RESULTADO */
-.btn-continuar {
-    display: block;
-    text-align: center;
-    margin-top: 15px;
-    padding: 14px;
-    border-radius: 12px;
-    background: linear-gradient(90deg, #6b0da1, #6109b3);
-    color: white;
-    font-weight: bold;
-    text-decoration: none;
-    transition: 0.3s;
-}
+    .imc-acoes {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
 
-.btn-continuar:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(74, 14, 131, 0.5);
-}
+    .btn-continuar {
+      display: block;
+      text-align: center;
+      padding: 14px;
+      border-radius: 6px;
+      background: var(--vermelho);
+      color: var(--branco);
+      font-weight: bold;
+      font-size: 15px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
 
-.btn-resetar {
-    display: block;
-    text-align: center;
-    margin-top: 10px;
-    padding: 14px;
-    border-radius: 12px;
-    background: #020617;
-    color: #94a3b8;
-    text-decoration: none;
-    transition: 0.3s;
-}
+    .btn-continuar:hover {
+      background: var(--principal_escura);
+    }
 
-.btn-resetar:hover {
-    transform: scale(1.05);
-}
+    .btn-resetar {
+      display: block;
+      text-align: center;
+      padding: 12px;
+      border-radius: 6px;
+      background: transparent;
+      border: 1px solid #444;
+      color: var(--cinza_claro);
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      width: 100%;
+      transition: 0.2s;
+    }
+
+    .btn-resetar:hover {
+      border-color: var(--vermelho);
+      color: var(--branco);
+    }
+
+    .imc-salvo-valor {
+      font-size: 52px;
+      font-weight: bold;
+      color: var(--vermelho);
+      margin-top: 8px;
+    }
   </style>
 </head>
 <body>
-<div class="card">
-  <h1>Calculando seu IMC</h1>
+  <header><%- include('../partials/navbar'); %></header>
 
-  <% if (typeof imcBanco !== 'undefined') { %>
-    <div class="resultado">
-      <span>Seu IMC salvo</span>
-      <h2><%= Number(imcBanco).toFixed(2) %></h2>
-    </div>
-    <div class="faixas">
-      <div id="abaixo" class="<%= Number(imcBanco) < 18.5 ? 'ativo' : '' %>">Abaixo do peso</div>
-      <div id="ideal" class="<%= Number(imcBanco) >= 18.5 && Number(imcBanco) < 25 ? 'ativo' : '' %>">Peso ideal</div>
-      <div id="acima" class="<%= Number(imcBanco) >= 25 ? 'ativo' : '' %>">Acima do peso</div>
-    </div>
-    <div style="display:flex; flex-direction:column; gap:0.8rem; margin-top:1.5rem;">
-      <a href="/aguardar-verificacao" class="btn-continuar">Continuar →</a>
-      <a href="/imc" class="btn-resetar">Calcular novamente</a>
-    </div>
+  <main class="imc-main">
+    <div class="imc-card">
+      <h1>Calculando seu IMC</h1>
 
-  <% } else { %>
-    <div id="tela-calcular">
-      <div class="inputs">
-        <div class="input-group">
-          <label>Peso (kg)</label>
-          <input type="text" id="peso" placeholder="75">
+      <% if (typeof imcBanco !== 'undefined' && imcBanco) { %>
+
+        <div class="imc-resultado">
+          <span>Seu IMC salvo</span>
+          <div class="imc-salvo-valor"><%= Number(imcBanco).toFixed(2) %></div>
         </div>
-        <div class="input-group">
-          <label>Altura (cm)</label>
-          <input type="text" id="altura" placeholder="170">
+
+        <div class="imc-faixas">
+          <div id="abaixo" class="<%= Number(imcBanco) < 18.5 ? 'ativo' : '' %>">Abaixo do peso</div>
+          <div id="ideal"  class="<%= Number(imcBanco) >= 18.5 && Number(imcBanco) < 25 ? 'ativo' : '' %>">Peso ideal</div>
+          <div id="acima"  class="<%= Number(imcBanco) >= 25 ? 'ativo' : '' %>">Acima do peso</div>
         </div>
-      </div>
-      <button onclick="calcularIMC()">Calcular IMC</button>
 
-      <div class="resultado">
-        <span>Seu IMC</span>
-        <h2 id="imc">--</h2>
-      </div>
-      <div class="faixas">
-        <div id="abaixo">Abaixo do peso</div>
-        <div id="ideal">Peso ideal</div>
-        <div id="acima">Acima do peso</div>
-      </div>
+        <div class="imc-acoes">
+          <a href="/aguardar-verificacao" class="btn-continuar">Continuar →</a>
+          <a href="/imc" class="btn-resetar">Calcular novamente</a>
+        </div>
+
+      <% } else { %>
+
+        <div id="tela-calcular">
+          <div class="imc-inputs">
+            <div class="imc-group">
+              <label>Peso (kg)</label>
+              <input type="text" id="peso" placeholder="75">
+            </div>
+            <div class="imc-group">
+              <label>Altura (cm)</label>
+              <input type="text" id="altura" placeholder="170">
+            </div>
+          </div>
+          <button class="imc-btn" onclick="calcularIMC()">Calcular IMC</button>
+
+          <div class="imc-resultado">
+            <span>Seu IMC</span>
+            <div class="imc-valor" id="imc">--</div>
+          </div>
+
+          <div class="imc-faixas">
+            <div id="abaixo">Abaixo do peso</div>
+            <div id="ideal">Peso ideal</div>
+            <div id="acima">Acima do peso</div>
+          </div>
+        </div>
+
+        <div id="acoes" style="display:none;">
+          <form action="/imc" method="POST" id="formSalvar">
+            <input type="hidden" name="peso" id="peso-hidden">
+            <input type="hidden" name="altura" id="altura-hidden">
+            <div class="imc-acoes">
+              <button type="submit" class="imc-btn">Salvar e ver resultado</button>
+              <button type="button" onclick="resetar()" class="btn-resetar">Calcular novamente</button>
+            </div>
+          </form>
+        </div>
+
+      <% } %>
     </div>
+  </main>
 
-    <div id="acoes" style="display:none; margin-top:1.5rem; flex-direction:column; gap:0.8rem;">
-      <form action="/imc" method="POST" id="formSalvar">
-        <input type="hidden" name="peso" id="peso-hidden">
-        <input type="hidden" name="altura" id="altura-hidden">
-        <button type="submit">Salvar e ver resultado</button>
-      </form>
-      <button onclick="resetar()" class="btn-resetar">Calcular novamente</button>
-    </div>
-  <% } %>
+  <script>
+    function calcularIMC() {
+      const peso = parseFloat(document.getElementById('peso').value.replace(',', '.'))
+      let alturaCm = parseFloat(document.getElementById('altura').value.replace(',', '.'))
 
-</div>
+      if (!peso || !alturaCm) return
 
-<script>
-  function calcularIMC() {
-    const peso = parseFloat(document.getElementById('peso').value.replace(',', '.'))
-    let alturaCm = parseFloat(document.getElementById('altura').value.replace(',', '.'))
+      if (alturaCm < 3) alturaCm = alturaCm * 100
+      if (alturaCm < 50 || alturaCm > 250) {
+        alert('Altura inválida! Digite em cm (ex: 170) ou metros (ex: 1.70)')
+        return
+      }
 
-    if (!peso || !alturaCm) return
+      const alturaM = alturaCm / 100
+      const imc = parseFloat((peso / (alturaM * alturaM)).toFixed(2))
 
-    if (alturaCm < 3) alturaCm = alturaCm * 100
+      document.getElementById('imc').textContent = imc.toFixed(2)
 
-    if (alturaCm < 50 || alturaCm > 250) {
-      alert('Altura inválida! Digite em cm (ex: 170) ou metros (ex: 1.70)')
-      return
+      document.getElementById('abaixo').classList.remove('ativo')
+      document.getElementById('ideal').classList.remove('ativo')
+      document.getElementById('acima').classList.remove('ativo')
+
+      if (imc < 18.5) document.getElementById('abaixo').classList.add('ativo')
+      else if (imc < 25) document.getElementById('ideal').classList.add('ativo')
+      else document.getElementById('acima').classList.add('ativo')
+
+      document.getElementById('peso-hidden').value = peso
+      document.getElementById('altura-hidden').value = alturaCm
+      document.getElementById('acoes').style.display = 'block'
     }
 
-    const alturaM = alturaCm / 100
-    const imc = parseFloat((peso / (alturaM * alturaM)).toFixed(2))
-
-    document.getElementById('imc').textContent = imc.toFixed(2)
-
-    document.getElementById('abaixo').classList.remove('ativo')
-    document.getElementById('ideal').classList.remove('ativo')
-    document.getElementById('acima').classList.remove('ativo')
-
-    if (imc < 18.5) document.getElementById('abaixo').classList.add('ativo')
-    else if (imc < 25) document.getElementById('ideal').classList.add('ativo')
-    else document.getElementById('acima').classList.add('ativo')
-
-    document.getElementById('peso-hidden').value = peso
-    document.getElementById('altura-hidden').value = alturaCm
-    document.getElementById('acoes').style.display = 'flex'
-  }
-
-  function resetar() {
-    document.getElementById('imc').textContent = '--'
-    document.getElementById('abaixo').classList.remove('ativo')
-    document.getElementById('ideal').classList.remove('ativo')
-    document.getElementById('acima').classList.remove('ativo')
-    document.getElementById('acoes').style.display = 'none'
-    document.getElementById('peso').value = ''
-    document.getElementById('altura').value = ''
-  }
-</script>
+    function resetar() {
+      document.getElementById('imc').textContent = '--'
+      document.getElementById('abaixo').classList.remove('ativo')
+      document.getElementById('ideal').classList.remove('ativo')
+      document.getElementById('acima').classList.remove('ativo')
+      document.getElementById('acoes').style.display = 'none'
+      document.getElementById('peso').value = ''
+      document.getElementById('altura').value = ''
+    }
+  </script>
 </body>
 </html>
