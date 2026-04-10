@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil</title>
+    <script defer src="/js/script.js"></script>
+    <script defer src="/js/editar-perfil.js"></script>
+    <link rel="stylesheet" href="/css/editar-perfil.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="icon" href="imagens/LogoSemFgrande.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/apis/simple-notify.min.css" />
+    <script src="/apis/simple-notify.min.js"></script>
+    <script src="/js/notify.js"></script>
+</head>
+
+<body>
+    <%- include('../partials/navbar'); %>
+
+    <nav class="container-ver-eventos">
+        <button class="botao-seta" onclick="location.href='/perfil'">
+            <img src="/imagens/left-arrow.png" alt="Seta">
+        </button>
+        <span class="ver-eventos">Voltar</span>
+    </nav>
+
+    <main>
+        <%
+            let avisoErro = { nome: "", email: "", foto: "", senha: "" };
+            let msgErro = "";
+            if (erros && erros.errors) {
+                erros.errors.forEach(function(itemErro) {
+                    if (itemErro.path == "nome")  { avisoErro.nome  = "erro"; msgErro += `* ${itemErro.msg} <br>`; }
+                    if (itemErro.path == "senha") { avisoErro.senha = "erro"; msgErro += `* ${itemErro.msg} <br>`; }
+                    if (itemErro.path == "email") { avisoErro.email = "erro"; msgErro += `* ${itemErro.msg} <br>`; }
+                    if (itemErro.path == "foto")  { avisoErro.foto  = "erro"; msgErro += `* ${itemErro.msg} <br>`; }
+                });
+                if (msgErro != "") {
+        %>
+                    <script>
+                        let msgErro = "<%= msgErro %>"
+                        notify("Erro(s) no preenchimento",
+                            "Verifique o(s) campo(s) <br> " + msgErro.replace(/&lt;/g,"<").replace(/&gt;/g,">"),
+                            "error", "right bottom", 5000)
+                    </script>
+        <%      }
+            }
+            if (dadosNotificacao) {
+        %>
+                <script>
+                    notify("<%= dadosNotificacao.titulo %>","<%= dadosNotificacao.mensagem %>", "<%= dadosNotificacao.tipo %>", "right bottom")
+                </script>
+        <% } %>
+
+        <form id="form-perfil" class="form-container" enctype="multipart/form-data" method="POST" action="/salvar-perfil">
+
+            <input type="hidden" name="alu_id" value="<%= valores.id %>">
+
+            <section class="banner-container">
+                <section class="profile-info">
+                    <figure class="profile-pic-overlay">
+                        <img src="<%= valores.foto || 'imagens/alunos/default_user.jpg' %>" alt="Perfil" id="profileImage">
+                        <figcaption class="icon-overlay small" id="editProfile">
+                            <img src="imagens/1159633.png" alt="Editar Perfil">
+                        </figcaption>
+                    </figure>
+                    <section class="name-info">
+                        <h2><%= valores.nome %></h2>
+                        <p>@<%= valores.nome %></p>
+                    </section>
+                </section>
+            </section>
+
+            <input type="file" id="profileInput" name="foto" accept="image/*" hidden>
+
+            <header>
+                <h1>Editar Perfil</h1>
+            </header>
+
+            <nav class="tabs">
+                <button type="button" class="tab active" data-tab="aluno">Informações do Usuário</button>
+            </nav>
+
+            <section id="form-aluno" class="form active">
+                <label>Nome de usuário
+                    <input type="text" value="<%= valores.nome %>" name="nome" class="<%= avisoErro.nome %>" required>
+                </label>
+                <label>Data de nascimento
+                    <input type="date" name="nasc" value="<%= valores.nasc || '' %>">
+                </label>
+                <small>Não preencha senha ou e-mail caso não deseje alterar</small>
+                <label>E-mail
+                    <input type="email" name="email" value="<%= valores.email %>" class="<%= avisoErro.email %>">
+                </label>
+                <label>Senha
+                    <input type="password" name="senha" id="senha" placeholder="Nova senha" class="<%= avisoErro.senha %>">
+                </label>
+                <label>Confirmar Senha
+                    <input type="password" name="repsenha" id="repsenha" placeholder="Confirme a senha">
+                </label>
+            </section>
+
+            <section id="form-pessoal" class="form">
+                <label>Telefone
+                    <input type="tel" name="telefone" value="">
+                </label>
+            </section>
+
+            <button type="submit" class="btn-salvar">Salvar Alterações</button>
+        </form>
+    </main>
+
+    <aside id="cropperModal" class="modal">
+        <section class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Recortar Imagem</h2>
+            <section class="image-container">
+                <img id="cropperImage" src="">
+            </section>
+            <section class="modal-buttons">
+                <button id="confirmCrop" class="btn-salvar">Confirmar</button>
+                <button id="cancelCrop" class="btn-cancelar">Cancelar</button>
+            </section>
+        </section>
+    </aside>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+</body>
+</html>

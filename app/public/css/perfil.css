@@ -1,0 +1,237 @@
+/* PERFIL */
+.perfil-main {
+    display: flex;
+    min-height: calc(100vh - 80px);
+    background: var(--preto);
+    color: var(--branco);
+}
+
+/* SIDEBAR ESQUERDA */
+.perfil-sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: #111;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    border-right: 1px solid #222;
+}
+
+.perfil-foto-container {
+    position: relative;
+    width: 160px;
+    height: 160px;
+}
+
+.perfil-foto {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--vermelho);
+    border: 3px solid #222;
+}
+
+.perfil-editar-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: #222;
+    border-radius: 50%;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.perfil-editar-btn img {
+    width: 18px;
+    height: 18px;
+}
+
+.perfil-nome {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--branco);
+    margin-top: 8px;
+}
+
+.perfil-email {
+    font-size: 13px;
+    color: var(--cinza_claro);
+    text-align: center;
+}
+
+.perfil-treino-atual {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.label-vermelho {
+    color: var(--vermelho);
+    font-weight: bold;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.valor-treino {
+    color: var(--branco);
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.perfil-stats-lista {
+    list-style: none;
+    width: 100%;
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.perfil-stats-lista li {
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--branco);
+    border-bottom: 1px solid #222;
+    padding-bottom: 8px;
+}
+
+.perfil-stats-lista li span {
+    color: var(--cinza_claro);
+    font-weight: normal;
+    margin-left: 6px;
+}
+
+/* CONTEÚDO DIREITO */
+.perfil-conteudo {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.perfil-bemvindo {
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--branco);
+}
+
+/* CARD TREINOS NA SEMANA */
+.perfil-card-treinos {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 16px 20px;
+}
+
+.perfil-card-treinos .card-icone {
+    font-size: 28px;
+}
+
+.perfil-card-treinos strong {
+    display: block;
+    font-size: 15px;
+    text-transform: uppercase;
+    color: var(--branco);
+}
+
+.perfil-card-treinos p {
+    font-size: 13px;
+    color: var(--cinza_claro);
+    margin-top: 4px;
+}
+
+/* LINHA DE CARDS */
+.perfil-cards-row {
+    display: flex;
+    gap: 16px;
+}
+
+.perfil-card {
+    flex: 1;
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 16px 20px;
+    min-height: 90px;
+}
+
+.perfil-card.vazio {
+    background: #0d0d0d;
+}
+
+.card-label {
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--cinza_claro);
+    margin-bottom: 8px;
+}
+
+.card-valor {
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: bold;
+    color: var(--branco);
+}
+
+.card-valor span {
+    font-size: 16px;
+    font-weight: normal;
+    color: var(--cinza_claro);
+}
+
+/* GRÁFICO (placeholder) */
+.perfil-grafico-row {
+    flex: 1;
+    display: flex;
+}
+
+.perfil-grafico {
+    flex: 1;
+    background: #0d0d0d;
+    border: 1px solid #222;
+    border-radius: 8px;
+    min-height: 160px;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+    .perfil-main {
+        flex-direction: column;
+    }
+
+    .perfil-sidebar {
+        width: 100%;
+        min-width: unset;
+        border-right: none;
+        border-bottom: 1px solid #222;
+    }
+
+    .perfil-cards-row {
+        flex-wrap: wrap;
+    }
+
+    .perfil-card {
+        min-width: calc(50% - 8px);
+    }
+}
+
+@media (max-width: 480px) {
+    .perfil-card {
+        min-width: 100%;
+    }
+}

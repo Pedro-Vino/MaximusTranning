@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= aluno.nome %></title>
+    <link rel="stylesheet" href="/css/perfil.css">
+    <link rel="icon" href="imagens/LogoSemFgrande.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
+    <script src="/js/notify.js"></script>
+</head>
+<body>
+    <% if (dadosNotificacao) { %>
+        <script>
+            notify("<%= dadosNotificacao.titulo %>","<%= dadosNotificacao.mensagem %>", "<%= dadosNotificacao.tipo %>", "right top")
+        </script>
+    <% } %>
+
+    <header>
+        <%- include('../partials/navbar'); %>
+    </header>
+
+    <main class="perfil-main">
+
+        <section class="perfil-sidebar">
+            <div class="perfil-foto-container">
+                <img src="<%= aluno.foto || 'imagens/alunos/default_user.png' %>" alt="Foto de perfil" class="perfil-foto">
+                <a href="/editar-perfil" class="perfil-editar-btn" title="Editar perfil">
+                    <img src="imagens/1159633.png" alt="Editar">
+                </a>
+            </div>
+            <h2 class="perfil-nome"><%= aluno.nome %></h2>
+            <p class="perfil-email"><%= aluno.email %></p>
+
+            <div class="perfil-treino-atual">
+                <span class="label-vermelho">TREINO ATUAL:</span>
+                <span class="valor-treino"><%= aluno.treino || 'A' %></span>
+            </div>
+
+            <ul class="perfil-stats-lista">
+                <li>IDADE: <span><%= aluno.idade || '—' %></span></li>
+                <li>PESO: <span><%= aluno.peso || '—' %></span></li>
+                <li>ALTURA: <span><%= aluno.altura || '—' %></span></li>
+                <li>PLANO ATUAL: <span><%= aluno.plano || '—' %></span></li>
+            </ul>
+        </section>
+
+        <section class="perfil-conteudo">
+            <h1 class="perfil-bemvindo">BEM VINDO DE VOLTA, <%= aluno.nome.split(' ')[0].toUpperCase() %>!</h1>
+
+            <div class="perfil-card-treinos">
+                <span class="card-icone">🏋️</span>
+                <div>
+                    <strong>TREINOS NA SEMANA</strong>
+                    <p>meta semanal: <%= aluno.metaSemanal || 5 %> treinos</p>
+                </div>
+            </div>
+
+            <div class="perfil-cards-row">
+                <div class="perfil-card">
+                    <p class="card-label">CALORIAS QUEIMADAS</p>
+                    <p class="card-valor">🔥 <%= aluno.calorias || '0' %> <span>kcal</span></p>
+                </div>
+                <div class="perfil-card">
+                    <p class="card-label">SEQUENCIA DE DIAS</p>
+                    <p class="card-valor"><%= aluno.sequencia || '00/00' %></p>
+                </div>
+                <div class="perfil-card vazio"></div>
+            </div>
+
+            <div class="perfil-grafico-row">
+                <div class="perfil-grafico vazio"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <%- include('../partials/footer'); %>
+</body>
+</html>

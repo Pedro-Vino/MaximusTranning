@@ -75,7 +75,7 @@ module.exports = {
         email: aluno.alu_email
       };
 
-      return res.redirect('/home');
+      return res.redirect('/perfil');
 
     } catch (err) {
       console.error(err);
@@ -201,8 +201,114 @@ module.exports = {
         }
       });
     }
-  }
+  },
 
+    carregarPerfil: async (req, res) => {
+    try {
+      const user = req.session.aluno;
+      const aluno = await AlunoModel.findByEmail(user.email);
+
+      res.render("pages/perfil", {
+        aluno: {
+          id: aluno.alu_id,
+          nome: aluno.alu_nome,
+          email: aluno.alu_email,
+          foto: aluno.alu_foto,
+          nasc: aluno.alu_nasc
+        },
+        dadosNotificacao: null
+      });
+
+    } catch (err) {
+      console.error(err);
+      return res.redirect("/imc");
+    }
+  },
+
+  carregarEditarPerfil: async (req, res) => {
+    try {
+      const user = req.session.aluno;
+      const aluno = await AlunoModel.findByEmail(user.email);
+      const nasc = aluno.alu_nasc ? aluno.alu_nasc.toISOString().split('T')[0] : "";
+
+      res.render("pages/editar-perfil", {
+        valores: {
+          id: aluno.alu_id,
+          nome: aluno.alu_nome,
+          email: aluno.alu_email,
+          foto: aluno.alu_foto,
+          nasc: nasc
+        },
+        erros: null,
+        dadosNotificacao: null
+      });
+
+    } catch (err) {
+      console.error(err);
+      return res.redirect("/login");
+    }
+  },
+
+  gravarPerfil: async (req, res) => {
+    try {
+        const id = req.session.aluno.id;
+        const dadosForm = {
+            nome: req.body.nome,
+            email: req.body.email,
+        };
+
+        // Atualiza senha só se preenchida
+        if (req.body.senha && req.body.senha.trim() !== "") {
+            if (req.body.senha !== req.body.repsenha) {
+                return res.render("pages/editar-perfil", {
+                    valores: req.body,
+                    erros: { errors: [{ path: "senha", msg: "Senhas não conferem" }] },
+                    dadosNotificacao: null
+                });
+            }
+            dadosForm.senha = req.body.senha;
+        }
+
+        // Atualiza foto se enviada
+        if (req.file) {
+            dadosForm.foto = `imagens/alunos/${req.file.filename}`;
+        }
+
+        await AlunoModel.update(id, dadosForm);
+
+        // Atualiza sessão
+        req.session.aluno.nome = dadosForm.nome;
+        req.session.aluno.email = dadosForm.email;
+
+        return res.render("pages/editar-perfil", {
+            valores: {
+                id,
+                nome: dadosForm.nome,
+                email: dadosForm.email,
+                foto: dadosForm.foto || req.body.foto,
+                nasc: req.body.nasc || ''
+            },
+            erros: null,
+            dadosNotificacao: {
+                titulo: "Sucesso",
+                mensagem: "Perfil atualizado com sucesso!",
+                tipo: "success"
+            }
+        });
+
+    } catch (err) {
+        console.error(err);
+        return res.render("pages/editar-perfil", {
+            valores: req.body,
+            erros: null,
+            dadosNotificacao: {
+                titulo: "Erro",
+                mensagem: "Erro ao salvar perfil",
+                tipo: "error"
+            }
+        });
+    }
+},
 };
 
 // const AlunoModel = require('../models/model-aluno');

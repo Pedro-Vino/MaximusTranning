@@ -4,6 +4,7 @@ var router = express.Router();
 const guestMiddleware = require('../helpers/guestMiddleware');
 const alunosController = require('../controllers/alunosController');
 const imcController = require('../controllers/imcController');
+const upload = require('../helpers/upload');
 
 function verificar(fn) {
   return typeof fn === 'function' ? fn : (req, res) => res.sendStatus(500);
@@ -14,17 +15,9 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get('/', (req, res) => {
-  res.render('pages/home');
-});
-
-router.get('/planos', (req, res) => {
-  res.render('pages/planos');
-});
-
-router.get('/proposta', (req, res) => {
-  res.render('pages/nossaProposta');
-});
+router.get('/', (req, res) => res.render('pages/home'));
+router.get('/planos', (req, res) => res.render('pages/planos'));
+router.get('/proposta', (req, res) => res.render('pages/nossaProposta'));
 
 router.get('/cadastro', guestMiddleware, (req, res) => {
   res.render('pages/cadastro', {
@@ -34,7 +27,7 @@ router.get('/cadastro', guestMiddleware, (req, res) => {
   });
 });
 
-router.post('/cadastrar', alunosController.cadastrarAluno);
+router.post('/cadastrar', verificar(alunosController.cadastrarAluno));
 router.get('/ativar-conta', verificar(alunosController.ativarConta));
 
 router.get('/login', verificar(alunosController.exibirLogin));
@@ -46,33 +39,22 @@ router.post('/logout', verificar(alunosController.logout));
 router.get('/imc', verificar(imcController.exibirImc));
 router.post('/imc', verificar(imcController.realizarImc));
 
-router.get('/recuperar-senha', (req, res) => {
-  res.render('pages/recuperar-senha', {
-    erros: null,
-    dadosNotificacao: null
-  });
-});
+function authMiddleware(req, res, next) {
+  if (!req.session.aluno) {
+    return res.redirect('/login');
+  }
+  next();
+}
+router.get('/perfil', authMiddleware, verificar(alunosController.carregarPerfil));
+router.get('/editar-perfil', authMiddleware, verificar(alunosController.carregarEditarPerfil));
+router.post('/salvar-perfil', upload.single('foto'), verificar(alunosController.gravarPerfil));
 
-router.post(
-  '/recuperar-senha',
-  verificar(alunosController.regrasValidacaoFormRecSenha),
-  verificar(alunosController.recuperarSenha)
-);
+// comentado até implementar
+// router.get('/recuperar-senha'
+// router.post('/recuperar-senha'
+// router.get('/reset-senha'
+// router.get('/reset-senha-teste'
+// router.post('/resetar-senha'
 
-router.get('/reset-senha', verificar(alunosController.validarTokenNovaSenha));
-
-router.get('/reset-senha-teste', (req, res) => {
-  res.render('pages/resetar-senha', {
-    erros: null,
-    dadosNotificacao: null,
-    usu_id: ""
-  });
-});
-
-router.post(
-  '/resetar-senha',
-  verificar(alunosController.regrasValidacaoFormNovaSenha),
-  verificar(alunosController.resetarSenha)
-);
 
 module.exports = router;

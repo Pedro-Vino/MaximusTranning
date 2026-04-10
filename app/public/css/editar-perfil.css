@@ -1,0 +1,322 @@
+/* EDITAR PERFIL */
+* {
+    box-sizing: border-box;
+}
+
+main {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 0 20px 60px;
+}
+
+/* VOLTAR */
+.container-ver-eventos {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 30px;
+    border-bottom: 1px solid #222;
+}
+
+.botao-seta {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.botao-seta img {
+    width: 22px;
+    filter: invert(1);
+}
+
+.ver-eventos {
+    color: var(--branco);
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* BANNER / FOTO */
+.banner-container {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profile-pic-overlay {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.profile-pic-overlay img#profileImage {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #333;
+}
+
+.icon-overlay {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: var(--vermelho);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.icon-overlay img {
+    width: 14px;
+    height: 14px;
+    filter: invert(1);
+}
+
+.name-info h2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--branco);
+    text-transform: uppercase;
+}
+
+.name-info p {
+    font-size: 13px;
+    color: var(--cinza_claro);
+    margin-top: 4px;
+}
+
+/* HEADER */
+header h1 {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--branco);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    border-left: 4px solid var(--vermelho);
+    padding-left: 12px;
+}
+
+/* TABS */
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #222;
+    padding-bottom: 0;
+}
+
+.tab {
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--cinza_claro);
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.tab.active {
+    color: var(--branco);
+    border-bottom: 3px solid var(--vermelho);
+}
+
+.tab:hover {
+    color: var(--branco);
+}
+
+/* FORM */
+.form {
+    display: none;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form.active {
+    display: flex;
+}
+
+.form-container label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--cinza_claro);
+}
+
+.form-container input[type="text"],
+.form-container input[type="email"],
+.form-container input[type="password"],
+.form-container input[type="date"],
+.form-container input[type="tel"] {
+    width: 100%;
+    padding: 12px 14px;
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 6px;
+    color: var(--branco);
+    font-size: 15px;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.form-container input:focus {
+    border-color: var(--vermelho);
+}
+
+.form-container input.erro {
+    border-color: var(--vermelho) !important;
+}
+
+.form-container small {
+    color: var(--cinza_claro);
+    font-size: 12px;
+    margin-top: -8px;
+}
+
+/* BOTÃO SALVAR */
+.btn-salvar {
+    width: 100%;
+    padding: 14px;
+    background: var(--vermelho);
+    border: none;
+    border-radius: 6px;
+    color: var(--branco);
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 10px;
+}
+
+.btn-salvar:hover {
+    background: var(--principal_escura);
+}
+
+.btn-cancelar {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: var(--cinza_claro);
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 6px;
+}
+
+.btn-cancelar:hover {
+    border-color: var(--vermelho);
+    color: var(--branco);
+}
+
+/* MODAL CROP */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 24px;
+    width: 90%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal-content h2 {
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--branco);
+    border-left: 4px solid var(--vermelho);
+    padding-left: 10px;
+}
+
+.close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 24px;
+    color: var(--cinza_claro);
+    cursor: pointer;
+}
+
+.close:hover {
+    color: var(--branco);
+}
+
+.image-container {
+    max-height: 340px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #000;
+}
+
+.image-container img {
+    max-width: 100%;
+    display: block;
+}
+
+.modal-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* RESPONSIVO */
+@media (max-width: 600px) {
+    main {
+        padding: 0 12px 40px;
+    }
+
+    header h1 {
+        font-size: 18px;
+    }
+
+    .profile-pic-overlay img#profileImage {
+        width: 70px;
+        height: 70px;
+    }
+
+    .profile-pic-overlay {
+        width: 70px;
+        height: 70px;
+    }
+}
+small{
+    color: var(--principal)
+}
