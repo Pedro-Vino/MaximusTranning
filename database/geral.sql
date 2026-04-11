@@ -1,13 +1,9 @@
 CREATE DATABASE maximus_db;
 USE maximus_db;
 
-DROP VIEW IF EXISTS registro;
-DROP TABLE IF EXISTS imc;
-DROP TABLE IF EXISTS aluno;
-
 -- Tabela aluno
 CREATE TABLE aluno (
-  alu_id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   alu_nome VARCHAR(100),
   alu_email VARCHAR(100) UNIQUE,
   alu_senha VARCHAR(255),
