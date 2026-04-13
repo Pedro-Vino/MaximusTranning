@@ -9,10 +9,11 @@
 }
 
 :root {
-    --erro:#812222;
-    --principal: #D72638;
-    --principal_escura: #A31C29;
-    --principal_claro: #F0545E;
+    --vermelho: #CB0D01;
+    --erro:#cb0c00;
+    --principal: #cb0c01;
+    --principal_escura: #cb0c00;
+    --principal_claro: #f85646;
     --complementar: #FFC300;
     --complementar2: #B8860B;
     --branco: #f1f1f1;
