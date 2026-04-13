@@ -168,6 +168,7 @@ header h1 {
 .form-container input[type="email"],
 .form-container input[type="password"],
 .form-container input[type="date"],
+.form-container input[type="number"],
 .form-container input[type="tel"] {
     width: 100%;
     padding: 12px 14px;
