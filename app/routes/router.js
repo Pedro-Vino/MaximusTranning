@@ -4,6 +4,7 @@ var router = express.Router();
 const guestMiddleware = require('../helpers/guestMiddleware');
 const alunosController = require('../controllers/alunosController');
 const imcController = require('../controllers/imcController');
+const homeController = require('../controllers/homeController');
 const upload = require('../helpers/upload');
 
 function verificar(fn) {
@@ -15,8 +16,8 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get('/', (req, res) => res.render('pages/home'));
-router.get('/planos', (req, res) => res.render('pages/planos'));
+router.get('/', homeController.exibirHome);
+router.get('/home', homeController.exibirHome);
 router.get('/proposta', (req, res) => res.render('pages/nossaProposta'));
 
 router.get('/cadastro', guestMiddleware, (req, res) => {
@@ -53,12 +54,25 @@ router.get('/editar-perfil', authMiddleware, verificar(alunosController.carregar
 router.post('/salvar-perfil', authMiddleware, upload.single('foto'), verificar(alunosController.gravarPerfil));
 router.post('/salvar-perfil', upload.single('foto'), verificar(alunosController.gravarPerfil));
 
-// comentado até implementar
-// router.get('/recuperar-senha'
-// router.post('/recuperar-senha'
-// router.get('/reset-senha'
-// router.get('/reset-senha-teste'
-// router.post('/resetar-senha'
+router.get('/recuperar-senha', (req, res) => {
+  res.render('pages/recuperar-senha', { erros: null, dadosNotificacao: null });
+});
+
+router.post('/recuperar-senha',
+  alunosController.regrasValidacaoFormRecSenha,
+  verificar(alunosController.recuperarSenha)
+);
+router.post('/resetar-senha',
+  alunosController.regrasValidacaoFormNovaSenha,
+  verificar(alunosController.resetarSenha)
+);
+
+router.get('/reset-senha', verificar(alunosController.validarTokenNovaSenha));
+
+router.post('/resetar-senha',
+  verificar(alunosController.regrasValidacaoFormNovaSenha),
+  verificar(alunosController.resetarSenha)
+);
 
 
 module.exports = router;

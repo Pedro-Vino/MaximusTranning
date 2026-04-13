@@ -123,7 +123,24 @@ notify(
 </section>
 
 <footer class="form-footer">
-<input type="submit" value="Cadastrar">
+<button type="submit" id="enviar_login" onclick="mostrarCarregando()">CADASTRAR</button>
+
+<div id="loading" style="display:none; text-align:center; margin-top:16px;">
+  <p style="color: var(--cinza_claro); font-size:14px;">⏳ Enviando email de ativação...</p>
+</div>
+
+<script>
+function mostrarCarregando() {
+  setTimeout(() => {
+    const btn = document.getElementById('enviar_login');
+    const loading = document.getElementById('loading');
+    btn.disabled = true;
+    btn.textContent = 'AGUARDE...';
+    btn.style.opacity = '0.7';
+    loading.style.display = 'block';
+  }, 100);
+}
+</script>
 
 <nav>
 <a href="/login">Já tem conta? <b>Entrar</b></a>

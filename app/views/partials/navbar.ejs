@@ -16,7 +16,22 @@
         <a href="/planos">Planos</a>
         <a href="/contato">Contato</a>
       </article>
-      <a href="/login" class="botao-destaque">Conta</a>
+
+      <% if (locals.aluno) { %>
+        <div class="navbar-usuario">
+          <a href="/perfil" class="navbar-perfil-btn">
+            <img 
+              src="/<%= aluno.foto || 'imagens/alunos/default_user.png' %>" 
+              alt="Foto de perfil"
+              class="navbar-foto"
+            >
+            <span><%= aluno.nome.split(' ')[0] %></span>
+          </a>
+          <a href="/logout" class="botao-destaque botao-logout">Sair</a>
+        </div>
+      <% } else { %>
+        <a href="/login" class="botao-destaque">Conta</a>
+      <% } %>
     </nav>
   </section>
 </header>

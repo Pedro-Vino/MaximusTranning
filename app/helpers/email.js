@@ -3,15 +3,14 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: process.env.EMAIL_USER, // Seu e-mail
-        pass: process.env.EMAIL_PASS  // Sua senha, ou  o senha configurada para App password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
     },
     tls: {
-        secure: false,
-        ignoreTLS: true,
-        rejectUnauthorized: false, // ignorar certificado digital - APENAS EM DESENVOLVIMENTO
-    }
-
+        rejectUnauthorized: false
+    },
+    connectionTimeout: 5000,  
+    greetingTimeout: 5000,    
 });
 
 function enviarEmail(to, subject, text=null, html = null, callback) {

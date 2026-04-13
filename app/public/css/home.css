@@ -2,27 +2,22 @@ body {
   background-color: var(--preto);
   color: var(--branco);
   font-family: Arial, Helvetica, sans-serif;
-  overflow: hidden;
-  overflow: hidden;
 }
 
+/* HERO */
 .hero {
   display: flex;
   align-items: stretch;
   justify-content: space-between;
-
-  padding: 0; 
-  height: calc(100vh - 70px); 
+  height: calc(100vh - 70px);
 }
 
 .hero-texto {
   width: 50%;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  padding-left: 40px; 
+  padding-left: 40px;
 }
 
 .hero-texto h1 {
@@ -61,53 +56,130 @@ body {
 .hero-imagem {
   width: 50%;
   height: 100%;
-
   background-image: url("/imagens/treinoINICIO01.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
-  border-radius: 0; 
 }
 
+/* HOME LOGADO */
+.home-logado {
+  padding: 40px;
+  border-top: 1px solid #222;
+}
 
+.home-bemvindo {
+  font-size: clamp(18px, 2.5vw, 26px);
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--branco);
+  margin-bottom: 24px;
+}
 
+.home-treinos-titulo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.home-treinos-titulo h3 {
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--branco);
+}
+
+.home-categoria {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.home-categoria--abaixo { background: #f59e0b33; color: #f59e0b; }
+.home-categoria--ideal  { background: #22c55e33; color: #22c55e; }
+.home-categoria--acima  { background: #ef444433; color: #ef4444; }
+
+.home-treinos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.home-treino-card {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.2s;
+}
+
+.home-treino-card:hover {
+  border-color: var(--vermelho);
+}
+
+.home-treino-card h3 {
+  font-size: 15px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--vermelho);
+}
+
+.treino-musculo {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--branco);
+}
+
+.treino-descricao {
+  font-size: 13px;
+  color: var(--cinza_claro);
+  line-height: 1.5;
+}
+
+.home-sem-imc {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  color: var(--cinza_claro);
+}
+
+.btn-imc {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 10px 24px;
+  background: var(--vermelho);
+  color: var(--branco);
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.btn-imc:hover {
+  background: var(--principal_escura);
+}
+
+/* RESPONSIVO */
 @media (max-width: 900px) {
-
-  .hero {
-    height: calc(100vh - 70px);
-  }
-
-  .hero-texto {
-    width: 55%;
-    padding-left: 20px;
-  }
-
-  .hero-imagem {
-    width: 45%;
-  }
-
-  .hero-texto h1 {
-    font-size: 28px;
-  }
-
-  .hero-texto p {
-    font-size: 14px;
-  }
+  .hero-texto { width: 55%; padding-left: 20px; }
+  .hero-imagem { width: 45%; }
+  .hero-texto h1 { font-size: 28px; }
+  .hero-texto p { font-size: 14px; }
+  .home-logado { padding: 24px 20px; }
 }
 
 @media (max-width: 600px) {
-
-  .hero {
-    height: calc(100vh - 70px);
-  }
-
-  .hero-texto {
-    width: 55%;
-    padding-left: 15px;
-  }
-
-  .hero-imagem {
-    width: 45%;
-  }
+  .hero { flex-direction: column; height: auto; }
+  .hero-texto { width: 100%; padding: 30px 20px; }
+  .hero-imagem { width: 100%; height: 200px; }
+  .home-logado { padding: 20px 16px; }
 }

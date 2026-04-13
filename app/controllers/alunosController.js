@@ -80,7 +80,8 @@ module.exports = {
       req.session.aluno = {
         id: aluno.alu_id,
         nome: aluno.alu_nome,
-        email: aluno.alu_email
+        email: aluno.alu_email,
+        foto: aluno.alu_foto
       };
 
       return res.redirect('/perfil');
@@ -336,6 +337,133 @@ gravarPerfil: async (req, res) => {
       }
     });
   }
+},
+regrasValidacaoFormRecSenha: [
+  body("email")
+    .isEmail().withMessage("Digite um e-mail válido!")
+    .custom(async (value) => {
+      const aluno = await AlunoModel.findByEmail(value);
+      if (!aluno) throw new Error("E-mail não encontrado");
+    }),
+],
+
+recuperarSenha: async (req, res) => {
+  console.log("=== recuperarSenha chamado ===");
+  console.log("body:", req.body);
+  const erros = validationResult(req);
+  console.log("erros:", erros);
+  if (!erros.isEmpty()) { 
+    return res.render("pages/recuperar-senha", {
+      erros: erros,
+      dadosNotificacao: null
+    });
+  }
+  try {
+    const aluno = await AlunoModel.findByEmail(req.body.email);
+    const token = jwt.sign(
+      { userId: aluno.alu_id },
+      process.env.SECRET_KEY,
+      { expiresIn: "25m" }
+    );
+
+    const html = require("../helpers/email-reset-senha")(
+      process.env.URL_BASE,
+      token,
+      aluno.alu_nome
+    );
+
+    enviarEmail(req.body.email, "Redefinição de senha", null, html, () => {
+      return res.render("pages/recuperar-senha", {
+        erros: null,
+        dadosNotificacao: {
+          titulo: "Email enviado",
+          mensagem: "Verifique sua caixa de entrada para redefinir a senha",
+          tipo: "success"
+        }
+      });
+    });
+  } catch (err) {
+    console.error(err);
+    return res.render("pages/recuperar-senha", {
+      erros: null,
+      dadosNotificacao: {
+        titulo: "Erro",
+        mensagem: "Erro ao enviar email",
+        tipo: "error"
+      }
+    });
+  }
+},
+
+validarTokenNovaSenha: async (req, res) => {
+  const token = req.query.token;
+  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+    if (err) {
+      return res.render("pages/recuperar-senha", {
+        erros: null,
+        dadosNotificacao: {
+          titulo: "Link expirado",
+          mensagem: "Insira seu e-mail para iniciar o reset de senha",
+          tipo: "error"
+        }
+      });
+    }
+    return res.render("pages/resetar-senha", {
+      erros: null,
+      alu_id: decoded.userId,
+      dadosNotificacao: null
+    });
+  });
+},
+
+regrasValidacaoFormNovaSenha: [
+  body("senha")
+    .isLength({ min: 6 }).withMessage("Senha deve ter no mínimo 6 caracteres")
+    .custom((value, { req }) => {
+      if (value !== req.body.repsenha) throw new Error("As senhas não são iguais");
+      return true;
+    }),
+],
+
+resetarSenha: async (req, res) => {
+  const erros = validationResult(req);
+  if (!erros.isEmpty()) {
+    return res.render("pages/resetar-senha", {
+      erros: erros,
+      alu_id: req.body.alu_id,
+      dadosNotificacao: null
+    });
+  }
+  try {
+    const senhaHash = await bcrypt.hash(req.body.senha, 10);
+    await AlunoModel.update(req.body.alu_id, { senha: senhaHash });
+    return res.render("pages/login", {
+      dados: { email: "", senha: "" },
+      erros: null,
+      erro: null,
+      dadosNotificacao: {
+        titulo: "Senha redefinida",
+        mensagem: "Sua senha foi atualizada com sucesso!",
+        tipo: "success"
+      }
+    });
+  } catch (err) {
+    console.error(err);
+    return res.render("pages/resetar-senha", {
+      erros: null,
+      alu_id: req.body.alu_id,
+      dadosNotificacao: {
+        titulo: "Erro",
+        mensagem: "Erro ao redefinir senha",
+        tipo: "error"
+      }
+    });
+  }
+},
+logout: (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/login");
+  });
 },
 };
 

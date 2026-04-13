@@ -31,6 +31,10 @@ app.use(session({
 const rotas = require('./app/routes/router');
 app.use('/', rotas);
 
+app.use((err, req, res, next) => {
+  console.error("ERRO GERAL:", err.stack);
+  res.status(500).send(`<pre>${err.stack}</pre>`);
+});
 // EM MANUTENÇÃO
 // const rotasAdm = require('./app/routes/routerAdm');
 // app.use('/adm/', rotasAdm);

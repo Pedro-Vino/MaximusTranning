@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recuperar Senha</title>
+    <title>Redefinir Senha</title>
     <link rel="stylesheet" href="/css/base.css">
-    <link rel="stylesheet" href="/css/login.css">
     <link rel="icon" href="imagens/LogoSemFgrande.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
@@ -25,11 +24,13 @@
     <main class="main_login">
         <div class="container6">
             <div class="form-header">
-                <h1>Recuperar senha</h1>
-                <p>Digite seu e-mail para receber o link de redefinição.</p>
+                <h1>Nova senha</h1>
+                <p>Digite e confirme sua nova senha.</p>
             </div>
 
-            <form action="/recuperar-senha" method="POST">
+            <form action="/resetar-senha" method="POST">
+                <input type="hidden" name="alu_id" value="<%= alu_id %>">
+
                 <% if (erros && erros.errors) { %>
                     <% erros.errors.forEach(function(e) { %>
                         <p class="spanerro">* <%= e.msg %></p>
@@ -37,33 +38,20 @@
                 <% } %>
 
                 <div class="form-group">
-                    <label>E-mail</label>
-                    <input type="email" name="email" placeholder="seuemail@gmail.com" required>
+                    <label>Nova senha</label>
+                    <input type="password" name="senha" id="senha" placeholder="Nova senha" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirmar senha</label>
+                    <input type="password" name="repsenha" id="repsenha" placeholder="Confirme a senha" required>
                 </div>
 
-                <button type="submit" id="enviar_login" onclick="mostrarCarregando()">ENVIAR LINK</button>
-
-                <div id="loading" style="display:none; text-align:center; margin-top:16px;">
-                <p style="color: var(--cinza_claro); font-size:14px;">⏳ Enviando email de recuperação...</p>
-                </div>
-
-                <script>
-                function mostrarCarregando() {
-                setTimeout(() => {
-                    const btn = document.getElementById('enviar_login');
-                    const loading = document.getElementById('loading');
-                    btn.disabled = true;
-                    btn.textContent = 'AGUARDE...';
-                    btn.style.opacity = '0.7';
-                    loading.style.display = 'block';
-                }, 100);
-                }
-                </script>
+                <button type="submit" id="enviar_login">SALVAR NOVA SENHA</button>
             </form>
 
             <div class="form-footer">
                 <nav>
-                    <a href="/login">Lembrou a senha? <b>Fazer login</b></a>
+                    <a href="/login">Voltar para o <b>login</b></a>
                 </nav>
             </div>
         </div>
