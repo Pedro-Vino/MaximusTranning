@@ -36,8 +36,8 @@ app.use((err, req, res, next) => {
   res.status(500).send(`<pre>${err.stack}</pre>`);
 });
 // EM MANUTENÇÃO
-// const rotasAdm = require('./app/routes/routerAdm');
-// app.use('/adm/', rotasAdm);
+const rotasAdm = require('./app/routes/routerAdm');
+app.use('/adm/', rotasAdm);
 
 app.set("/navbar", './app/views/partial/navbar')
 

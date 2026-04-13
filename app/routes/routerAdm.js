@@ -1,35 +1,13 @@
-
 const express = require('express');
 const router = express.Router();
-const admController = require("../controllers/admController");
-// const alunosController = require("../controllers/alunosController");
+const admController = require('../controllers/admController');
 
-const verificarAdm = admController.verificarAdm;
+const { verificarAdm } = admController;
 
-const USER = {
-    id: "admMaximus",
-    senha: "adm123456"
-};
+router.get('/login', admController.exibirLogin);
+router.post('/login', admController.realizarLogin);
 
-router.get("/login", (req, res) => {
-  res.render("pages/adm/login", {
-  erro: null,  erros: null,  dados: { email: "", senha: "" },  retorno: null
-});
-});
-
-router.get('/home',verificarAdm, function(req,res){
-    res.render('pages/adm/home');  
-})
-
-
-// //LOGIN
-// router.get('/login', admController.loginPage);
-// //POST
-// router.post('/login', admController.login);
-
-// // Página FORMULÁRIO DE ALUNO
-// router.get('/aluno', admController.formAluno);
-// // POST
-// router.post('/aluno', admController.cadastrarAluno);
+router.get('/home', verificarAdm, admController.exibirHome);
+router.get('/logout', admController.logout);
 
 module.exports = router;

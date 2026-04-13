@@ -83,7 +83,15 @@ const AlunoModel = {
     );
     return result.affectedRows > 0;
   },
-
+  findAll: async () => {
+    const [rows] = await pool.query(
+      `SELECT a.alu_id, a.alu_nome, a.alu_email, a.alu_status,
+              i.imc as alu_imc
+      FROM aluno a
+      LEFT JOIN imc i ON i.aluno_id = a.alu_id`
+    );
+    return rows;
+  },
 };
 
 module.exports = AlunoModel;
