@@ -13,7 +13,7 @@ CREATE TABLE aluno (
   alu_email VARCHAR(100) UNIQUE,
   alu_senha VARCHAR(255),
   alu_status TINYINT DEFAULT 0,
-  alu_foto VARCHAR(255) DEFAULT 'imagens/alunos/default_user.jpg',
+  alu_foto VARCHAR(255) DEFAULT 'imagens/alunos/default_user.png',
   alu_nasc DATE NULL
 );
 
