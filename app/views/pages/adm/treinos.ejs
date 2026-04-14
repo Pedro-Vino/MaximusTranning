@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADM — Treinos</title>
+  <link rel="stylesheet" href="/css/adm/base.css">
+  <link rel="icon" href="/imagens/LogoSemFgrande.png">
+</head>
+<body>
+  <%- include('../../partials/adm_navbar'); %>
+
+  <main class="adm-main">
+    <div class="adm-page-header">
+      <h1>Treinos</h1>
+      <button class="adm-btn adm-btn-vermelho" onclick="abrirModal('novo')">+ Novo treino</button>
+    </div>
+
+    <div class="adm-table-container">
+      <div class="adm-search">
+        <input type="text" id="searchInput" placeholder="Pesquisar treino...">
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Músculo</th>
+            <th>Categoria</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaTreinos">
+          <% treinos.forEach(treino => { %>
+            <tr>
+              <td><%= treino.id %></td>
+              <td>Treino <%= treino.nome %></td>
+              <td><%= treino.musculo %></td>
+              <td>
+                <span class="badge
+                  <%= treino.categoria === 'ideal'  ? 'badge-ativo' :
+                      treino.categoria === 'acima'  ? 'badge-inativo' : '' %>">
+                  <%= treino.categoria === 'abaixo' ? 'Abaixo do peso'
+                    : treino.categoria === 'ideal'  ? 'Peso ideal'
+                    : 'Acima do peso' %>
+                </span>
+              </td>
+              <td style="display:flex; gap:8px;">
+                <button class="adm-btn adm-btn-outline" style="padding:6px 12px; font-size:12px;"
+                  onclick="abrirModal('editar', {
+                    id: '<%= treino.id %>',
+                    nome: '<%= treino.nome %>',
+                    musculo: `<%= treino.musculo %>`,
+                    descricao: `<%= treino.descricao %>`,
+                    categoria: '<%= treino.categoria %>'
+                  })">Editar</button>
+                <form action="/adm/treinos/deletar" method="POST" onsubmit="return confirm('Deletar treino?')">
+                  <input type="hidden" name="id" value="<%= treino.id %>">
+                  <button type="submit" class="adm-btn" style="padding:6px 12px; font-size:12px; background:#2a0000; color:#ef4444; border:1px solid #ef444433;">Deletar</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- MODAL -->
+  <div class="adm-modal-overlay" id="modal">
+    <div class="adm-modal">
+      <h2 id="modal-titulo">Treino</h2>
+      <form id="modal-form" method="POST">
+        <input type="hidden" name="id" id="modal-id">
+        <div class="adm-form-group">
+          <label>Nome (A, B ou C)</label>
+          <input type="text" name="nome" id="modal-nome" required maxlength="2">
+        </div>
+        <div class="adm-form-group">
+          <label>Músculo</label>
+          <input type="text" name="musculo" id="modal-musculo" required>
+        </div>
+        <div class="adm-form-group">
+          <label>Descrição</label>
+          <input type="text" name="descricao" id="modal-descricao" required>
+        </div>
+        <div class="adm-form-group">
+          <label>Categoria</label>
+          <select name="categoria" id="modal-categoria">
+            <option value="abaixo">Abaixo do peso</option>
+            <option value="ideal">Peso ideal</option>
+            <option value="acima">Acima do peso</option>
+          </select>
+        </div>
+        <div class="adm-modal-footer">
+          <button type="button" class="adm-btn adm-btn-outline" onclick="fecharModal()">Cancelar</button>
+          <button type="submit" class="adm-btn adm-btn-vermelho">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <%- include('../../partials/adm_footer'); %>
+
+  <script>
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+      const filtro = this.value.toLowerCase();
+      document.querySelectorAll('#tabelaTreinos tr').forEach(tr => {
+        tr.style.display = tr.children[1].innerText.toLowerCase().includes(filtro) ? '' : 'none';
+      });
+    });
+
+    function abrirModal(tipo, dados) {
+      const modal = document.getElementById('modal');
+      const form = document.getElementById('modal-form');
+      modal.classList.add('open');
+
+      if (tipo === 'novo') {
+        document.getElementById('modal-titulo').textContent = 'Novo treino';
+        form.action = '/adm/treinos/criar';
+        document.getElementById('modal-id').value = '';
+        document.getElementById('modal-nome').value = '';
+        document.getElementById('modal-musculo').value = '';
+        document.getElementById('modal-descricao').value = '';
+        document.getElementById('modal-categoria').value = 'ideal';
+      } else {
+        document.getElementById('modal-titulo').textContent = 'Editar treino';
+        form.action = '/adm/treinos/editar';
+        document.getElementById('modal-id').value = dados.id;
+        document.getElementById('modal-nome').value = dados.nome;
+        document.getElementById('modal-musculo').value = dados.musculo;
+        document.getElementById('modal-descricao').value = dados.descricao;
+        document.getElementById('modal-categoria').value = dados.categoria;
+      }
+    }
+
+    function fecharModal() {
+      document.getElementById('modal').classList.remove('open');
+    }
+
+    window.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modal')) fecharModal();
+    });
+  </script>
+</body>
+</html>

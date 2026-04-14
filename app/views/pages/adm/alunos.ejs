@@ -2,90 +2,142 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="/css/aAdmbase.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADM — Alunos</title>
+  <link rel="stylesheet" href="/css/adm/base.css">
+  <link rel="icon" href="/imagens/LogoSemFgrande.png">
 </head>
 <body>
+  <%- include('../../partials/adm_navbar'); %>
 
-<div class="container">
+  <main class="adm-main">
+    <div class="adm-page-header">
+      <h1>Alunos</h1>
+      <button class="adm-btn adm-btn-vermelho" onclick="abrirModal('novo')">+ Novo aluno</button>
+    </div>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <h2>Admin-Maximus</h2>
-    <ul>
-      <li>Dashboard</li>
-      <li>Alunos</li>
-      <li>Relatórios</li>
-    </ul>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- HEADER -->
-    <header class="header">
-      <h1>Dashboard</h1>
-      <input type="text" id="searchInput" placeholder="Pesquisar aluno...">
-    </header>
-
-    <!-- CARDS -->
-    <section class="cards">
-      <div class="card">
-  👥 Total: <%= alunos?.length || 0 %></div>
-      <div class="card">🏋️ Treinos</div>
-      <div class="card">📊 Média IMC</div>
-    </section>
-
-    <!-- TABELA -->
-   <section class="table-section">
-  <table id="tabelaAlunos">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Treino</th>
-        <th>IMC</th>
-      </tr>
-    </thead>
-
-<tbody>
-  <% (alunos || []).forEach(aluno => { %>
-    <tr>
-      <td><%= aluno.alu_id %></td>
-      <td><%= aluno.alu_nome %></td>
-      <td><%= aluno.alu_treino || '-' %></td>
-      <td>
-        <%= aluno.alu_imc 
-            ? Number(aluno.alu_imc).toFixed(2) 
-            : '-' %>
-      </td>
-    </tr>
-  <% }) %>
-</tbody>
+    <div class="adm-table-container">
+      <div class="adm-search">
+        <input type="text" id="searchInput" placeholder="Pesquisar por nome ou email...">
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>IMC</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaAlunos">
+          <% alunos.forEach(aluno => { %>
+            <tr>
+              <td><%= aluno.alu_id %></td>
+              <td><%= aluno.alu_nome %></td>
+              <td><%= aluno.alu_email %></td>
+              <td><%= aluno.alu_imc ? Number(aluno.alu_imc).toFixed(2) : '—' %></td>
+              <td>
+                <span class="badge <%= aluno.alu_status == 1 ? 'badge-ativo' : 'badge-inativo' %>">
+                  <%= aluno.alu_status == 1 ? 'Ativo' : 'Inativo' %>
+                </span>
+              </td>
+              <td>
+                <button class="adm-btn adm-btn-outline" style="padding:6px 12px; font-size:12px;"
+                  onclick="abrirModal('editar', {
+                    id: '<%= aluno.alu_id %>',
+                    nome: '<%= aluno.alu_nome %>',
+                    email: '<%= aluno.alu_email %>',
+                    status: '<%= aluno.alu_status %>'
+                  })">Editar</button>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
       </table>
-    </section>
-
+    </div>
   </main>
 
-</div>
-<!-- Script para pesquisar -->
-<script>
-const input = document.getElementById('searchInput');
+  <!-- MODAL -->
+  <div class="adm-modal-overlay" id="modal">
+    <div class="adm-modal">
+      <h2 id="modal-titulo">Aluno</h2>
+      <form id="modal-form" method="POST">
+        <input type="hidden" name="alu_id" id="modal-id">
+        <div class="adm-form-group">
+          <label>Nome</label>
+          <input type="text" name="nome" id="modal-nome" required>
+        </div>
+        <div class="adm-form-group">
+          <label>Email</label>
+          <input type="email" name="email" id="modal-email" required>
+        </div>
+        <div class="adm-form-group" id="grupo-senha">
+          <label>Senha</label>
+          <input type="password" name="senha" id="modal-senha" placeholder="Deixe vazio para não alterar">
+        </div>
+        <div class="adm-form-group" id="grupo-status" style="display:none;">
+          <label>Status</label>
+          <select name="status" id="modal-status">
+            <option value="1">Ativo</option>
+            <option value="0">Inativo</option>
+          </select>
+        </div>
+        <div class="adm-modal-footer">
+          <button type="button" class="adm-btn adm-btn-outline" onclick="fecharModal()">Cancelar</button>
+          <button type="submit" class="adm-btn adm-btn-vermelho">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-input.addEventListener('keyup', function () {
-  const filtro = input.value.toLowerCase();
-  const linhas = document.querySelectorAll('#tabelaAlunos tbody tr');
+  <%- include('../../partials/adm_footer'); %>
 
-  linhas.forEach(linha => {
-    const nome = linha.children[1].innerText.toLowerCase(); // 👈 AQUI
+  <script>
+    // Pesquisa
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+      const filtro = this.value.toLowerCase();
+      document.querySelectorAll('#tabelaAlunos tr').forEach(tr => {
+        const nome = tr.children[1].innerText.toLowerCase();
+        const email = tr.children[2].innerText.toLowerCase();
+        tr.style.display = (nome.includes(filtro) || email.includes(filtro)) ? '' : 'none';
+      });
+    });
 
-    if (nome.includes(filtro)) {
-      linha.style.display = '';
-    } else {
-      linha.style.display = 'none';
+    // Modal
+    function abrirModal(tipo, dados) {
+      const modal = document.getElementById('modal');
+      const form = document.getElementById('modal-form');
+      modal.classList.add('open');
+
+      if (tipo === 'novo') {
+        document.getElementById('modal-titulo').textContent = 'Novo aluno';
+        form.action = '/adm/alunos/criar';
+        document.getElementById('modal-id').value = '';
+        document.getElementById('modal-nome').value = '';
+        document.getElementById('modal-email').value = '';
+        document.getElementById('modal-senha').placeholder = 'Senha obrigatória';
+        document.getElementById('grupo-status').style.display = 'none';
+      } else {
+        document.getElementById('modal-titulo').textContent = 'Editar aluno';
+        form.action = '/adm/alunos/editar';
+        document.getElementById('modal-id').value = dados.id;
+        document.getElementById('modal-nome').value = dados.nome;
+        document.getElementById('modal-email').value = dados.email;
+        document.getElementById('modal-senha').placeholder = 'Deixe vazio para não alterar';
+        document.getElementById('modal-status').value = dados.status;
+        document.getElementById('grupo-status').style.display = 'flex';
+      }
     }
-  });
-});
-</script>
+
+    function fecharModal() {
+      document.getElementById('modal').classList.remove('open');
+    }
+
+    window.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modal')) fecharModal();
+    });
+  </script>
 </body>
 </html>

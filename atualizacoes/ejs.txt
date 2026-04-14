@@ -350,3 +350,44 @@ login
 </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+HOME adm Antiga 
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADM Maximus Tranning</title>
+    <link rel="stylesheet" href="/css/adm/base.css">
+    <link rel="stylesheet" href="/css/adm/home.css">
+    <link rel="icon" href="/imagens/LogoSemFgrande.png">
+</head>
+<body>
+    <%- include('../../partials/adm_navbar'); %>
+    <main>
+        <section class="logo-area">
+            <img src="/imagens/LogoSemFgrande.png" alt="Logo Maximus Tranning" class="home-logo">
+            <h1 class="tituloLogo">Maximus Tranning</h1>
+        </section>
+        <section class="botoesHome">
+            <a href="/adm/usuarios"><button class="botaohome">Pesquisar Alunos</button></a>
+            <a href="/adm/"><button class="botaohome">Pesquisar</button></a>
+            <a href="/adm/"><button class="botaohome">Solicitações</button></a>
+        </section>
+    </main>
+    <%- include('../../partials/adm_footer'); %>    
+</body>
+</html>

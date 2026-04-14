@@ -1,26 +1,87 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADM Maximus Tranning</title>
-    <link rel="stylesheet" href="/css/adm/base.css">
-    <link rel="stylesheet" href="/css/adm/home.css">
-    <link rel="icon" href="/imagens/LogoSemFgrande.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADM — Dashboard</title>
+  <link rel="stylesheet" href="/css/adm/base.css">
+  <link rel="icon" href="/imagens/LogoSemFgrande.png">
 </head>
 <body>
-    <%- include('../../partials/adm_navbar'); %>
-    <main>
-        <section class="logo-area">
-            <img src="/imagens/LogoSemFgrande.png" alt="Logo Maximus Tranning" class="home-logo">
-            <h1 class="tituloLogo">Maximus Tranning</h1>
-        </section>
-        <section class="botoesHome">
-            <a href="/adm/usuarios"><button class="botaohome">Pesquisar Alunos</button></a>
-            <a href="/adm/"><button class="botaohome">Pesquisar</button></a>
-            <a href="/adm/"><button class="botaohome">Solicitações</button></a>
-        </section>
-    </main>
-    <%- include('../../partials/adm_footer'); %>    
+  <%- include('../../partials/adm_navbar'); %>
+
+  <main class="adm-main">
+    <div class="adm-page-header">
+      <h1>Dashboard</h1>
+    </div>
+
+    <div class="adm-cards">
+      <div class="adm-card">
+        <p>Total de alunos</p>
+        <h2><%= alunos.length %></h2>
+      </div>
+      <div class="adm-card">
+        <p>Alunos ativos</p>
+        <h2><%= alunos.filter(a => a.alu_status == 1).length %></h2>
+      </div>
+      <div class="adm-card">
+        <p>Aguardando ativação</p>
+        <h2><%= alunos.filter(a => a.alu_status == 0).length %></h2>
+      </div>
+      <div class="adm-card">
+        <p>Média IMC</p>
+        <h2>
+          <%= alunos.filter(a => a.alu_imc).length > 0
+            ? (alunos.filter(a => a.alu_imc).reduce((s, a) => s + Number(a.alu_imc), 0) / alunos.filter(a => a.alu_imc).length).toFixed(1)
+            : '—' %>
+          <span>kg/m²</span>
+        </h2>
+      </div>
+    </div>
+
+    <div class="adm-table-container">
+      <div class="adm-search">
+        <input type="text" id="searchInput" placeholder="Pesquisar aluno...">
+        <a href="/adm/alunos" class="adm-btn adm-btn-outline">Ver todos</a>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>IMC</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaAlunos">
+          <% alunos.forEach(aluno => { %>
+            <tr>
+              <td><%= aluno.alu_id %></td>
+              <td><%= aluno.alu_nome %></td>
+              <td><%= aluno.alu_email %></td>
+              <td><%= aluno.alu_imc ? Number(aluno.alu_imc).toFixed(2) : '—' %></td>
+              <td>
+                <span class="badge <%= aluno.alu_status == 1 ? 'badge-ativo' : 'badge-inativo' %>">
+                  <%= aluno.alu_status == 1 ? 'Ativo' : 'Inativo' %>
+                </span>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <%- include('../../partials/adm_footer'); %>
+
+  <script>
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+      const filtro = this.value.toLowerCase();
+      document.querySelectorAll('#tabelaAlunos tr').forEach(tr => {
+        tr.style.display = tr.children[1].innerText.toLowerCase().includes(filtro) ? '' : 'none';
+      });
+    });
+  </script>
 </body>
 </html>
