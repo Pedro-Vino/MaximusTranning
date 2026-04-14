@@ -46,6 +46,16 @@ const exibirHome = async (req, res) => {
   }
 };
 
+const exibirDashboard = async (req, res) => {
+  try {
+    const alunos = await AlunoModel.findAll();
+    return res.render("pages/adm/dashboard", { alunos });
+  } catch (err) {
+    console.error(err);
+    return res.render("pages/adm/dashboard", { alunos: [] });
+  }
+};
+
 const logout = (req, res) => {
   req.session.destroy(() => res.redirect("/adm/login"));
 };
@@ -128,6 +138,6 @@ const deletarTreino = async (req, res) => {
 
 module.exports = {
   verificarAdm, exibirLogin, realizarLogin, exibirHome, logout,
-  exibirAlunos, criarAluno, editarAluno,
+  exibirAlunos, criarAluno, editarAluno, exibirDashboard,
   exibirTreinos, criarTreino, editarTreino, deletarTreino
 };

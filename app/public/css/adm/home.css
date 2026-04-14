@@ -93,3 +93,84 @@ main {
         font-size: 1em;
     }
 }
+.adm-home-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+  padding: 40px 20px;
+  gap: 40px;
+}
+
+.adm-logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.adm-home-logo {
+  width: 250px;
+  filter: drop-shadow(0 0 20px rgba(203, 13, 1, 0.4));
+}
+
+.adm-titulo-logo {
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--vermelho);
+  letter-spacing: 2px;
+}
+
+.adm-subtitulo {
+  font-size: 13px;
+  color: var(--cinza);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.adm-botoes-home {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.adm-botao-home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 160px;
+  padding: 28px 20px;
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 10px;
+  color: var(--branco);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: 0.2s;
+  border-color: var(--vermelho);
+}
+
+.adm-botao-home:hover {
+  border-color: var(--vermelho);
+  background: #1a1a1a;
+  color: var(--vermelho);
+  box-shadow: 0 0 10px var(--vermelho);
+  transform: matrix(1, 0, 0, 1, 0, 0);
+}
+
+.adm-botao-icone {
+  font-size: 28px;
+}
+
+@media (max-width: 480px) {
+  .adm-botao-home {
+    width: 130px;
+    padding: 20px 14px;
+  }
+}

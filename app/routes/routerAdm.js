@@ -7,6 +7,7 @@ router.get('/login', admController.exibirLogin);
 router.post('/login', admController.realizarLogin);
 router.get('/logout', admController.logout);
 
+router.get('/dashboard', verificarAdm, admController.exibirDashboard);
 router.get('/home', verificarAdm, admController.exibirHome);
 router.get('/alunos', verificarAdm, admController.exibirAlunos);
 router.post('/alunos/criar', verificarAdm, admController.criarAluno);
