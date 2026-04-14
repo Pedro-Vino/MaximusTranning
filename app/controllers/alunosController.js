@@ -297,9 +297,12 @@ gravarPerfil: async (req, res) => {
     await AlunoModel.update(id, dadosForm);
 
     if (req.session.aluno) {
-      req.session.aluno.nome = dadosForm.nome;
-      req.session.aluno.email = dadosForm.email;
-    }
+  req.session.aluno.nome = dadosForm.nome;
+  req.session.aluno.email = dadosForm.email;
+  if (dadosForm.foto) {
+    req.session.aluno.foto = dadosForm.foto;
+  }
+}
 
     if (req.body.peso && req.body.altura) {
       await imcModel.salvarOuAtualizar(id, req.body.peso, req.body.altura);

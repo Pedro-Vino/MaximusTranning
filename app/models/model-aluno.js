@@ -41,7 +41,7 @@ const AlunoModel = {
     return rows[0] || null;
   },
 
-  update: async (id, data) => {
+ update: async (id, data) => {
     const fields = [];
     const values = [];
 
@@ -57,6 +57,10 @@ const AlunoModel = {
       const hash = await bcrypt.hash(data.senha, 10);
       fields.push("alu_senha = ?");
       values.push(hash);
+    }                    // ← fecha o if senha aqui
+    if (data.foto) {     // ← foto fora do if senha
+      fields.push("alu_foto = ?");
+      values.push(data.foto);
     }
 
     if (fields.length === 0) return false;
