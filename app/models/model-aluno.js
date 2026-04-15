@@ -62,7 +62,10 @@ const AlunoModel = {
       fields.push("alu_foto = ?");
       values.push(data.foto);
     }
-
+      if (data.nasc) {
+     fields.push("alu_nasc = ?");
+     values.push(data.nasc);
+    }
     if (fields.length === 0) return false;
 
     const sql = `UPDATE aluno SET ${fields.join(", ")} WHERE alu_id = ?`;
@@ -95,6 +98,21 @@ const AlunoModel = {
       LEFT JOIN imc i ON i.aluno_id = a.alu_id`
     );
     return rows;
+  },
+
+    atualizarAluno: async (alu_id, dados) => {
+    const sql = `
+      UPDATE aluno 
+      SET alu_nome = ?, alu_email = ?, alu_status = ?
+      WHERE alu_id = ?
+    `;
+    const [result] = await pool.query(sql, [
+      dados.nome,
+      dados.email,
+      parseInt(dados.status),
+      alu_id
+    ]);
+    return result;
   },
 };
 

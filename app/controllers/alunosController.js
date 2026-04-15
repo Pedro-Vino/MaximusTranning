@@ -277,6 +277,7 @@ gravarPerfil: async (req, res) => {
     const dadosForm = {      
       nome: req.body.nome,
       email: req.body.email,
+      nasc: req.body.nasc || null,  // adicionado
     };
 
     if (req.body.senha && req.body.senha.trim() !== "") {

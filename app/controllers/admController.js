@@ -83,10 +83,11 @@ const criarAluno = async (req, res) => {
 const editarAluno = async (req, res) => {
   try {
     const { alu_id, nome, email, senha, status } = req.body;
-    const dados = { nome, email };
-    if (senha && senha.trim() !== "") dados.senha = senha;
-    if (status !== undefined) dados.status = status;
-    await AlunoModel.update(alu_id, dados);
+
+    console.log("Recebido:", req.body);
+
+    await AlunoModel.atualizarAluno(alu_id, { nome, email, status });
+
     return res.redirect('/adm/alunos');
   } catch (err) {
     console.error(err);
