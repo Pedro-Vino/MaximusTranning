@@ -5,20 +5,9 @@ body {
 }
 
 /* HERO */
-.hero {
-  display: flex;
-  align-items: stretch;
-  justify-content: space-between;
-  height: calc(100vh - 70px);
-}
 
-.hero-texto {
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 40px;
-}
+
+
 
 .hero-texto h1 {
   font-size: 48px;
@@ -27,14 +16,44 @@ body {
   margin-bottom: 20px;
 }
 
-.hero-texto p {
-  color: var(--branco);
-  margin-bottom: 30px;
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+.hero {
+  position: relative;
+  min-height: 90vh;
+  width: 100%;
+  background-image: url("/imagens/treinoINICIO01.jpg");
+  background-size: cover;
+  background-position: center 35%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero-texto {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
 }
 
 .hero-botoes {
   display: flex;
-  gap: 15px;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn-vermelho,
+.btn-borda {
+  flex: 1;
+  text-align: center;
 }
 
 .btn-vermelho {
@@ -53,13 +72,13 @@ body {
   color: var(--branco);
 }
 
-.hero-imagem {
-  width: 50%;
-  height: 100%;
-  background-image: url("/imagens/treinoINICIO01.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, #000 40%, rgba(0,0,0,0.6));
 }
 
 /* HOME LOGADO */
@@ -168,18 +187,64 @@ body {
   background: var(--principal_escura);
 }
 
-/* RESPONSIVO */
-@media (max-width: 900px) {
-  .hero-texto { width: 55%; padding-left: 20px; }
-  .hero-imagem { width: 45%; }
-  .hero-texto h1 { font-size: 28px; }
-  .hero-texto p { font-size: 14px; }
-  .home-logado { padding: 24px 20px; }
-}
 
+
+
+/* MOBILE COMPLETO */
 @media (max-width: 600px) {
-  .hero { flex-direction: column; height: auto; }
-  .hero-texto { width: 100%; padding: 30px 20px; }
-  .hero-imagem { width: 100%; height: 200px; }
-  .home-logado { padding: 20px 16px; }
+
+  /* HERO PRINCIPAL */
+  .hero {
+    height: 100vh;
+    padding: 70px 16px 20px; /* espaço do menu + lateral */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: hidden;
+  }
+
+  /* TEXTO */
+  .hero-texto {
+    width: 100%;
+    max-width: 90%;
+  }
+
+  .hero-texto h1 {
+    font-size: 24px;
+    line-height: 1.2;
+    margin-bottom: 15px;
+  }
+
+  .hero-texto p {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  /* BOTÕES (ALINHADOS E BONITOS) */
+  .hero-botoes {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .btn-vermelho,
+  .btn-borda {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 10px;
+    font-weight: bold;
+  }
+
+  /* AJUSTE DA IMAGEM DE FUNDO */
+  .hero {
+    background-position: center top;
+  }
+
+  /* EVITA QUALQUER SCROLL LATERAL */
+  body {
+    overflow-x: hidden;
+  }
 }
