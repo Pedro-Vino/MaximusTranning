@@ -63,6 +63,11 @@ const AlunoModel = {
       values.push(data.foto);
     }
 
+    if (data.status !== undefined && data.status !== null) {
+    fields.push("alu_status = ?");
+    values.push(data.status);
+    }
+
     if (fields.length === 0) return false;
 
     const sql = `UPDATE aluno SET ${fields.join(", ")} WHERE alu_id = ?`;
