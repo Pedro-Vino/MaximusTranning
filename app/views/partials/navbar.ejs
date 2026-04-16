@@ -4,10 +4,15 @@
 <header>
   <section class="containernavbar">
 
+    
+
     <a class="logo-container" href="/">
       <img src="/imagens/LogoSemFgrande.png" alt="Logo">
       <h2 class="nome-logo">MAXIMUS TRAINING</h2>
     </a>
+    <button class="menu-toggle" onclick="toggleMenu()">
+      ☰
+    </button>
 
     <nav class="navnavbar">
       <article class="menu-links">
@@ -35,3 +40,8 @@
     </nav>
   </section>
 </header>
+<script>
+  function toggleMenu() {
+    document.querySelector('.navnavbar').classList.toggle('ativo');
+  }
+</script>

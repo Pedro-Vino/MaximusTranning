@@ -4,6 +4,21 @@ const TreinoModel = require('../models/model-treino');
 
 const exibirHome = async (req, res) => {
   try {
+    if (!req.session.aluno) {
+      return res.render('pages/home', { aluno: null, treinos: [], imc: null });
+    }
+
+    console.log("sessão aluno:", req.session.aluno);
+    const aluno = await AlunoModel.findByEmail(req.session.aluno.email);
+    console.log("aluno encontrado:", aluno?.alu_id);
+    const imcDados = await imcModel.findByAluno(aluno.alu_id);
+    console.log("imc encontrado:", imcDados);
+  } catch (err) {
+    console.error("Erro ao exibir home:", err);
+    return res.render('pages/home', { aluno: null, treinos: [], imc: null });
+  }
+  
+  try {
     // se não está logado, renderiza home simples
     if (!req.session.aluno) {
       return res.render('pages/home', {
