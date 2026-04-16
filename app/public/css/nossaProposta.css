@@ -1,3 +1,12 @@
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
 body {
   background-color: var(--preto);
   color: var(--branco);
@@ -93,7 +102,8 @@ nav a:hover {
 
 /* TÍTULO */
 .titulo-proposta {
-  color: --;
+  
+  color: var(--branco);
   font-size: 40px;
   margin-bottom: 30px;
 }
@@ -126,13 +136,15 @@ nav a:hover {
 
 
 .hero-imagem {
-  width: 50%;
+  width: 49%;
   height: 100%;
 
   background-image: url("/imagens/NossaProposta.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+ 
+
 }
 
 
@@ -211,35 +223,58 @@ nav a:hover {
 }
 
 
-@media (max-width: 900px) {
+/* RESPONSIVO MOBILE REAL */
+@media (max-width: 600px) {
 
-  .hero-texto {
-    width: 55%;
-    padding-left: 20px;
+  /* HERO VIRA COLUNA */
+  .hero {
+    flex-direction: column;
+    height: auto;
   }
 
-  .hero-imagem {
-    width: 45%;
+  /* TEXTO */
+  .hero-texto {
+    width: 100%;
+    padding: 20px;
   }
 
   .titulo-proposta {
-    font-size: 28px;
+    font-size: 24px;
+    text-align: center;
   }
 
+  /* CARDS */
   .card-proposta {
-    font-size: 14px;
+    font-size: 13px;
     padding: 15px;
+    margin-bottom: 15px;
   }
+
+ .hero-imagem {
+  display: none;
 }
 
-@media (max-width: 600px) {
-
-  .hero-texto {
-    width: 55%;
-    padding-left: 15px;
+  /* TREINOS */
+  .treinos {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
   }
 
-  .hero-imagem {
-    width: 45%;
+  .treino {
+    width: 90%;
+    padding: 25px;
+  }
+
+  .treino h2 {
+    font-size: 18px;
+  }
+
+  .treino h3 {
+    font-size: 14px;
+  }
+
+  .treino p {
+    font-size: 13px;
   }
 }

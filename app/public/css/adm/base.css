@@ -21,8 +21,24 @@ body {
 }
 
 /* NAVBAR */
+
+/* HAMBURGUER */
+.hamburguer {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburguer span {
+  width: 25px;
+  height: 3px;
+  background: white;
+  margin: 4px 0;
+  transition: 0.3s;
+}
+
 .adm-header {
-  background: #111;
+  background: var(--cinza);
   border-bottom: 1px solid var(--borda);
   position: sticky;
   top: 0;
@@ -136,7 +152,7 @@ body {
   color: var(--branco);
 }
 
-.adm-btn-vermelho:hover { background: #a00; }
+.adm-btn-vermelho:hover { background: var(--vermelho); }
 
 .adm-btn-outline {
   background: transparent;
