@@ -68,6 +68,11 @@ const AlunoModel = {
     values.push(data.status);
     }
 
+    if (data.nasc && data.nasc.trim() !== "") {
+    fields.push("alu_nasc = ?");
+    values.push(data.nasc);
+    }
+
     if (fields.length === 0) return false;
 
     const sql = `UPDATE aluno SET ${fields.join(", ")} WHERE alu_id = ?`;
