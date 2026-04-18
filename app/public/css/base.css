@@ -94,11 +94,14 @@ header {
 
 .botao-destaque {
   background: var(--vermelho);
+  color: white;
   padding: 8px 16px;
   border-radius: 5px;
+  transition: background 0.3s, color 0.3s;
 }
+
 .botao-destaque:hover {
-  background-color: var(--vermelho);
+  background: #410404; /* vermelho mais escuro */
   color: var(--preto);
 }
 .navbar-usuario {

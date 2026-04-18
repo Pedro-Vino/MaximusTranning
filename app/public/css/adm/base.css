@@ -38,7 +38,7 @@ body {
 }
 
 .adm-header {
-  background: var(--cinza);
+  background: var(--preto);
   border-bottom: 1px solid var(--borda);
   position: sticky;
   top: 0;
@@ -211,7 +211,7 @@ thead th {
   font-size: 12px;
   font-weight: bold;
   text-transform: uppercase;
-  color: var(--cinza);
+  color: var(--vermelho);
   border-bottom: 1px solid var(--borda);
 }
 
