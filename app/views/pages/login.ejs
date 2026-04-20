@@ -86,16 +86,16 @@ notify(
 <label>Senha</label>
 
 <div class="input-group">
-<input 
-    type="password" 
-    name="senha" 
-    id="senha"
-    class="<%= erroValidacao.senha %>" 
-    placeholder="Digite sua senha">
+    <input 
+        type="password" 
+        name="senha" 
+        id="senha"
+        class="<%= erroValidacao.senha %>" 
+        placeholder="Digite sua senha">
 
-<button type="button" onclick="toggleSenha()" class="toggle-senha-btn1">
-👁
-</button>
+    <button type="button" onclick="toggleSenha()" class="toggle-senha-btn1">
+        <img src="/imagens/olho-fechado.png" alt="Mostrar senha" id="iconeSenha" class="icone-olho">
+    </button>
 </div>
 
 <span class="spanerro"><%= msgErroPag.senha %></span>
@@ -122,6 +122,21 @@ notify(
 function toggleSenha() {
     const input = document.getElementById("senha");
     input.type = input.type === "password" ? "text" : "password";
+}
+</script>
+
+<script>
+function toggleSenha() {
+    const input = document.getElementById("senha");
+    const icone = document.getElementById("iconeSenha");
+
+    if (input.type === "password") {
+        input.type = "text";
+        icone.src = "/imagens/abrir-o-olho.png";
+    } else {
+        input.type = "password";
+        icone.src = "/imagens/fechar-o-olho.png";
+    }
 }
 </script>
 

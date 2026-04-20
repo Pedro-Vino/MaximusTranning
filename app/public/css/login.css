@@ -96,24 +96,6 @@ input:focus {
     color: var(--principal);
 }
 
-.input-group {
-    display: flex;
-    align-items: center;
-}
-
-.input-group input {
-    flex: 1;
-}
-
-.input-group button {
-    background: transparent;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    padding: 0 10px;
-    font-size: 16px;
-}
-
 .content {
     background: #0d0d0d;
     padding: 10px;
@@ -213,5 +195,51 @@ input:focus {
     input {
         padding: 8px;
     }
+
+    
+
 }
 
+
+.input-group {
+    position: relative;
+    width: 100%;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 45px 10px 10px;
+    box-sizing: border-box;
+    background: var(--preto);
+    border: none;
+    border-bottom: 2px solid #222;
+    color: var(--branco);
+    outline: none;
+}
+
+.input-group input:focus {
+    border-bottom: 2px solid var(--principal);
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+.toggle-senha-btn1 {
+    position: absolute;
+    right: 12px;
+    top: 52%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icone-olho {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
