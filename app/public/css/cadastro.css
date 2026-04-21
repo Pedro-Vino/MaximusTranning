@@ -76,7 +76,7 @@ label {
 
 /* INPUT */
 input {
-    width: 100%;
+    width: 97%;
     padding: 10px;
     background: var(--preto);
     border: none;
@@ -87,8 +87,10 @@ input {
     font-size: clamp(16px, 4vw, 25px);
 }
 
-input:focus {
-    border-bottom: 2px solid var(--principal);
+input:focus{
+ border-bottom: 2px solid var(--principal);
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+    transition: all 0.3s ease;
 }
 
 .erro {
@@ -225,4 +227,99 @@ input:focus {
     input {
         padding: 8px;
     }
+}
+
+
+.input-group {
+    position: relative;
+    width: 100%;
+}
+
+.input-group input:focus{
+ border-bottom: 2px solid var(--principal);
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+.input-group input {
+    width: 100%;
+    height: 50px;
+    padding: 10px 45px 10px 10px;
+    box-sizing: border-box;
+    background: var(--preto);
+    border: none;
+    border-bottom: 2px solid #222;
+    color: var(--branco);
+    outline: none;
+}
+
+.toggle-senha-btn1 {
+    width: 45px;       
+    height: 45px;    
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icone-olho {
+    width: 50px;       
+    height: 35px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 70%;
+}
+
+.input-group2 {
+    position: relative;
+    width: 100%;
+}
+
+.input-group2 input {
+    width: 100%;
+    height: 50px;
+    padding: 10px 45px 10px 10px;
+    box-sizing: border-box;
+    background: var(--preto);
+    border: none;
+    border-bottom: 2px solid #222;
+    color: var(--branco);
+    outline: none;
+}
+
+.input-group2 input:focus {
+    border-bottom: 2px solid var(--principal);
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}    
+
+.toggle-senha-btn2 {
+    width: 45px;       
+    height: 45px;    
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icone-olho2 {
+    width: 50px;       
+    height: 35px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 70%;
 }

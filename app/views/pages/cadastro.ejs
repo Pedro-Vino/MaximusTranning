@@ -104,8 +104,9 @@ notify(
 
 <div class="input-group">
 <input type="password" name="senha" id="senha" value="<%= dadosForm.senha %>" class="<%= erroValidacao.senha %>">
-<button type="button" onclick="toggleSenha()">👁️</button>
-</div>
+ <button type="button" onclick="toggleSenha()" class="toggle-senha-btn1">
+        <img src="/imagens/fechar-o-olho.png" alt="Mostrar senha" id="iconeSenha" class="icone-olho">
+    </button></div>
 
 <span class="spanerro"><%= msgErroPag.senha %></span>
 </section>
@@ -114,10 +115,11 @@ notify(
 <section class="form-group">
 <label>Confirmar Senha</label>
 
-<div class="input-group">
+<div class="input-group2">
 <input type="password" name="repsenha" id="repsenha" value="<%= dadosForm.repsenha %>" class="<%= erroValidacao.repsenha %>">
-<button type="button" onclick="toggleReSenha()">👁️</button>
-</div>
+ <button type="button" onclick="toggleReSenha()" class="toggle-senha-btn2">
+        <img src="/imagens/fechar-o-olho.png" alt="Mostrar senha" id="iconeSenha2" class="icone-olho2">
+    </button></div>
 
 <span class="spanerro"><%= msgErroPag.repsenha %></span>
 </section>
@@ -164,6 +166,36 @@ function toggleSenha() {
 function toggleReSenha() {
     const s = document.getElementById("repsenha");
     s.type = s.type === "password" ? "text" : "password";
+}
+</script>
+
+<script>
+function toggleSenha() {
+    const input = document.getElementById("senha");
+    const icone = document.getElementById("iconeSenha");
+
+    if (input.type === "password") {
+        input.type = "text";
+        icone.src = "/imagens/abrir-o-olho.png";
+    } else {
+        input.type = "password";
+        icone.src = "/imagens/fechar-o-olho.png";
+    }
+}
+</script>
+
+<script>
+function toggleReSenha() {
+    const input = document.getElementById("repsenha");
+    const icone = document.getElementById("iconeSenha2");
+
+    if (input.type === "password") {
+        input.type = "text";
+        icone.src = "/imagens/abrir-o-olho.png";
+    } else {
+        input.type = "password";
+        icone.src = "/imagens/fechar-o-olho.png";
+    }
 }
 </script>
 
