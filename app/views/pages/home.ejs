@@ -26,37 +26,51 @@
   <% } %>
 
   <% if (aluno) { %>
-  <section class="home-logado">
-    <h2 class="home-bemvindo">
-      BEM VINDO DE VOLTA, <%= aluno.nome.split(' ')[0].toUpperCase() %>!
-    </h2>
+<section class="home-logado">
+  <h2 class="home-bemvindo">
+    BEM VINDO DE VOLTA, <%= aluno.nome.split(' ')[0].toUpperCase() %>!
+  </h2>
 
-    <% if (treinos.length > 0) { %>
-      <div class="home-treinos-titulo">
-        <h3>TREINOS RECOMENDADOS PARA VOCÊ</h3>
-        <span class="home-categoria home-categoria--<%= aluno.categoria %>">
-          <%= aluno.categoria === 'abaixo' ? 'Abaixo do peso'
-            : aluno.categoria === 'ideal'  ? 'Peso ideal'
-            : 'Acima do peso' %>
-        </span>
-      </div>
-      <div class="home-treinos-grid">
-        <% treinos.forEach(treino => { %>
-          <div class="home-treino-card">
-            <h3>TREINO <%= treino.nome %></h3>
-            <p class="treino-musculo"><%= treino.musculo %></p>
-            <p class="treino-descricao"><%= treino.descricao %></p>
-          </div>
-        <% }) %>
-      </div>
-    <% } else { %>
-      <div class="home-sem-imc">
-        <p>Complete seu IMC para receber treinos personalizados.</p>
-        <a href="/imc" class="btn-imc">Calcular IMC agora</a>
-      </div>
-    <% } %>
-  </section>
+  <% if (treinoAtual) { %>
+
+    <div class="home-treinos-titulo">
+      <h3>SEU TREINO DE HOJE — DIA <%= dia %></h3>
+      <span class="home-categoria home-categoria--<%= aluno.categoria %>">
+        <%= aluno.categoria === 'abaixo' ? 'Abaixo do peso'
+          : aluno.categoria === 'ideal'  ? 'Peso ideal'
+          : 'Acima do peso' %>
+      </span>
+    </div>
+
+    <div class="home-treino-card home-treino-card--destaque">
+      <h3>TREINO <%= treino_atual %></h3>
+      <p class="treino-musculo"><%= treinoAtual.musculo %></p>
+      <p class="treino-descricao">
+        <%- treinoAtual.descricao.split(',').join('<br>') %>
+      </p>
+
+      <form action="/treino/concluir" method="POST">
+        <input type="hidden" name="treino_nome" value="<%= treino_atual %>">
+        <input type="hidden" name="categoria" value="<%= treinoAtual.categoria %>">
+        <button type="submit" class="btn-concluir">
+          CONCLUIR TREINO <%= treino_atual %>
+            <span class="btn-proximo">
+              próximo: 
+              <%= treino_atual === 'C' ? 'Treino A (novo ciclo)' : 'Treino ' + (treino_atual === 'A' ? 'B' : 'C') %>
+            </span>
+        </button>
+      </form>
+    </div>
+
+  <% } else { %>
+    <div class="home-sem-imc">
+      <p>Complete seu IMC para receber treinos personalizados.</p>
+      <a href="/imc" class="btn-imc">Calcular IMC agora</a>
+    </div>
   <% } %>
+
+</section>
+<% } %>
 
   <%- include('../partials/footer'); %>
   

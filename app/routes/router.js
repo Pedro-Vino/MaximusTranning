@@ -5,6 +5,7 @@ const guestMiddleware = require('../helpers/guestMiddleware');
 const alunosController = require('../controllers/alunosController');
 const imcController = require('../controllers/imcController');
 const homeController = require('../controllers/homeController');
+const progressoController = require('../controllers/progressoController');
 const upload = require('../helpers/upload');
 
 function verificar(fn) {
@@ -72,6 +73,8 @@ router.post('/resetar-senha',
   verificar(alunosController.regrasValidacaoFormNovaSenha),
   verificar(alunosController.resetarSenha)
 );
+
+router.post('/treino/concluir', authMiddleware, verificar(progressoController.concluirTreino));
 
 
 module.exports = router;

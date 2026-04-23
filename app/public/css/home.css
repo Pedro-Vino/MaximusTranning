@@ -161,6 +161,46 @@ html, body {
   line-height: 1.5;
 }
 
+.home-treino-card--destaque {
+  padding: 24px;
+  gap: 12px;
+}
+
+.home-treino-card--destaque h3 {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--vermelho);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.home-treino-card--destaque .treino-musculo {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--branco);
+}
+
+.home-treino-card--destaque .treino-descricao {
+  font-size: 18px;
+  color: var(--cinza_claro);
+  line-height: 1.6;
+  margin-top: 8px;
+}
+
+.home-treino-card--destaque .treino-musculo::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--vermelho);
+  margin-top: 6px;
+  border-radius: 2px;
+}
+
+.treino-descricao {
+  line-height: 1.8;
+}
+
 .home-sem-imc {
   background: #111;
   border: 1px solid #333;
@@ -187,6 +227,38 @@ html, body {
   background: var(--principal_escura);
 }
 
+.btn-concluir {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  margin-top: 16px;
+  padding: 14px 24px;
+  background: var(--vermelho);
+  color: var(--branco);
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-concluir:hover {
+  background: var(--principal_escura);
+}
+
+.btn-proximo {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.5px;
+  text-transform: none;
+}
 
 
 
@@ -247,4 +319,5 @@ html, body {
   body {
     overflow-x: hidden;
   }
+ 
 }

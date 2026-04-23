@@ -1,9 +1,11 @@
+const db = require('../../config/pool-conexoes');
 const AlunoModel = require('../models/model-aluno');
 const bcrypt = require('bcryptjs');
 const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const { enviarEmail } = require("../helpers/email");
 const imcModel = require('../models/model-imc');
+
 
 function classificarImc(imc) {
   if (imc < 18.5) return 'Abaixo do peso';
@@ -221,6 +223,32 @@ module.exports = {
       if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) idade--;
     }
 
+    const [[{ sequencia }]] = await db.query(
+      `SELECT COUNT(*) AS sequencia FROM progresso WHERE aluno_id = ?`,
+      [aluno.alu_id]
+    );
+
+    const [[ultimo]] = await db.query(
+      `SELECT treino_nome FROM progresso 
+       WHERE aluno_id = ? 
+       ORDER BY data_conclusao DESC LIMIT 1`,
+      [aluno.alu_id]
+    );
+    const treino_atual = !ultimo ? 'A' : { A: 'B', B: 'C', C: 'A' }[ultimo.treino_nome];
+
+    const pesoNumerico = imc ? Number(imc.peso) : 70;
+    const [[{ calorias }]] = await db.query(
+      `SELECT COALESCE(ROUND(SUM(
+        CASE 
+          WHEN treino_nome = 'C' THEN 6 * ? * 1
+          ELSE 5 * ? * 1
+        END
+      )), 0) AS calorias
+      FROM progresso 
+      WHERE aluno_id = ?`,
+      [pesoNumerico, pesoNumerico, aluno.alu_id]
+    );
+
     res.render("pages/perfil", {
       aluno: {
         id: aluno.alu_id,
@@ -232,7 +260,10 @@ module.exports = {
         peso: imc ? Number(imc.peso).toFixed(1) + ' kg' : '—',
         altura: imc ? (Number(imc.altura) * 100).toFixed(0) + ' cm' : '—',
         imc: imc ? Number(imc.imc).toFixed(2) : '—',
-        classificacaoImc: imc ? classificarImc(Number(imc.imc)) : '—'
+        classificacaoImc: imc ? classificarImc(Number(imc.imc)) : '—',
+        sequencia,
+        treino: treino_atual,
+        calorias
       },
       dadosNotificacao: null
     });

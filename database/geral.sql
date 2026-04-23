@@ -36,6 +36,16 @@ CREATE TABLE treino (
   descricao TEXT
 );
 
+-- Progresso
+CREATE TABLE progresso (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  aluno_id INT NOT NULL,
+  treino_nome ENUM('A', 'B', 'C') NOT NULL,
+  categoria ENUM('ideal', 'acima', 'abaixo') NOT NULL,
+  data_conclusao DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (aluno_id) REFERENCES aluno(alu_id)
+);
+
 -- Inserts treino
 INSERT INTO treino (categoria, nome, musculo, descricao) VALUES
 ('ideal', 'A', 'Peito, Ombro e Tríceps', 'Supino reto 4x12, desenvolvimento com halteres 3x12, tríceps corda 3x15. Foco em hipertrofia com cargas moderadas e boa execução.'),
@@ -57,6 +67,26 @@ BEGIN
   SET NEW.imc = NEW.peso / (NEW.altura * NEW.altura);
 END //
 DELIMITER ;
+
+
+--view do progresso do aluno
+CREATE VIEW alu_progresso AS
+SELECT 
+  aluno_id,
+  COUNT(*) AS total_dias,
+  SUM(treino_nome = 'A') AS treinos_A,
+  SUM(treino_nome = 'B') AS treinos_B,
+  SUM(treino_nome = 'C') AS treinos_C,
+  CASE (SELECT treino_nome FROM progresso p2 
+        WHERE p2.aluno_id = p.aluno_id 
+        ORDER BY data_conclusao DESC LIMIT 1)
+    WHEN 'A' THEN 'B'
+    WHEN 'B' THEN 'C'
+    WHEN 'C' THEN 'A'
+    ELSE 'A'
+  END AS proximo_treino
+FROM progresso p
+GROUP BY aluno_id;
 
 -- View
 CREATE VIEW registro AS
@@ -80,4 +110,5 @@ JOIN imc i ON i.aluno_id = a.alu_id;
 -- SET FOREIGN_KEY_CHECKS = 0;
 -- TRUNCATE TABLE imc;
 -- TRUNCATE TABLE aluno;
+-- TRUNCATE TABLE progresso;
 -- SET FOREIGN_KEY_CHECKS = 1;
