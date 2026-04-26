@@ -71,6 +71,42 @@
                     <p class="card-valor"><%= aluno.imc %> <span><%= aluno.classificacaoImc %></span></p>
                 </div>
             </div>
+             <div class="perfil-bottom-row">
+
+                <div class="perfil-proximos-treinos">
+                    <p class="card-label">PRÓXIMOS TREINOS</p>
+                    <% 
+                        const dias = ['DOMINGO','SEGUNDA-FEIRA','TERÇA-FEIRA','QUARTA-FEIRA','QUINTA-FEIRA','SEXTA-FEIRA','SÁBADO'];
+                        const hoje = new Date();
+                        const treinos_seq = ['A','B','C'];
+                        const treino_atual_idx = treinos_seq.indexOf(aluno.treino || 'A');
+                    %>
+                    <% for(let i = 1; i <= 2; i++) { %>
+                    <%
+                        const proximoData = new Date(hoje);
+                        proximoData.setDate(hoje.getDate() + i);
+                        const diaNome = dias[proximoData.getDay()];
+                        const proximoTreino = treinos_seq[(treino_atual_idx + i) % 3];
+                        const dia = String(proximoData.getDate()).padStart(2,'0');
+                        const mes = String(proximoData.getMonth()+1).padStart(2,'0');
+                    %>
+                    <div class="perfil-treino-item">
+                        <div class="perfil-treino-barra"></div>
+                        <div>
+                            <strong><%= diaNome %></strong>
+                            <p>Treino <%= proximoTreino %> — <%= dia %>/<%= mes %> 08:00</p>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+
+                <div class="perfil-logo-area">
+                    <img src="/imagens/LogoSemFgrande.png" alt="Maximus Training" class="perfil-logo-img">
+                    <p class="perfil-logo-txt">MAXIMUS TRAINING</p>
+                    <span class="perfil-logo-sub">GYM CENTER</span>
+                </div>
+
+            </div>
         </section>
 
     </main>
