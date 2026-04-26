@@ -76,5 +76,10 @@ router.post('/resetar-senha',
 
 router.post('/treino/concluir', authMiddleware, verificar(progressoController.concluirTreino));
 
+router.get('/contato', (req, res) => {
+    res.render('pages/contato', { dadosNotificacao: null });
+});
+
+router.post('/contato', verificar(alunosController.enviarContato));
 
 module.exports = router;
