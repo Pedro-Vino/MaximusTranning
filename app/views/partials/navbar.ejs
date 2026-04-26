@@ -3,16 +3,11 @@
 </head>
 <header>
   <section class="containernavbar">
-
-    
-
     <a class="logo-container" href="/">
       <img src="/imagens/LogoSemFgrande.png" alt="Logo">
       <h2 class="nome-logo">MAXIMUS TRAINING</h2>
     </a>
-    <button class="menu-toggle" onclick="toggleMenu()">
-      ☰
-    </button>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
 
     <nav class="navnavbar">
       <article class="menu-links">
@@ -22,26 +17,52 @@
         <a href="/contato">Contato</a>
       </article>
 
+      <!-- BOTÃO MODO CLARO/ESCURO -->
+      <button class="btn-tema" id="btn-tema" onclick="toggleTema()" title="Alternar tema">
+        <span id="tema-icone">☀️</span>
+      </button>
+
       <% if (locals.aluno) { %>
         <div class="navbar-usuario">
           <a href="/perfil" class="navbar-perfil-btn">
-            <img 
-              src="/<%= aluno.foto || 'imagens/alunos/default_user.png' %>" 
-              alt="Foto de perfil"
-              class="navbar-foto"
-            >
+            <img src="/<%= aluno.foto || 'imagens/alunos/default_user.png' %>" alt="Foto de perfil" class="navbar-foto">
             <span><%= aluno.nome.split(' ')[0] %></span>
           </a>
           <a href="/logout" class="botao-destaque botao-logout">Sair</a>
         </div>
-      <% } else { %> 
+      <% } else { %>
         <a href="/login" class="botao-destaque">Conta</a>
       <% } %>
     </nav>
   </section>
 </header>
+
 <script>
   function toggleMenu() {
     document.querySelector('.navnavbar').classList.toggle('ativo');
   }
+
+  function toggleTema() {
+    const html = document.documentElement;
+    const icone = document.getElementById('tema-icone');
+    const temaAtual = html.getAttribute('data-tema');
+
+    if (temaAtual === 'claro') {
+      html.removeAttribute('data-tema');
+      icone.textContent = '☀️';
+      localStorage.setItem('tema', 'escuro');
+    } else {
+      html.setAttribute('data-tema', 'claro');
+      icone.textContent = '🌙';
+      localStorage.setItem('tema', 'claro');
+    }
+  }
+  (function() {
+    const temaSalvo = localStorage.getItem('tema');
+    if (temaSalvo === 'claro') {
+      document.documentElement.setAttribute('data-tema', 'claro');
+      const icone = document.getElementById('tema-icone');
+      if (icone) icone.textContent = '🌙';
+    }
+  })();
 </script>

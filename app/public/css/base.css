@@ -37,6 +37,68 @@
     --sombra-moderada: rgba(0,0,0,0.1)
 }
 
+/* MODO CLARO */
+[data-tema="claro"] {
+  --preto: #f5f5f5;
+  --branco: #111111;
+  --cinza: #e0e0e0;
+  --cinza_claro: #555555;
+  --principal: #cb0c01;
+  --vermelho: #CB0D01;
+  --fundo-claro: #ffffff;
+}
+
+[data-tema="claro"] body {
+  background-color: #f5f5f5;
+  color: #111;
+}
+
+[data-tema="claro"] header {
+  background-color: #e8e8e8;
+  border-bottom: 1px solid #ccc;
+}
+
+[data-tema="claro"] .navnavbar a {
+  color: #111;
+}
+
+[data-tema="claro"] .nome-logo {
+  color: #111;
+}
+
+[data-tema="claro"] .navbar-perfil-btn span {
+  color: #111;
+}
+
+/* BOTÃO TEMA */
+.btn-tema {
+  background: transparent;
+  border: 1px solid #333;
+  border-radius: 20px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.2s;
+  color: var(--branco);
+  display: flex;
+  align-items: center;
+}
+
+.btn-tema:hover {
+  border-color: var(--vermelho);
+  background: #1a1a1a;
+}
+
+[data-tema="claro"] .btn-tema {
+  border-color: #aaa;
+  color: #111;
+}
+
+[data-tema="claro"] .btn-tema:hover {
+  background: #ddd;
+}
+
+
 body {
   background-color: var(--preto);
   color: var(--branco);
