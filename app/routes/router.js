@@ -82,4 +82,6 @@ router.get('/contato', (req, res) => {
 
 router.post('/contato', verificar(alunosController.enviarContato));
 
+router.post('/concluir-treino', authMiddleware, homeController.concluirTreino);
+
 module.exports = router;

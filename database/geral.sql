@@ -36,6 +36,14 @@ CREATE TABLE treino (
   descricao TEXT
 );
 
+CREATE TABLE treino_historico (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  aluno_id INT NOT NULL,
+  treino_nome VARCHAR(10) NOT NULL,
+  data_treino DATE NOT NULL,
+  FOREIGN KEY (aluno_id) REFERENCES aluno(alu_id)
+);
+
 -- Progresso
 CREATE TABLE progresso (
   id INT AUTO_INCREMENT PRIMARY KEY,

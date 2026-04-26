@@ -1,52 +1,35 @@
-const db = require('../../config/pool-conexoes');
 const AlunoModel = require('../models/model-aluno');
 const imcModel = require('../models/model-imc');
-
+const TreinoModel = require('../models/model-treino');
+const TreinoHistoricoModel = require('../models/model-treino-historico');
 
 const exibirHome = async (req, res) => {
   try {
     if (!req.session.aluno) {
-      return res.render('pages/home', { aluno: null, treinos: [], treinoAtual: null, treino_atual: null, dia: null });
+      return res.render('pages/home', { aluno: null, treinos: [], imc: null });
     }
 
     const aluno = await AlunoModel.findByEmail(req.session.aluno.email);
     const imcDados = await imcModel.findByAluno(aluno.alu_id);
 
+    let treinos = [];
     let categoria = null;
-    let treinoAtual = null;
-    let treino_atual = null;
-    let dia = null;
 
     if (imcDados) {
       const imcValor = Number(imcDados.imc);
-      categoria = imcValor < 18.5 ? 'abaixo'
-                : imcValor < 25   ? 'ideal'
-                : 'acima';
-
-      // qual treino vem agora
-      const [[ultimo]] = await db.query(
-        `SELECT treino_nome FROM progresso 
-         WHERE aluno_id = ? 
-         ORDER BY data_conclusao DESC LIMIT 1`,
-        [aluno.alu_id]
-      );
-
-      treino_atual = !ultimo ? 'A' : { A: 'B', B: 'C', C: 'A' }[ultimo.treino_nome];
-
-      const [[detalhes]] = await db.query(
-        `SELECT * FROM treino WHERE nome = ? AND categoria = ?`,
-        [treino_atual, categoria]
-      );
-
-      treinoAtual = detalhes || null;
-
-      const [[{ total }]] = await db.query(
-        `SELECT COUNT(*) AS total FROM progresso WHERE aluno_id = ?`,
-        [aluno.alu_id]
-      );
-
-      dia = total + 1;
+      categoria = imcValor < 18.5 ? 'abaixo' : imcValor < 25 ? 'ideal' : 'acima';
+      treinos = await TreinoModel.findByCategoria(categoria);
     }
+
+    const treinouHoje = await TreinoHistoricoModel.treinouHoje(aluno.alu_id);
+    const ultimoTreino = await TreinoHistoricoModel.ultimoTreino(aluno.alu_id);
+    const sequencia = await TreinoHistoricoModel.sequenciaDias(aluno.alu_id);
+
+    // define qual treino mostrar hoje (rotação A→B→C)
+    const seq = ['A', 'B', 'C'];
+    const ultimoIdx = ultimoTreino ? seq.indexOf(ultimoTreino.treino_nome) : -1;
+    const treinoHoje = seq[(ultimoIdx + 1) % 3];
+    const treinoAtual = treinos.find(t => t.nome === treinoHoje) || treinos[0];
 
     return res.render('pages/home', {
       aluno: {
@@ -55,18 +38,35 @@ const exibirHome = async (req, res) => {
         email: aluno.alu_email,
         foto: aluno.alu_foto,
         imc: imcDados ? Number(imcDados.imc).toFixed(2) : null,
-        categoria
+        categoria,
+        sequencia
       },
-      treinos: treinoAtual ? [treinoAtual] : [],
+      treinos,
       treinoAtual,
-      treino_atual,
-      dia
+      treinouHoje,
+      imc: imcDados
     });
 
   } catch (err) {
     console.error(err);
-    return res.render('pages/home', { aluno: null, treinos: [], treinoAtual: null, treino_atual: null, dia: null });
+    return res.render('pages/home', { aluno: null, treinos: [], imc: null });
   }
 };
 
-module.exports = { exibirHome };
+const concluirTreino = async (req, res) => {
+  try {
+    const id = req.session.aluno?.id;
+    if (!id) return res.redirect('/login');
+
+    const treinouHoje = await TreinoHistoricoModel.treinouHoje(id);
+    if (treinouHoje) return res.redirect('/');
+
+    await TreinoHistoricoModel.registrar(id, req.body.treino_nome);
+    return res.redirect('/');
+  } catch (err) {
+    console.error(err);
+    return res.redirect('/');
+  }
+};
+
+module.exports = { exibirHome, concluirTreino };
