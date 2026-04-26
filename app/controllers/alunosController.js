@@ -105,8 +105,10 @@ module.exports = {
       });
     }
 
-    const { nome, email, senha } = req.body;
+    const { nome, email, senha, nasc } = req.body;
 
+    console.log("=== cadastrarAluno ===");
+    console.log("nome:", nome, "email:", email, "nasc:", nasc);
     try {
       const existe = await AlunoModel.findByEmail(email);
 
@@ -127,7 +129,8 @@ module.exports = {
       const novoId = await AlunoModel.create({
         nome,
         email,
-        senha: senhaHash
+        senha: senhaHash,
+        nasc
       });
       req.session.aluno_pendente = novoId;
       const token = jwt.sign(

@@ -13,17 +13,16 @@ const AlunoModel = {
   },
 
   create: async (data) => {
-    const sql = `
-      INSERT INTO aluno
-      (alu_nome, alu_email, alu_senha)
-      VALUES (?, ?, ?)
-    `;
-    const values = [data.nome, data.email, data.senha];
-    const [result] = await pool.query(sql, values);
-    return result.insertId;
-  },
+  const sql = `
+    INSERT INTO aluno
+    (alu_nome, alu_email, alu_senha, alu_nasc)
+    VALUES (?, ?, ?, ?)
+  `;
+  const values = [data.nome, data.email, data.senha, data.nasc || null];
+  const [result] = await pool.query(sql, values);
+  return result.insertId;
+},
 
-  // ← aqui estava o trecho duplicado, removido
 
   login: async (email) => {
     const [rows] = await pool.query(
@@ -57,8 +56,8 @@ const AlunoModel = {
       const hash = await bcrypt.hash(data.senha, 10);
       fields.push("alu_senha = ?");
       values.push(hash);
-    }                    // ← fecha o if senha aqui
-    if (data.foto) {     // ← foto fora do if senha
+    }                    
+    if (data.foto) {    
       fields.push("alu_foto = ?");
       values.push(data.foto);
     }

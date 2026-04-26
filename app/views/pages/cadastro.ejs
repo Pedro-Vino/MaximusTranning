@@ -4,176 +4,147 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
-
     <link rel="stylesheet" href="/css/cadastro.css">
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/erro.css">
-
     <link rel="icon" href="/imagens/LogoSemFgrande.png">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
     <script src="/js/notify.js"></script>
-
     <script src="/js/cadastro.js" defer></script>
 </head>
 
 <body onload="testarSenha()">
 
 <%
-const dadosForm = typeof dados !== 'undefined' ? dados : { nome: "", email: "", senha: "", repsenha: "" };
-
+const dadosForm = typeof dados !== 'undefined' ? dados : { nome: "", email: "", senha: "", repsenha: "", nasc: "" };
 const erroValidacao = { nome:"", email:"", senha:"", repsenha:"", nasc:"" };
 const msgErroPag = { nome:"", email:"", senha:"", repsenha:"", nasc:"" };
+let msgErro = "";
 
 if (typeof erros !== 'undefined' && erros && erros.errors) {
     erros.errors.forEach(function(erro) {
-        if (erro.path === "nome") {
-            erroValidacao.nome = "erro";
-            msgErroPag.nome = erro.msg;
-        }
-        if (erro.path === "email") {
-            erroValidacao.email = "erro";
-            msgErroPag.email = erro.msg;
-        }
-        if (erro.path === "senha") {
-            erroValidacao.senha = "erro";
-            msgErroPag.senha = erro.msg;
-        }
-        if (erro.path === "repsenha") {
-            erroValidacao.repsenha = "erro";
-            msgErroPag.repsenha = erro.msg;
-        }
-        if (erro.path === "nasc") {
-            erroValidacao.nasc = "erro";
-            msgErroPag.nasc = erro.msg;
-        }
+        if (erro.path === "nome")    { erroValidacao.nome    = "erro"; msgErroPag.nome    = erro.msg; msgErro += `* ${erro.msg} <br>`; }
+        if (erro.path === "email")   { erroValidacao.email   = "erro"; msgErroPag.email   = erro.msg; msgErro += `* ${erro.msg} <br>`; }
+        if (erro.path === "senha")   { erroValidacao.senha   = "erro"; msgErroPag.senha   = erro.msg; msgErro += `* ${erro.msg} <br>`; }
+        if (erro.path === "repsenha"){ erroValidacao.repsenha= "erro"; msgErroPag.repsenha= erro.msg; msgErro += `* ${erro.msg} <br>`; }
+        if (erro.path === "nasc")    { erroValidacao.nasc    = "erro"; msgErroPag.nasc    = erro.msg; msgErro += `* ${erro.msg} <br>`; }
     });
 }
 %>
 
-<% if (typeof dadosNotificacao !== 'undefined' && dadosNotificacao) { %>
+<% if (msgErro !== "") { %>
 <script>
-notify(
-"<%= dadosNotificacao.titulo %>",
-"<%= dadosNotificacao.mensagem %>",
-"<%= dadosNotificacao.tipo %>",
-"right bottom"
-)
+window.addEventListener('load', function() {
+    let msgErro = "<%= msgErro %>"
+    notify("Erro(s) no preenchimento",
+        "Verifique o(s) campo(s) <br> " + msgErro.replace(/&lt;/g,"<").replace(/&gt;/g,">"),
+        "error", "right bottom", 5000)
+});
 </script>
 <% } %>
 
-<header>
-<%- include('../partials/navbar'); %>
-</header>
+<% if (typeof dadosNotificacao !== 'undefined' && dadosNotificacao) { %>
+<script>
+window.addEventListener('load', function() {
+    notify("<%= dadosNotificacao.titulo %>","<%= dadosNotificacao.mensagem %>","<%= dadosNotificacao.tipo %>","right bottom")
+});
+</script>
+<% } %>
+
+<header><%- include('../partials/navbar'); %></header>
 
 <main class="main_login">
-
 <section class="container6">
 
-<header class="form-header">
+    <header class="form-header">
+        <article class="divisoria">
+            <img src="/imagens/LogoSemFgrande.png" class="logo">
+            <h1 class="titlelogo">Maximus Tranning</h1>
+        </article>
+        <h1>Cadastre-se</h1>
+    </header>
 
-<article class="divisoria">
-    <img src="/imagens/LogoSemFgrande.png" class="logo">
-    <h1 class="titlelogo">Maximus Tranning</h1>
-</article>
+    <form method="post" action="/cadastrar" id="signup">
 
-<h1>Cadastre-se</h1>
+        <!-- NOME -->
+        <section class="form-group">
+            <label>Nome</label>
+            <input type="text" name="nome" value="<%= dadosForm.nome %>" class="<%= erroValidacao.nome %>" placeholder="Nome de usuário">
+            <span class="spanerro"><%= msgErroPag.nome %></span>
+        </section>
 
-</header>
+        <!-- EMAIL -->
+        <section class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" value="<%= dadosForm.email %>" class="<%= erroValidacao.email %>" placeholder="seuemail@gmail.com">
+            <span class="spanerro"><%= msgErroPag.email %></span>
+        </section>
 
-<form method="post" action="/cadastrar">
+        <!-- DATA DE NASCIMENTO -->
+        <section class="form-group">
+            <label>Data de Nascimento</label>
+            <input type="date" name="nasc" id="datanasc" value="<%= dadosForm.nasc || '' %>" class="<%= erroValidacao.nasc %>">
+            <span class="spanerro"><%= msgErroPag.nasc %></span>
+        </section>
 
-<!-- NOME -->
-<section class="form-group">
-<label>Nome</label>
-<input type="text" name="nome" value="<%= dadosForm.nome %>" class="<%= erroValidacao.nome %>">
-<span class="spanerro"><%= msgErroPag.nome %></span>
+        <!-- SENHA -->
+        <section class="form-group">
+            <div class="content" id="requisitos-senha">
+                <p>Senha deve conter</p>
+                <ul class="requirement-list">
+                    <li id="req-tamanho"><i>●</i><span>ao menos 8 caracteres</span></li>
+                    <li id="req-numero"><i>●</i><span>ao menos 1 número</span></li>
+                    <li id="req-minuscula"><i>●</i><span>ao menos 1 letra minúscula</span></li>
+                    <li id="req-simbolo"><i>●</i><span>ao menos 1 símbolo (@#$...)</span></li>
+                    <li id="req-maiuscula"><i>●</i><span>ao menos 1 letra maiúscula</span></li>
+                </ul>
+            </div>
+            <label>Senha</label>
+            <div class="input-group">
+                <input type="password" name="senha" id="senha" value="<%= dadosForm.senha %>" class="<%= erroValidacao.senha %>" placeholder="Senha">
+                <button type="button" onclick="toggleSenha()" class="toggle-senha-btn1">
+                    <img src="/imagens/fechar-o-olho.png" alt="Mostrar senha" id="iconeSenha" class="icone-olho">
+                </button>
+            </div>
+            <span class="spanerro"><%= msgErroPag.senha %></span>
+
+            <!-- REQUISITOS DE SENHA -->
+            
+        </section>
+
+        <!-- CONFIRMAR SENHA -->
+        <section class="form-group">
+            <label>Confirmar Senha</label>
+            <div class="input-group">
+                <input type="password" name="repsenha" id="repsenha" value="<%= dadosForm.repsenha %>" class="<%= erroValidacao.repsenha %>" placeholder="Repita a senha">
+                <button type="button" onclick="toggleReSenha()" class="toggle-senha-btn2">
+                    <img src="/imagens/fechar-o-olho.png" alt="Mostrar senha" id="iconeSenha2" class="icone-olho2">
+                </button>
+            </div>
+            <span class="spanerro"><%= msgErroPag.repsenha %></span>
+        </section>
+
+        <footer class="form-footer">
+            <button type="submit" id="enviar_login" onclick="mostrarCarregando()">CADASTRAR</button>
+            <div id="loading" style="display:none; text-align:center; margin-top:16px;">
+                <p style="color: var(--cinza_claro); font-size:14px;">⏳ Enviando email de ativação...</p>
+            </div>
+            <nav>
+                <a href="/login">Já tem conta? <b>Entrar</b></a>
+            </nav>
+        </footer>
+
+    </form>
 </section>
-
-<!-- EMAIL -->
-<section class="form-group">
-<label>Email</label>
-<input type="email" name="email" value="<%= dadosForm.email %>" class="<%= erroValidacao.email %>">
-<span class="spanerro"><%= msgErroPag.email %></span>
-</section>
-
-<!-- SENHA -->
-<section class="form-group">
-<label>Senha</label>
-
-<div class="input-group">
-<input type="password" name="senha" id="senha" value="<%= dadosForm.senha %>" class="<%= erroValidacao.senha %>">
- <button type="button" onclick="toggleSenha()" class="toggle-senha-btn1">
-        <img src="/imagens/fechar-o-olho.png" alt="Mostrar senha" id="iconeSenha" class="icone-olho">
-    </button></div>
-
-<span class="spanerro"><%= msgErroPag.senha %></span>
-</section>
-
-<!-- REPSENHA -->
-<section class="form-group">
-<label>Confirmar Senha</label>
-
-<div class="input-group2">
-<input type="password" name="repsenha" id="repsenha" value="<%= dadosForm.repsenha %>" class="<%= erroValidacao.repsenha %>">
- <button type="button" onclick="toggleReSenha()" class="toggle-senha-btn2">
-        <img src="/imagens/fechar-o-olho.png" alt="Mostrar senha" id="iconeSenha2" class="icone-olho2">
-    </button></div>
-
-<span class="spanerro"><%= msgErroPag.repsenha %></span>
-</section>
-
-<footer class="form-footer">
-<button type="submit" id="enviar_login" onclick="mostrarCarregando()">CADASTRAR</button>
-
-<div id="loading" style="display:none; text-align:center; margin-top:16px;">
-  <p style="color: var(--cinza_claro); font-size:14px;">⏳ Enviando email de ativação...</p>
-</div>
-
-<script>
-function mostrarCarregando() {
-  setTimeout(() => {
-    const btn = document.getElementById('enviar_login');
-    const loading = document.getElementById('loading');
-    btn.disabled = true;
-    btn.textContent = 'AGUARDE...';
-    btn.style.opacity = '0.7';
-    loading.style.display = 'block';
-  }, 100);
-}
-</script>
-
-<nav>
-<a href="/login">Já tem conta? <b>Entrar</b></a>
-</nav>
-</footer>
-
-</form>
-
-</section>
-
 </main>
 
 <%- include('../partials/footer'); %>
 
 <script>
 function toggleSenha() {
-    const s = document.getElementById("senha");
-    s.type = s.type === "password" ? "text" : "password";
-}
-
-function toggleReSenha() {
-    const s = document.getElementById("repsenha");
-    s.type = s.type === "password" ? "text" : "password";
-}
-</script>
-
-<script>
-function toggleSenha() {
     const input = document.getElementById("senha");
     const icone = document.getElementById("iconeSenha");
-
     if (input.type === "password") {
         input.type = "text";
         icone.src = "/imagens/abrir-o-olho.png";
@@ -182,13 +153,10 @@ function toggleSenha() {
         icone.src = "/imagens/fechar-o-olho.png";
     }
 }
-</script>
 
-<script>
 function toggleReSenha() {
     const input = document.getElementById("repsenha");
     const icone = document.getElementById("iconeSenha2");
-
     if (input.type === "password") {
         input.type = "text";
         icone.src = "/imagens/abrir-o-olho.png";
@@ -196,6 +164,43 @@ function toggleReSenha() {
         input.type = "password";
         icone.src = "/imagens/fechar-o-olho.png";
     }
+}
+
+function mostrarCarregando() {
+    setTimeout(() => {
+        const btn = document.getElementById('enviar_login');
+        const loading = document.getElementById('loading');
+        btn.disabled = true;
+        btn.textContent = 'AGUARDE...';
+        btn.style.opacity = '0.7';
+        loading.style.display = 'block';
+    }, 100);
+}
+
+// Validador de senha em tempo real
+function testarSenha() {
+    const senhaInput = document.getElementById('senha');
+    if (!senhaInput) return;
+
+    senhaInput.addEventListener('input', function() {
+        const senha = this.value;
+
+        const regras = {
+            'req-tamanho':  senha.length >= 8,
+            'req-numero':   /\d/.test(senha),
+            'req-minuscula':/[a-z]/.test(senha),
+            'req-simbolo':  /[@#$%^&*!]/.test(senha),
+            'req-maiuscula':/[A-Z]/.test(senha),
+        };
+
+        Object.entries(regras).forEach(([id, valido]) => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.style.color = valido ? '#CB0D01' : '';
+                el.querySelector('i').style.color = valido ? '#CB0D01' : '';
+            }
+        });
+    });
 }
 </script>
 
