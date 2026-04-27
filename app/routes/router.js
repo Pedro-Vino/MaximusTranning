@@ -74,7 +74,6 @@ router.post('/resetar-senha',
   verificar(alunosController.resetarSenha)
 );
 
-router.post('/treino/concluir', authMiddleware, verificar(progressoController.concluirTreino));
 
 router.get('/contato', (req, res) => {
     res.render('pages/contato', { dadosNotificacao: null });

@@ -79,7 +79,7 @@
                         const dias = ['DOMINGO','SEGUNDA-FEIRA','TERÇA-FEIRA','QUARTA-FEIRA','QUINTA-FEIRA','SEXTA-FEIRA','SÁBADO'];
                         const hoje = new Date();
                         const treinos_seq = ['A','B','C'];
-                        const treino_atual_idx = treinos_seq.indexOf(aluno.treino || 'A');
+                        const treino_atual_idx = treinos_seq.indexOf(aluno.treino) - 1;
                     %>
                     <% for(let i = 1; i <= 2; i++) { %>
                     <%

@@ -1,7 +1,7 @@
 const AlunoModel = require('../models/model-aluno');
 const imcModel = require('../models/model-imc');
 const TreinoModel = require('../models/model-treino');
-const TreinoHistoricoModel = require('../models/model-treino-historico');
+const ProgressoModel = require('../models/model-progresso'); // ← trocado
 
 const exibirHome = async (req, res) => {
   try {
@@ -21,11 +21,10 @@ const exibirHome = async (req, res) => {
       treinos = await TreinoModel.findByCategoria(categoria);
     }
 
-    const treinouHoje = await TreinoHistoricoModel.treinouHoje(aluno.alu_id);
-    const ultimoTreino = await TreinoHistoricoModel.ultimoTreino(aluno.alu_id);
-    const sequencia = await TreinoHistoricoModel.sequenciaDias(aluno.alu_id);
+    const treinouHoje = await ProgressoModel.treinouHoje(aluno.alu_id);
+    const ultimoTreino = await ProgressoModel.ultimoTreino(aluno.alu_id);
+    const sequencia = await ProgressoModel.sequenciaDias(aluno.alu_id);
 
-    // define qual treino mostrar hoje (rotação A→B→C)
     const seq = ['A', 'B', 'C'];
     const ultimoIdx = ultimoTreino ? seq.indexOf(ultimoTreino.treino_nome) : -1;
     const treinoHoje = seq[(ultimoIdx + 1) % 3];
@@ -55,13 +54,16 @@ const exibirHome = async (req, res) => {
 
 const concluirTreino = async (req, res) => {
   try {
-    const id = req.session.aluno?.id;
+    const aluno = req.session.aluno; 
+    const id = aluno?.alu_id || aluno?.id;
     if (!id) return res.redirect('/login');
 
-    const treinouHoje = await TreinoHistoricoModel.treinouHoje(id);
+    const treinouHoje = await ProgressoModel.treinouHoje(id);
     if (treinouHoje) return res.redirect('/');
 
-    await TreinoHistoricoModel.registrar(id, req.body.treino_nome);
+    // passa categoria junto agora que a tabela exige
+    const categoria = req.body.categoria;
+    await ProgressoModel.registrar(id, req.body.treino_nome, categoria);
     return res.redirect('/');
   } catch (err) {
     console.error(err);

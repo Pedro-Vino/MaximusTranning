@@ -51,6 +51,7 @@
         <% if (!treinouHoje) { %>
           <form action="/concluir-treino" method="POST">
             <input type="hidden" name="treino_nome" value="<%= treinoAtual.nome %>">
+            <input type="hidden" name="categoria" value="<%= aluno.categoria %>">
             <button type="submit" class="btn-concluir">
               CONCLUIR TREINO <%= treinoAtual.nome %>
               <span>próximo: Treino <%= treinoAtual.nome === 'C' ? 'A (novo ciclo)' : treinoAtual.nome === 'A' ? 'B' : 'C' %></span>
