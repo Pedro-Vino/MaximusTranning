@@ -27,7 +27,12 @@ const exibirHome = async (req, res) => {
 
     const seq = ['A', 'B', 'C'];
     const ultimoIdx = ultimoTreino ? seq.indexOf(ultimoTreino.treino_nome) : -1;
-    const treinoHoje = seq[(ultimoIdx + 1) % 3];
+
+    // se já treinou hoje, mostra o treino de hoje mesmo (não avança)
+    // se não treinou hoje, avança pro próximo
+    const treinoHoje = treinouHoje
+      ? seq[ultimoIdx]
+      : seq[(ultimoIdx + 1) % 3];
     const treinoAtual = treinos.find(t => t.nome === treinoHoje) || treinos[0];
 
     return res.render('pages/home', {
