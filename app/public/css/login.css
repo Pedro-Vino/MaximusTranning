@@ -221,8 +221,8 @@ input {
 }
 
 .input-group input:focus {
-    border-bottom: 2px solid var(--principal);
-    box-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+    border-bottom: 2px solid var(--vermelho);
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.575);
     transition: all 0.3s ease;
 }    
 

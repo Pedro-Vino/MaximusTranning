@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -41,10 +41,20 @@
                 <div class="form-group">
                     <label>Nova senha</label>
                     <input type="password" name="senha" id="senha" placeholder="Nova senha" required>
+                
+                    <button type="button" onclick="toggleSenha()" class="toggle-senha-btn1">
+                         <img src="/imagens/fechar-o-olho.png" alt="Mostrar senha" id="iconeSenha" class="icone-olho">
+                    </button>
+                
                 </div>
                 <div class="form-group">
                     <label>Confirmar senha</label>
                     <input type="password" name="repsenha" id="repsenha" placeholder="Confirme a senha" required>
+                
+                    <button type="button" onclick="toggleReSenha()" class="toggle-senha-btn2">
+                         <img src="/imagens/fechar-o-olho.png" alt="Mostrar senha" id="iconeSenha2" class="icone-olho2">
+                     </button>
+
                 </div>
 
                 <button type="submit" id="enviar_login">SALVAR NOVA SENHA</button>
@@ -57,5 +67,36 @@
             </div>
         </div>
     </main>
+
+<script>
+function toggleSenha() {
+    const input = document.getElementById("senha");
+    const icone = document.getElementById("iconeSenha");
+
+    if (input.type === "password") {
+        input.type = "text";
+        icone.src = "/imagens/abrir-o-olho.png";
+    } else {
+        input.type = "password";
+        icone.src = "/imagens/fechar-o-olho.png";
+    }
+}
+</script>
+
+    <script>
+function toggleReSenha() {
+    const input = document.getElementById("repsenha");
+    const icone = document.getElementById("iconeSenha2");
+
+    if (input.type === "password") {
+        input.type = "text";
+        icone.src = "/imagens/abrir-o-olho.png";
+    } else {
+        input.type = "password";
+        icone.src = "/imagens/fechar-o-olho.png";
+    }
+}
+</script>
+
 </body>
 </html>
