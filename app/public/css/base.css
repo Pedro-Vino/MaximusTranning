@@ -256,3 +256,54 @@ header {
     text-align: center;
   }
 }
+/* MENU HAMBURGUER */
+.menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--branco);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    .navnavbar {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        left: 0;
+        background: #111;
+        padding: 20px;
+        z-index: 999;
+        border-top: 1px solid #222;
+    }
+
+    .navnavbar.menu-aberto {
+        display: flex;
+    }
+
+    .menu-links {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .navbar-usuario {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .containernavbar {
+        position: relative;
+    }
+}
