@@ -1,6 +1,12 @@
 <head>
     <link rel="stylesheet" href="/css/base.css">
-    <script src="temas.js"></script>
+    <!-- aplica tema ANTES de renderizar para evitar flash -->
+    <script>
+        (function() {
+            const tema = localStorage.getItem('tema');
+            if (tema === 'claro') document.documentElement.setAttribute('data-tema', 'claro');
+        })();
+    </script>
 </head>
 <header>
   <section class="containernavbar">
@@ -17,7 +23,6 @@
         <a href="/contato">Contato</a>
       </article>
 
-      <!-- BOTÃO MODO CLARO/ESCURO -->
       <button class="btn-tema" id="btn-tema" onclick="toggleTema()" title="Alternar tema">
         <span id="tema-icone">☀️</span>
       </button>
@@ -36,3 +41,32 @@
     </nav>
   </section>
 </header>
+
+<script>
+function toggleMenu() {
+    document.querySelector('.navnavbar').classList.toggle('ativo');
+}
+
+function toggleTema() {
+    const html = document.documentElement;
+    const icone = document.getElementById('tema-icone');
+    const temaAtual = html.getAttribute('data-tema');
+
+    if (temaAtual === 'claro') {
+        html.removeAttribute('data-tema');
+        icone.textContent = '☀️';
+        localStorage.setItem('tema', 'escuro');
+    } else {
+        html.setAttribute('data-tema', 'claro');
+        icone.textContent = '🌙';
+        localStorage.setItem('tema', 'claro');
+    }
+}
+
+// atualiza ícone após DOM carregar
+document.addEventListener('DOMContentLoaded', function() {
+    const tema = localStorage.getItem('tema');
+    const icone = document.getElementById('tema-icone');
+    if (icone && tema === 'claro') icone.textContent = '🌙';
+});
+</script>
