@@ -1,0 +1,211 @@
+/* BOTÃO FLUTUANTE */
+
+#chat-toggle{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+
+  width: 60px;
+  height: 60px;
+
+  border-radius: 50%;
+
+  background: #d40000;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 28px;
+
+  cursor: pointer;
+
+  z-index: 9999;
+
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+
+  transition: 0.3s;
+}
+
+#chat-toggle:hover{
+  transform: scale(1.1);
+}
+
+/* CHAT */
+
+#chatbot{
+  position: fixed;
+
+  bottom: 90px;
+  right: 20px;
+
+  width: 320px;
+  height: 420px;
+
+  background: #111;
+
+  border-radius: 15px;
+
+  overflow: hidden;
+
+  display: none;
+  flex-direction: column;
+
+  z-index: 9999;
+
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+
+  animation: abrirChat 0.3s ease;
+}
+
+@keyframes abrirChat{
+  from{
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* HEADER */
+
+#chat-header{
+  background: #d40000;
+  color: white;
+
+  padding: 15px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-weight: bold;
+}
+
+/* FECHAR */
+
+#fechar-chat{
+  background: transparent;
+  border: none;
+
+  color: white;
+
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+/* BODY */
+
+#chat-body{
+  flex: 1;
+
+  padding: 10px;
+
+  overflow-y: auto;
+
+  color: white;
+
+  font-size: 14px;
+}
+
+/* INPUT */
+
+#chat-input{
+  border: none;
+  outline: none;
+
+  padding: 15px;
+
+  background: #222;
+  color: white;
+}
+
+/* BOTÕES */
+
+#quick-buttons{
+  display: flex;
+  gap: 10px;
+
+  margin-bottom: 15px;
+
+  flex-wrap: wrap;
+}
+
+#quick-buttons button{
+  background: #d40000;
+
+  border: none;
+
+  color: white;
+
+  padding: 8px 12px;
+
+  border-radius: 20px;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+#quick-buttons button:hover{
+  background: #ff1e1e;
+}
+
+/* MENSAGEM USUÁRIO */
+
+.msg-user{
+  text-align: right;
+
+  margin: 10px 0;
+
+  background: #d40000;
+
+  padding: 10px;
+
+  border-radius: 10px;
+
+  width: fit-content;
+
+  margin-left: auto;
+
+  max-width: 80%;
+}
+
+/* MENSAGEM BOT */
+
+.msg-bot{
+  text-align: left;
+
+  margin: 10px 0;
+
+  background: #222;
+
+  padding: 10px;
+
+  border-radius: 10px;
+
+  width: fit-content;
+
+  max-width: 80%;
+}
+
+small{
+  opacity: 0.7;
+}
+
+/* RESPONSIVO */
+
+@media(max-width: 500px){
+
+  #chatbot{
+    width: 90%;
+    right: 5%;
+    height: 70vh;
+  }
+
+}

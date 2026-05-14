@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Suporte</title>
+
+<style>
+
+body{
+    background: #000;
+    color: white;
+    font-family: Arial;
+}
+
+#chatbot{
+
+    width: 400px;
+
+    margin: 50px auto;
+
+    background: #111;
+
+    border-radius: 10px;
+
+    padding: 15px;
+}
+
+#chat-header{
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+    margin-bottom: 15px;
+}
+
+#chat-body{
+
+    height: 300px;
+
+    overflow-y: auto;
+
+    background: #222;
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    margin-bottom: 10px;
+}
+
+#chat-input{
+
+    width: 100%;
+
+    padding: 10px;
+
+    border: none;
+
+    border-radius: 5px;
+}
+
+.msg-user{
+
+    color: #00ff88;
+
+    margin-bottom: 10px;
+}
+
+.msg-bot{
+
+    color: white;
+
+    margin-bottom: 10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<%- include('../partials/navbar'); %>
+
+<div id="chatbot">
+
+    <div id="chat-header">
+        💬 Suporte Maximus
+    </div>
+
+    <div id="chat-body"></div>
+
+    <input
+        type="text"
+        id="chat-input"
+        placeholder="Digite sua dúvida..."
+    >
+
+</div>
+
+<script>
+
+const input = document.getElementById("chat-input");
+
+const body = document.getElementById("chat-body");
+
+input.addEventListener("keypress", async function(e){
+
+    if(e.key === "Enter"){
+
+        const mensagem = input.value;
+
+        if(mensagem == ""){
+            return;
+        }
+
+        // mensagem usuário
+        body.innerHTML += `
+
+            <p class="msg-user">
+                <b>Você:</b> ${mensagem}
+            </p>
+
+        `;
+
+        // envia para backend
+        const resposta = await fetch("/chat", {
+
+            method: "POST",
+
+            headers:{
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                mensagem: mensagem
+            })
+
+        });
+
+        const dados = await resposta.json();
+
+        // resposta bot
+        body.innerHTML += `
+
+            <p class="msg-bot">
+                <b>Bot:</b> ${dados.resposta}
+            </p>
+
+        `;
+
+        input.value = "";
+
+        body.scrollTop = body.scrollHeight;
+    }
+
+});
+
+</script>
+
+</body>
+</html>
