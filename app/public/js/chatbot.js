@@ -15,7 +15,7 @@ chatToggle.addEventListener("click", () => {
 
     body.innerHTML += `
       <div class="msg-bot">
-        <b>🤖 Suporte:</b><br>
+        <b> Suporte:</b><br>
         Olá 👋<br>
         Bem-vindo ao suporte Maximus Training.<br>
         Como posso ajudar?
@@ -77,7 +77,7 @@ input.addEventListener("keypress", async function(e){
 
     body.innerHTML += `
       <div class="msg-bot" id="digitando">
-        🤖 Digitando...
+         Digitando...
       </div>
     `;
 
@@ -105,7 +105,7 @@ input.addEventListener("keypress", async function(e){
 
     body.innerHTML += `
       <div class="msg-bot">
-        <b>🤖 Bot:</b> ${dados.resposta}
+        <b> Bot:</b> ${dados.resposta}
         <br>
         <small>${hora}</small>
       </div>

@@ -19,6 +19,8 @@ body{
     font-family: Arial;
 }
 
+/* CHAT */
+
 #chatbot{
 
     width: 400px;
@@ -27,10 +29,14 @@ body{
 
     background: #111;
 
-    border-radius: 10px;
+    border-radius: 15px;
 
     padding: 15px;
+
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
+
+/* HEADER */
 
 #chat-header{
 
@@ -39,46 +45,136 @@ body{
     font-weight: bold;
 
     margin-bottom: 15px;
+
+    color: #fff;
 }
+
+/* BODY */
 
 #chat-body{
 
-    height: 300px;
+    height: 350px;
 
     overflow-y: auto;
 
-    background: #222;
+    background: #1a1a1a;
 
-    padding: 10px;
+    padding: 15px;
 
-    border-radius: 10px;
+    border-radius: 12px;
 
     margin-bottom: 10px;
 }
+
+/* INPUT */
 
 #chat-input{
 
     width: 100%;
 
-    padding: 10px;
+    padding: 12px;
 
     border: none;
 
-    border-radius: 5px;
-}
+    border-radius: 10px;
 
-.msg-user{
-
-    color: #00ff88;
-
-    margin-bottom: 10px;
-}
-
-.msg-bot{
+    background: #222;
 
     color: white;
 
-    margin-bottom: 10px;
+    outline: none;
+
+    font-size: 14px;
+
+    box-sizing: border-box;
+}
+
+#chat-input::placeholder{
+    color: #999;
+}
+
+/* MENSAGEM USUÁRIO */
+
+.msg-user{
+
+    background: #d40000;
+
+    color: white;
+
+    padding: 12px;
+
+    border-radius: 15px 15px 0 15px;
+
+    margin: 12px 0;
+
+    width: fit-content;
+
+    max-width: 80%;
+
+    margin-left: auto;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+
+}
+
+/* MENSAGEM BOT */
+
+.msg-bot{
+
+    background: #242424;
+
+    color: white;
+
+    padding: 12px;
+
+    border-radius: 15px 15px 15px 0;
+
+    margin: 12px 0;
+
+    width: fit-content;
+
+    max-width: 80%;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    border: 1px solid #333;
+
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+
+}
+
+/* HORÁRIO */
+
+.msg-user small,
+.msg-bot small{
+
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 11px;
+
+    opacity: 0.7;
+
+}
+
+/* RESPONSIVO */
+
+@media(max-width: 500px){
+
+    #chatbot{
+
+        width: 90%;
+
+        margin: 20px auto;
+    }
+
 }
 
 </style>
@@ -95,7 +191,21 @@ body{
         💬 Suporte Maximus
     </div>
 
-    <div id="chat-body"></div>
+    <div id="chat-body">
+
+        <div class="msg-bot">
+            👋 Olá!<br>
+            Bem-vindo ao suporte da Maximus Training.<br><br>
+
+            Você pode perguntar sobre:<br>
+            • Login<br>
+            • Cadastro<br>
+            • IMC<br>
+            • Treinos<br>
+            • Perfil
+        </div>
+
+    </div>
 
     <input
         type="text"
@@ -117,18 +227,44 @@ input.addEventListener("keypress", async function(e){
 
         const mensagem = input.value;
 
-        if(mensagem == ""){
+        if(mensagem.trim() == ""){
             return;
         }
+
+        // horário
+        const hora = new Date().toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
 
         // mensagem usuário
         body.innerHTML += `
 
-            <p class="msg-user">
-                <b>Você:</b> ${mensagem}
-            </p>
+            <div class="msg-user">
+
+                <b>Você:</b><br>
+                ${mensagem}
+
+                <small>${hora}</small>
+
+            </div>
 
         `;
+
+        input.value = "";
+
+        body.scrollTop = body.scrollHeight;
+
+        // digitando
+        body.innerHTML += `
+
+            <div class="msg-bot" id="digitando">
+                 Digitando...
+            </div>
+
+        `;
+
+        body.scrollTop = body.scrollHeight;
 
         // envia para backend
         const resposta = await fetch("/chat", {
@@ -145,18 +281,27 @@ input.addEventListener("keypress", async function(e){
 
         });
 
+        // delay fake
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
         const dados = await resposta.json();
+
+        // remove digitando
+        document.getElementById("digitando").remove();
 
         // resposta bot
         body.innerHTML += `
 
-            <p class="msg-bot">
-                <b>Bot:</b> ${dados.resposta}
-            </p>
+            <div class="msg-bot">
+
+                <b> Bot:</b><br>
+                ${dados.resposta}
+
+                <small>${hora}</small>
+
+            </div>
 
         `;
-
-        input.value = "";
 
         body.scrollTop = body.scrollHeight;
     }
