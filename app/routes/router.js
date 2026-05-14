@@ -20,6 +20,7 @@ function verificar(fn) {
 
 router.use((req, res, next) => {
   res.locals.aluno = req.session.aluno || null;
+  res.locals.paginaAtual = req.path;
   next();
 });
 
