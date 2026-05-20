@@ -16,12 +16,12 @@ function responderMensagem(mensagem) {
   // LOGIN
   if (/login|entrar|acessar|nao consigo entrar|erro ao entrar/.test(mensagem)) {
     if (/esqueci|nao lembro|recuperar|redefinir|resetar/.test(mensagem)) {
-      return "Para recuperar sua senha acesse <b>/recuperar-senha</b> ou clique em <b>Esqueci minha senha</b> na tela de login. Você receberá um link por email! 📧";
+      return "Para recuperar sua senha acesse <b>/recuperar-senha</b> ou clique em <b>Esqueci minha senha</b> na tela de login. Você receberá um link por email! ";
     }
     if (/erro|nao consigo|problema/.test(mensagem)) {
-      return "Problemas para entrar? Verifique email e senha. Se sua conta não foi ativada, confira seu email (incluindo spam). Se persistir, acesse <b>/recuperar-senha</b>! 🔑";
+      return "Problemas para entrar? Verifique email e senha. Se sua conta não foi ativada, confira seu email (incluindo spam). Se persistir, acesse <b>/recuperar-senha</b>! ";
     }
-    return "Para acessar sua conta clique em <b>Conta</b> no topo do site → faça login com email e senha. Sua conta precisa estar ativada pelo email! 🔐";
+    return "Para acessar sua conta clique em <b>Conta</b> no topo do site → faça login com email e senha. Sua conta precisa estar ativada pelo email! ";
   }
 
   // CADASTRO
@@ -31,18 +31,18 @@ function responderMensagem(mensagem) {
 
   // ATIVAÇÃO DE CONTA
   if (/ativar|ativacao|ativação|email de ativacao|nao recebi|confirmar conta|aguardar/.test(mensagem)) {
-    return "Após o cadastro e cálculo do IMC, enviamos um email de ativação. Verifique sua caixa de entrada e a pasta de <b>spam</b>. Clique no link para ativar! 📬";
+    return "Após o cadastro e cálculo do IMC, enviamos um email de ativação. Verifique sua caixa de entrada e a pasta de <b>spam</b>. Clique no link para ativar! ";
   }
 
   // IMC
   if (/imc|indice de massa|massa corporal|peso ideal|calcular imc/.test(mensagem)) {
     if (/o que e|significa|significado/.test(mensagem)) {
-      return "IMC = peso ÷ altura². Categorias:<br>• Abaixo de 18,5 → abaixo do peso<br>• 18,5 a 24,9 → peso ideal<br>• Acima de 25 → sobrepeso 📊";
+      return "IMC = peso ÷ altura². Categorias:<br>• Abaixo de 18,5 → abaixo do peso<br>• 18,5 a 24,9 → peso ideal<br>• Acima de 25 → sobrepeso ";
     }
     if (/como|onde|calcular|atualizar/.test(mensagem)) {
-      return "Calcule seu IMC em <b>/imc</b> no menu. Digite peso (kg) e altura (cm). Também pode atualizar em <b>Editar Perfil</b>! 📏";
+      return "Calcule seu IMC em <b>/imc</b> no menu. Digite peso (kg) e altura (cm). Também pode atualizar em <b>Editar Perfil</b>! ";
     }
-    return "Seu IMC define seu plano de treinos personalizado! Acesse <b>/imc</b> para calcular ou atualizar. Os treinos mudam automaticamente conforme seu IMC! 💪";
+    return "Seu IMC define seu plano de treinos personalizado! Acesse <b>/imc</b> para calcular ou atualizar. Os treinos mudam automaticamente conforme seu IMC! ";
   }
 
   // TREINOS
@@ -59,7 +59,7 @@ function responderMensagem(mensagem) {
     if (/proximo|próximo|amanha|amanhã/.test(mensagem)) {
       return "Seus próximos treinos aparecem no seu <b>Perfil</b>! Os treinos rodam em ciclo A → B → C → A... Um por dia. 📅";
     }
-    return "Seus treinos aparecem na <b>página inicial</b> após o login. São personalizados pelo IMC e alternam entre A, B e C diariamente. 💪";
+    return "Seus treinos aparecem na <b>página inicial</b> após o login. São personalizados pelo IMC e alternam entre A, B e C diariamente. ";
   }
 
   // PROGRESSO
@@ -69,12 +69,12 @@ function responderMensagem(mensagem) {
 
   // PERFIL
   if (/perfil|editar perfil|meus dados|atualizar dados/.test(mensagem)) {
-    return "Para editar seu perfil: clique na sua <b>foto na navbar → Perfil → ícone de editar</b>. Você pode alterar nome, email, foto, peso, altura e senha! ✏️";
+    return "Para editar seu perfil: clique na sua <b>foto na navbar → Perfil → ícone de editar</b>. Você pode alterar nome, email, foto, peso, altura e senha! ";
   }
 
   // FOTO
   if (/foto|imagem|avatar|foto de perfil|trocar foto/.test(mensagem)) {
-    return "Para trocar sua foto: <b>Editar Perfil → clique na foto → escolha uma imagem → recorte → salve</b>. Formatos aceitos: JPG, PNG, WEBP (máx. 5MB)! 📸";
+    return "Para trocar sua foto: <b>Editar Perfil → clique na foto → escolha uma imagem → recorte → salve</b>. Formatos aceitos: JPG, PNG, WEBP (máx. 5MB)! ";
   }
 
   // SENHA
@@ -82,17 +82,17 @@ function responderMensagem(mensagem) {
     if (/trocar|alterar|mudar|atualizar/.test(mensagem)) {
       return "Para trocar sua senha: <b>Editar Perfil → campo Nova senha → preencha e confirme → salve</b>. A senha precisa ter letras maiúsculas, minúsculas, números e símbolos! 🔒";
     }
-    return "Esqueceu a senha? Acesse <b>/recuperar-senha</b> ou clique em <b>Esqueci minha senha</b> no login. Você receberá um link por email para redefinir! 📧";
+    return "Esqueceu a senha? Acesse <b>/recuperar-senha</b> ou clique em <b>Esqueci minha senha</b> no login. Você receberá um link por email para redefinir! ";
   }
 
   // CONTATO
   if (/contato|suporte humano|atendimento|telefone|whatsapp/.test(mensagem)) {
-    return "📞 WhatsApp: (11) 99987-3264<br>✉️ Email: pedro.ns@uni9.edu.br<br>📍 UNINOVE Campus Memorial — Barra Funda, SP<br>Ou acesse <b>/contato</b> no menu!";
+    return " WhatsApp: (11) 99987-3264<br>✉️ Email: pedro.ns@uni9.edu.br<br>📍 UNINOVE Campus Memorial — Barra Funda, SP<br>Ou acesse <b>/contato</b> no menu!";
   }
 
   // ENDEREÇO
   if (/endereco|endereço|onde fica|localizacao|como chegar|barra funda|uninove/.test(mensagem)) {
-    return "🏋️ <b>UNINOVE — Campus Memorial (Prédio D)</b><br>Rua Deputado Salvador Julianelli, s/n<br>Barra Funda, São Paulo - SP<br>Acesse <b>/contato</b> para ver o mapa! 📍";
+    return " <b>UNINOVE — Campus Memorial (Prédio D)</b><br>Rua Deputado Salvador Julianelli, s/n<br>Barra Funda, São Paulo - SP<br>Acesse <b>/contato</b> para ver o mapa! 📍";
   }
 
   // HORÁRIOS
@@ -102,7 +102,7 @@ function responderMensagem(mensagem) {
 
   // PLANOS
   if (/plano|planos|mensalidade|preco|preço|valor|quanto custa/.test(mensagem)) {
-    return "Para conhecer nossos planos e valores acesse <b>/planos</b> no menu! Temos opções para todos os objetivos. 💰";
+    return "Para conhecer nossos planos e valores acesse <b>/planos</b> no menu! Temos opções para todos os objetivos. ";
   }
 
   // NOSSA PROPOSTA
