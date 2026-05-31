@@ -88,7 +88,7 @@ URL_BASE = https://localhost:3000
 ## ▶️ Executando o projeto
 
 ```bash
-npm start ou node app
+node app
 ```
 
 O sistema estará disponível em:
@@ -116,7 +116,7 @@ routes/      → rotas do Express
 
 ## 📧 Contato
 
-Email:
+Email: trainningmaximus@gmail.com
 
 ---
 
