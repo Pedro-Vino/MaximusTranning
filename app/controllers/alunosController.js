@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const { enviarEmail } = require("../helpers/email");
+const { salvarFotoPerfil } = require("../helpers/imagemPerfil");
 const imcModel = require('../models/model-imc');
 
 
@@ -326,7 +327,8 @@ gravarPerfil: async (req, res) => {
     }
 
     if (req.file) {
-      dadosForm.foto = `imagens/alunos/${req.file.filename}`;
+      const alunoAtual = await AlunoModel.findId(id);
+      dadosForm.foto = await salvarFotoPerfil(req.file.buffer, id, alunoAtual?.alu_foto);
     }
 
     await AlunoModel.update(id, dadosForm);

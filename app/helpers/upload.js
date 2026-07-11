@@ -1,18 +1,8 @@
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const dir = 'app/public/imagens/alunos';
-        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-        cb(null, dir);
-    },
-    filename: (req, file, cb) => {
-        const ext = path.extname(file.originalname);
-        cb(null, `perfil_${Date.now()}${ext}`);
-    }
-});
+// Guarda o arquivo em memória (buffer) em vez de gravar no disco direto.
+// O processamento/compressão (ver helpers/imagemPerfil.js) é quem grava o arquivo final.
+const storage = multer.memoryStorage();
 
 const upload = multer({
     storage,

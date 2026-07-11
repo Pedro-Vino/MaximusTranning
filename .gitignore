@@ -1,3 +1,8 @@
 node_modules/
 .env
 package-lock.json
+
+# Fotos de perfil enviadas pelos alunos: ficam salvas no servidor,
+# mas não devem ser versionadas no git (cresceria o repositório indefinidamente).
+app/public/imagens/alunos/*
+!app/public/imagens/alunos/default_user.png
