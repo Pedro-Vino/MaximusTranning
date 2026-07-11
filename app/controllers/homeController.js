@@ -1,7 +1,7 @@
 const AlunoModel = require('../models/model-aluno');
 const imcModel = require('../models/model-imc');
-const TreinoModel = require('../models/model-treino');
 const ProgressoModel = require('../models/model-progresso'); // ← trocado
+const { obterTreinoAtual } = require('../helpers/treinoAtual');
 
 const exibirHome = async (req, res) => {
   try {
@@ -12,28 +12,8 @@ const exibirHome = async (req, res) => {
     const aluno = await AlunoModel.findByEmail(req.session.aluno.email);
     const imcDados = await imcModel.findByAluno(aluno.alu_id);
 
-    let treinos = [];
-    let categoria = null;
-
-    if (imcDados) {
-      const imcValor = Number(imcDados.imc);
-      categoria = imcValor < 18.5 ? 'abaixo' : imcValor < 25 ? 'ideal' : 'acima';
-      treinos = await TreinoModel.findByCategoria(categoria);
-    }
-
-    const treinouHoje = await ProgressoModel.treinouHoje(aluno.alu_id);
-    const ultimoTreino = await ProgressoModel.ultimoTreino(aluno.alu_id);
+    const { treinoAtual, categoria, treinouHoje } = await obterTreinoAtual(aluno.alu_id);
     const sequencia = await ProgressoModel.sequenciaDias(aluno.alu_id);
-
-    const seq = ['A', 'B', 'C'];
-    const ultimoIdx = ultimoTreino ? seq.indexOf(ultimoTreino.treino_nome) : -1;
-
-    // se já treinou hoje, mostra o treino de hoje mesmo (não avança)
-    // se não treinou hoje, avança pro próximo
-    const treinoHoje = treinouHoje
-      ? seq[ultimoIdx]
-      : seq[(ultimoIdx + 1) % 3];
-    const treinoAtual = treinos.find(t => t.nome === treinoHoje) || treinos[0];
 
     return res.render('pages/home', {
       aluno: {
@@ -45,7 +25,6 @@ const exibirHome = async (req, res) => {
         categoria,
         sequencia
       },
-      treinos,
       treinoAtual,
       treinouHoje,
       imc: imcDados

@@ -253,6 +253,15 @@ module.exports = {
       [pesoNumerico, pesoNumerico, aluno.alu_id]
     );
 
+    let dadosNotificacao = null;
+    if (req.query.semTreino) {
+      dadosNotificacao = {
+        titulo: "Sem treino disponível",
+        mensagem: "Calcule seu IMC para receber um treino personalizado antes de baixar o PDF.",
+        tipo: "warning"
+      };
+    }
+
     res.render("pages/perfil", {
       aluno: {
         id: aluno.alu_id,
@@ -269,7 +278,7 @@ module.exports = {
         treino: treino_atual,
         calorias
       },
-      dadosNotificacao: null
+      dadosNotificacao
     });
 
   } catch (err) {

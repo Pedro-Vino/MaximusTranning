@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Treino <%= treino.nome %> - <%= aluno.nome %></title>
+  <style>
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+      color: #1a1a1a;
+      padding: 18mm 16mm;
+    }
+
+    .cabecalho {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px solid #CB0D01;
+      padding-bottom: 14px;
+      margin-bottom: 24px;
+    }
+
+    .cabecalho-marca {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .cabecalho-marca img {
+      height: 48px;
+      width: auto;
+    }
+
+    .cabecalho-marca-texto strong {
+      display: block;
+      font-size: 18px;
+      letter-spacing: 1px;
+      color: #1a1a1a;
+    }
+
+    .cabecalho-marca-texto span {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #CB0D01;
+      font-weight: bold;
+    }
+
+    .cabecalho-data {
+      text-align: right;
+      font-size: 12px;
+      color: #555;
+    }
+
+    .info-aluno {
+      background: #f4f4f4;
+      border-left: 4px solid #CB0D01;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .info-aluno div strong {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #888;
+      margin-bottom: 2px;
+    }
+
+    .info-aluno div span {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .titulo-treino {
+      margin-bottom: 4px;
+    }
+
+    .titulo-treino h1 {
+      font-size: 22px;
+      text-transform: uppercase;
+      color: #1a1a1a;
+    }
+
+    .titulo-treino h1 span {
+      color: #CB0D01;
+    }
+
+    .titulo-treino p {
+      font-size: 13px;
+      color: #666;
+      margin-top: 2px;
+      margin-bottom: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    thead th {
+      background: #1a1a1a;
+      color: #fff;
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 10px 12px;
+    }
+
+    thead th.col-centro {
+      text-align: center;
+    }
+
+    tbody td {
+      padding: 10px 12px;
+      font-size: 13px;
+      border-bottom: 1px solid #e2e2e2;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #fafafa;
+    }
+
+    td.col-centro {
+      text-align: center;
+      font-weight: 600;
+      color: #CB0D01;
+    }
+
+    .observacao {
+      background: #fff8f7;
+      border: 1px solid #f1c9c5;
+      border-radius: 4px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .observacao strong {
+      color: #CB0D01;
+    }
+
+    .rodape {
+      position: fixed;
+      bottom: 10mm;
+      left: 16mm;
+      right: 16mm;
+      border-top: 1px solid #ddd;
+      padding-top: 8px;
+      font-size: 10px;
+      color: #999;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cabecalho">
+    <div class="cabecalho-marca">
+      <% if (logoBase64) { %>
+        <img src="<%= logoBase64 %>" alt="Maximus Training">
+      <% } else { %>
+        <!-- LOGO AQUI: colocar app/public/imagens/LogoSemFgrande.png (ou equivalente) -->
+      <% } %>
+      <div class="cabecalho-marca-texto">
+        <strong>MAXIMUS TRAINING</strong>
+        <span>GYM CENTER</span>
+      </div>
+    </div>
+    <div class="cabecalho-data">
+      Gerado em<br>
+      <%= dataFormatada %>
+    </div>
+  </div>
+
+  <div class="info-aluno">
+    <div>
+      <strong>Aluno</strong>
+      <span><%= aluno.nome %></span>
+    </div>
+    <div>
+      <strong>Categoria</strong>
+      <span><%= categoriaLabel %></span>
+    </div>
+    <div>
+      <strong>Treino</strong>
+      <span>Treino <%= treino.nome %></span>
+    </div>
+  </div>
+
+  <div class="titulo-treino">
+    <h1>Treino <span><%= treino.nome %></span> — <%= treino.musculo %></h1>
+    <p>Grupo muscular do dia: <%= treino.musculo %></p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Exercício</th>
+        <th class="col-centro">Séries</th>
+        <th class="col-centro">Repetições</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% exercicios.forEach(ex => { %>
+        <tr>
+          <td><%= ex.nome %></td>
+          <td class="col-centro"><%= ex.series %></td>
+          <td class="col-centro"><%= ex.repeticoes %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <% if (treino.observacao) { %>
+    <div class="observacao">
+      <strong>Foco do treino:</strong> <%= treino.observacao %>
+    </div>
+  <% } %>
+
+  <div class="rodape">
+    <span>Maximus Training — Ficha de treino individual</span>
+    <span><%= aluno.nome %></span>
+  </div>
+
+</body>
+</html>

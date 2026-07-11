@@ -7,6 +7,7 @@ const alunosController = require('../controllers/alunosController');
 const imcController = require('../controllers/imcController');
 const homeController = require('../controllers/homeController');
 const progressoController = require('../controllers/progressoController');
+const treinoPdfController = require('../controllers/treinoPdfController');
 
 const upload = require('../helpers/upload');
 
@@ -116,6 +117,11 @@ router.get('/perfil',
 router.get('/editar-perfil',
   authMiddleware,
   verificar(alunosController.carregarEditarPerfil)
+);
+
+router.get('/perfil/treino-pdf',
+  authMiddleware,
+  verificar(treinoPdfController.baixarTreinoPdf)
 );
 
 router.post('/salvar-perfil',
