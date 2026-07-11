@@ -10,6 +10,7 @@ router.get('/logout', admController.logout);
 router.get('/dashboard', verificarAdm, admController.exibirDashboard);
 router.get('/home', verificarAdm, admController.exibirHome);
 router.get('/alunos', verificarAdm, admController.exibirAlunos);
+router.get('/alunos/:id', verificarAdm, admController.detalhesAluno);
 router.post('/alunos/criar', verificarAdm, admController.criarAluno);
 router.post('/alunos/editar', verificarAdm, admController.editarAluno);
 

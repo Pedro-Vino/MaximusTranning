@@ -2,28 +2,49 @@ const chatToggle = document.getElementById("chat-toggle");
 const chatbot = document.getElementById("chatbot");
 const fecharChat = document.getElementById("fechar-chat");
 
+const form = document.getElementById("chat-form");
 const input = document.getElementById("chat-input");
+const enviarBtn = document.getElementById("chat-enviar");
 const body = document.getElementById("chat-body");
+
+let chatIniciado = false;
+
+function escapeHtml(texto) {
+  const div = document.createElement("div");
+  div.textContent = texto;
+  return div.innerHTML;
+}
+
+function horaAtual() {
+  return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function adicionarMensagem(classe, htmlConteudo, hora) {
+  const div = document.createElement("div");
+  div.className = classe;
+  div.innerHTML = `${htmlConteudo}<span class="msg-hora">${hora}</span>`;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+  return div;
+}
 
 /* ABRIR CHAT */
 
 chatToggle.addEventListener("click", () => {
+  const aberto = chatbot.style.display === "flex";
+  chatbot.style.display = aberto ? "none" : "flex";
 
-  chatbot.style.display = "flex";
-
-  if(body.innerHTML.includes("quick-buttons")){
-
-    body.innerHTML += `
-      <div class="msg-bot">
-        <b> Suporte:</b><br>
-        Olá 👋<br>
-        Bem-vindo ao suporte Maximus Training.<br>
-        Como posso ajudar?
-      </div>
-    `;
-
+  if (!aberto) {
+    if (!chatIniciado) {
+      chatIniciado = true;
+      adicionarMensagem(
+        "msg-bot",
+        "Olá! Bem-vindo ao suporte da Maximus Training. Como posso ajudar?",
+        horaAtual()
+      );
+    }
+    input.focus();
   }
-
 });
 
 /* FECHAR CHAT */
@@ -32,87 +53,56 @@ fecharChat.addEventListener("click", () => {
   chatbot.style.display = "none";
 });
 
-/* BOTÕES */
+/* BOTÕES RÁPIDOS */
 
-function enviarPergunta(texto){
-
+function enviarPergunta(texto) {
   input.value = texto;
-
-  input.dispatchEvent(
-    new KeyboardEvent("keypress", {
-      key: "Enter"
-    })
-  );
-
+  form.requestSubmit();
 }
 
-/* ENVIAR */
+/* ENVIAR MENSAGEM */
 
-input.addEventListener("keypress", async function(e){
+form.addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-  if(e.key === "Enter"){
+  const mensagem = input.value.trim();
+  if (mensagem === "") return;
 
-    const mensagem = input.value;
+  adicionarMensagem("msg-user", escapeHtml(mensagem), horaAtual());
 
-    if(mensagem.trim() === ""){
-      return;
-    }
+  input.value = "";
+  input.disabled = true;
+  enviarBtn.disabled = true;
 
-    const hora = new Date().toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  const digitando = document.createElement("div");
+  digitando.className = "msg-bot msg-digitando";
+  digitando.innerHTML = "<span></span><span></span><span></span>";
+  body.appendChild(digitando);
+  body.scrollTop = body.scrollHeight;
 
-    body.innerHTML += `
-      <div class="msg-user">
-        <b>Você:</b> ${mensagem}
-        <br>
-        <small>${hora}</small>
-      </div>
-    `;
-
-    input.value = "";
-
-    body.scrollTop = body.scrollHeight;
-
-    body.innerHTML += `
-      <div class="msg-bot" id="digitando">
-         Digitando...
-      </div>
-    `;
-
-    body.scrollTop = body.scrollHeight;
-
-    const resposta = await fetch("/chat", {
-
-      method: "POST",
-
-      headers:{
-        "Content-Type":"application/json"
-      },
-
-      body: JSON.stringify({
-        mensagem
-      })
-
-    });
-
-    await new Promise(resolve => setTimeout(resolve, 1000));
+  try {
+    const [resposta] = await Promise.all([
+      fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mensagem })
+      }),
+      new Promise(resolve => setTimeout(resolve, 500))
+    ]);
 
     const dados = await resposta.json();
-
-    document.getElementById("digitando").remove();
-
-    body.innerHTML += `
-      <div class="msg-bot">
-        <b> Bot:</b> ${dados.resposta}
-        <br>
-        <small>${hora}</small>
-      </div>
-    `;
-
-    body.scrollTop = body.scrollHeight;
-
+    digitando.remove();
+    adicionarMensagem("msg-bot", dados.resposta, horaAtual());
+  } catch (err) {
+    digitando.remove();
+    adicionarMensagem(
+      "msg-bot",
+      "Não consegui me conectar agora. Tente novamente em instantes.",
+      horaAtual()
+    );
+  } finally {
+    input.disabled = false;
+    enviarBtn.disabled = false;
+    input.focus();
   }
-
 });

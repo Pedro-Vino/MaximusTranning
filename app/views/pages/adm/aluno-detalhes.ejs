@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADM — <%= aluno.nome %></title>
+  <link rel="stylesheet" href="/css/adm/base.css">
+  <link rel="stylesheet" href="/css/adm/aluno-detalhes.css">
+  <link rel="icon" href="/imagens/LogoSemFgrande.png">
+</head>
+<body>
+  <%- include('../../partials/adm_navbar'); %>
+
+  <main class="adm-main">
+    <a href="/adm/alunos" class="adm-voltar">&larr; Voltar para Alunos</a>
+
+    <div class="adm-page-header">
+      <h1><%= aluno.nome %></h1>
+    </div>
+
+    <div class="adm-cards">
+      <div class="adm-card">
+        <p>Nome</p>
+        <h2 style="font-size:18px;"><%= aluno.nome %></h2>
+      </div>
+      <div class="adm-card">
+        <p>Email</p>
+        <h2 style="font-size:16px;"><%= aluno.email %></h2>
+      </div>
+      <div class="adm-card">
+        <p>IMC</p>
+        <h2><%= aluno.imc || '—' %></h2>
+      </div>
+      <div class="adm-card">
+        <p>Treinos concluídos desde o cadastro</p>
+        <h2><%= totalConcluidos %></h2>
+      </div>
+    </div>
+
+    <div class="adm-semana-container">
+      <div class="adm-semana-titulo">
+        <h3>Atividade dos últimos 7 dias</h3>
+        <span class="adm-semana-resumo">
+          <strong><%= diasTreinadosSemana %></strong> de 7 dias treinados
+        </span>
+      </div>
+
+      <div class="adm-semana-barras">
+        <% semana.forEach(dia => { %>
+          <div class="adm-dia">
+            <div class="adm-dia-quadrado <%= dia.treinou ? 'treinou' : '' %> <%= dia.hoje ? 'hoje' : '' %>"
+                 title="<%= dia.treinou ? 'Treinou' : 'Sem treino' %> — <%= dia.dataFormatada %>"></div>
+            <span class="adm-dia-label"><%= dia.label %></span>
+            <span class="adm-dia-data"><%= dia.dataFormatada %></span>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </main>
+
+  <%- include('../../partials/adm_footer'); %>
+</body>
+</html>

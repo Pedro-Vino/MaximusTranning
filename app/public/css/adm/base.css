@@ -229,6 +229,18 @@ tbody td {
   color: var(--branco);
 }
 
+.adm-link-aluno {
+  color: var(--branco);
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.adm-link-aluno:hover {
+  color: var(--vermelho);
+  text-decoration: underline;
+}
+
 /* BADGE STATUS */
 .badge {
   padding: 3px 10px;

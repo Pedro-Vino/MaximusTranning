@@ -164,6 +164,44 @@ body{
 
 }
 
+/* BOTÕES RÁPIDOS */
+
+#quick-buttons{
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-bottom: 14px;
+}
+
+#quick-buttons button{
+
+    background: transparent;
+
+    border: 1px solid #d40000;
+
+    color: #fff;
+
+    padding: 6px 14px;
+
+    font-size: 12.5px;
+
+    font-weight: 600;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+#quick-buttons button:hover{
+    background: #d40000;
+}
+
 /* RESPONSIVO */
 
 @media(max-width: 500px){
@@ -193,16 +231,27 @@ body{
 
     <div id="chat-body">
 
-        <div class="msg-bot">
-            👋 Olá!<br>
-            Bem-vindo ao suporte da Maximus Training.<br><br>
+        <div id="quick-buttons">
+            <button type="button" onclick="enviarPergunta('IMC')">IMC</button>
+            <button type="button" onclick="enviarPergunta('Login')">Login</button>
+            <button type="button" onclick="enviarPergunta('Cadastro')">Cadastro</button>
+            <button type="button" onclick="enviarPergunta('Treinos')">Treinos</button>
+            <button type="button" onclick="enviarPergunta('Perfil')">Perfil</button>
+            <button type="button" onclick="enviarPergunta('Senha')">Senha</button>
+            <button type="button" onclick="enviarPergunta('Progresso')">Progresso</button>
+            <button type="button" onclick="enviarPergunta('Planos')">Planos</button>
+            <button type="button" onclick="enviarPergunta('Horário de funcionamento')">Horários</button>
+            <button type="button" onclick="enviarPergunta('Contato')">Contato</button>
+        </div>
 
-            Você pode perguntar sobre:<br>
-            • Login<br>
-            • Cadastro<br>
-            • IMC<br>
-            • Treinos<br>
-            • Perfil
+        <div class="msg-bot">
+            Olá! Bem-vindo ao suporte da Maximus Training.<br><br>
+
+            Escolha uma das opções acima ou digite sua dúvida abaixo. Você também pode perguntar sobre:<br>
+            • Ativação de conta<br>
+            • Foto de perfil<br>
+            • Localização e horários<br>
+            • Painel administrativo
         </div>
 
     </div>
@@ -220,6 +269,17 @@ body{
 const input = document.getElementById("chat-input");
 
 const body = document.getElementById("chat-body");
+
+function escapeHtml(texto){
+    const div = document.createElement("div");
+    div.textContent = texto;
+    return div.innerHTML;
+}
+
+function enviarPergunta(texto){
+    input.value = texto;
+    input.dispatchEvent(new KeyboardEvent("keypress", { key: "Enter" }));
+}
 
 input.addEventListener("keypress", async function(e){
 
@@ -243,7 +303,7 @@ input.addEventListener("keypress", async function(e){
             <div class="msg-user">
 
                 <b>Você:</b><br>
-                ${mensagem}
+                ${escapeHtml(mensagem)}
 
                 <small>${hora}</small>
 

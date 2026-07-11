@@ -26,6 +26,24 @@ const ProgressoModel = {
     return rows[0] || null;
   },
 
+  diasTreinadosUltimos7Dias: async (alunoId) => {
+    const [rows] = await pool.query(
+      `SELECT DATE(data_conclusao) as data_treino
+       FROM progresso
+       WHERE aluno_id = ? AND data_conclusao >= (CURDATE() - INTERVAL 6 DAY)`,
+      [alunoId]
+    );
+    return rows.map(r => r.data_treino);
+  },
+
+  totalConcluidos: async (alunoId) => {
+    const [[{ total }]] = await pool.query(
+      "SELECT COUNT(*) as total FROM progresso WHERE aluno_id = ?",
+      [alunoId]
+    );
+    return total;
+  },
+
   sequenciaDias: async (alunoId) => {
     const [rows] = await pool.query(
       "SELECT DATE(data_conclusao) as data_treino FROM progresso WHERE aluno_id = ? ORDER BY data_conclusao DESC",

@@ -35,7 +35,7 @@
           <% alunos.forEach(aluno => { %>
             <tr>
               <td><%= aluno.alu_id %></td>
-              <td><%= aluno.alu_nome %></td>
+              <td><a href="/adm/alunos/<%= aluno.alu_id %>" class="adm-link-aluno"><%= aluno.alu_nome %></a></td>
               <td><%= aluno.alu_email %></td>
               <td><%= aluno.alu_imc ? Number(aluno.alu_imc).toFixed(2) : '—' %></td>
               <td>

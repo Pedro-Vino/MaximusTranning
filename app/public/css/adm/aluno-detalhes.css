@@ -1,0 +1,85 @@
+.adm-voltar {
+  display: inline-block;
+  color: var(--cinza);
+  text-decoration: none;
+  font-size: 13px;
+  margin-bottom: 16px;
+  transition: 0.2s;
+}
+
+.adm-voltar:hover { color: var(--vermelho); }
+
+.adm-semana-container {
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.adm-semana-titulo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.adm-semana-titulo h3 {
+  font-size: 15px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--branco);
+}
+
+.adm-semana-resumo {
+  font-size: 13px;
+  color: var(--cinza);
+}
+
+.adm-semana-resumo strong {
+  color: var(--vermelho);
+  font-size: 16px;
+}
+
+.adm-semana-barras {
+  display: flex;
+  gap: 10px;
+}
+
+.adm-dia {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.adm-dia-quadrado {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  background: #1a1a1a;
+  border: 1px solid var(--borda);
+  transition: 0.2s;
+}
+
+.adm-dia-quadrado.treinou {
+  background: var(--vermelho);
+  border-color: var(--vermelho);
+}
+
+.adm-dia-quadrado.hoje {
+  box-shadow: 0 0 0 2px var(--branco) inset;
+}
+
+.adm-dia-label {
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--cinza);
+  text-transform: uppercase;
+}
+
+.adm-dia-data {
+  font-size: 10px;
+  color: #555;
+}
